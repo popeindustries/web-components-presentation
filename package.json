@@ -4,5 +4,8 @@
   "private": true,
   "devDependencies": {
     "dvlp": "^8.1.1"
+  },
+  "scripts": {
+    "dev": "dvlp --port 8888"
   }
 }
