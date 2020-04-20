@@ -1,0 +1,8 @@
+{
+  "name": "custom-element-presentation",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "dvlp": "^8.1.1"
+  }
+}
