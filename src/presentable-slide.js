@@ -1,4 +1,5 @@
-import { PresentableNote } from './presentable-note.js';
+import { ActiveElementMixin } from './active-element-mixin.js';
+import { PresentableCue } from './presentable-cue.js';
 
 const html = String.raw;
 const template = document.createElement('template');
@@ -23,28 +24,29 @@ template.innerHTML = html`
     }
   </style>
   <slot></slot>
-  <slot name="notes"></slot>
-  </div>
+  <slot name="cues"></slot>
 `;
 
-export class PresentableSlide extends HTMLElement {
+export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
   constructor() {
     super();
 
-    /** @type { Array<PresentableNote> } */
-    this.notes = [];
-    this.progress = 0;
+    /** @type { Array<PresentableCue> } */
+    this.cues = [];
+    this.cueRange = [0, 0];
+    this.onCue = this.onCue.bind(this);
 
     this.attachShadow({ mode: 'open' }).appendChild(
       template.content.cloneNode(true)
     );
 
-    this.shadowRoot.querySelector('slot[name="notes"]')?.addEventListener(
+    this.shadowRoot.querySelector('slot[name="cues"]')?.addEventListener(
       'slotchange',
       (event) => {
         for (const slottedChild of event.target.assignedElements()) {
-          if (slottedChild instanceof PresentableNote) {
-            this.notes.push(slottedChild);
+          if (slottedChild instanceof PresentableCue) {
+            const cue = slottedChild;
+            this.cues.push(cue);
           }
         }
       },
@@ -52,15 +54,34 @@ export class PresentableSlide extends HTMLElement {
     );
   }
 
-  connectedCallback() {}
-
-  forward() {
-    if (this.progress < 1) {
-      this.progress += 1 / this.notes.length;
-    }
+  connectedCallback() {
+    this.parentElement.addEventListener('cue', this.onCue);
   }
 
-  back() {}
+  disconnectedCallback() {
+    this.parentElement.removeEventListener('cue', this.onCue);
+  }
+
+  /**
+   * Handle cue change event
+   * @param { CustomEvent<{ cueIndex: number, oldCueIndex: number }> } event
+   */
+  onCue(event) {
+    const { cueIndex, oldCueIndex } = event.detail;
+    const hasOldCue =
+      oldCueIndex >= this.cueRange[0] && oldCueIndex < this.cueRange[1];
+    const hasCue = cueIndex >= this.cueRange[0] && cueIndex < this.cueRange[1];
+
+    if (hasOldCue) {
+      this.cues[oldCueIndex - this.cueRange[0]].active = false;
+    }
+    if (hasCue) {
+      const cue = this.cues[cueIndex - this.cueRange[0]];
+      cue.active = true;
+      // TODO: set step value
+    }
+    this.active = hasCue;
+  }
 }
 
 window.customElements.define('pres-slide', PresentableSlide);

@@ -1,15 +1,13 @@
+import { PresentableCue } from './presentable-cue.js';
 import { PresentableSlide } from './presentable-slide.js';
 
-// const RE_MULTIPLE_SPACES = /\s\s+/g;
 const TOUCH_THRESHOLD = 100;
-// const VOLUME_CHANGE = 0.1;
 
 const html = String.raw;
 const isLocal = window.location.hostname === 'localhost';
 const isShowtime = window.location.search.includes('showtime');
-const startingSlide = isShowtime ? 0 : getUrlSlide();
+const startingCue = isShowtime ? 0 : getUrlCue();
 const template = document.createElement('template');
-let start = Date.now();
 
 template.innerHTML = html`
   <style>
@@ -31,9 +29,8 @@ class PresentableShow extends HTMLElement {
   constructor() {
     super();
 
-    /** @type { Array<PresentableSlide> } */
-    this.slides = [];
-    this.slideIndex = 0;
+    this.cueIndex = -1;
+    this.cueTotal = 0;
 
     this.attachShadow({ mode: 'open' }).appendChild(
       template.content.cloneNode(true)
@@ -44,23 +41,32 @@ class PresentableShow extends HTMLElement {
       (event) => {
         for (const slottedChild of event.target.assignedElements()) {
           if (slottedChild instanceof PresentableSlide) {
-            this.slides.push(slottedChild);
+            const slide = slottedChild;
+            const cueRangeStart = this.cueTotal;
+
+            for (const cue of slide.cues) {
+              this.cueTotal++;
+              cue.index = this.cueTotal;
+            }
+
+            slide.cueRange = [cueRangeStart, this.cueTotal];
           }
         }
+
+        this.change(startingCue);
       },
       { once: true }
     );
   }
 
   connectedCallback() {
+    this.addEventListener('active', this, false);
     document.addEventListener('keyup', this, false, { passive: true });
     document.documentElement.addEventListener('touchstart', this, false);
     if (isLocal) {
       window.addEventListener('popstate', this, false);
       window.history.replaceState({}, document.title, window.location.href);
     }
-
-    // this.changeSlide(startingSlide);
   }
 
   disconnectedCallback() {
@@ -71,53 +77,57 @@ class PresentableShow extends HTMLElement {
 
   handleEvent(event) {
     switch (event.type) {
-      case 'keyup':
-        this.onKeyUp(event);
-        break;
-      case 'touchstart':
-        this.onTouchStart(event);
-        break;
-      case 'popstate':
-        if (event.state) {
-          this.changeSlide(getUrlSlide());
+      case 'active': {
+        if (event.target instanceof PresentableCue) {
+          console.log(event.target.innerHTML);
         }
         break;
+      }
+      case 'keyup': {
+        this.onKeyUp(event);
+        break;
+      }
+      case 'touchstart': {
+        this.onTouchStart(event);
+        break;
+      }
+      case 'popstate': {
+        if (event.state) {
+          this.change(getUrlCue());
+        }
+        break;
+      }
     }
   }
 
-  /**
-   * Display slide at 'slideIndex'
-   * @param {number} slideIndex
-   * @param {boolean} back
-   */
-  changeSlide(slideIndex, back) {
-    const current = this.slides[this.slideIndex];
-    const next = this.slides[slideIndex];
-
-    current.active = false;
-    next.active = true;
-
-    this.slideIndex = slideIndex;
+  change(cueIndex) {
+    this.dispatchEvent(
+      new CustomEvent('cue', {
+        bubbles: true,
+        detail: { cueIndex, oldCueIndex: this.cueIndex },
+      })
+    );
+    this.cueIndex = cueIndex;
     if (isLocal) {
       window.history.pushState(
         {},
         '',
-        window.location.href.replace(/\/\d*$/, `/${slideIndex}`)
+        window.location.href.replace(/\/\d*$/, `/${cueIndex}`)
       );
     }
   }
 
   forward() {
-    if (this.slideIndex + 1 < this.slides.length) {
-      this.changeSlide(this.slideIndex + 1);
+    if (this.cueIndex + 1 <= this.cueTotal) {
+      this.change(this.cueIndex + 1);
     } else {
       return;
     }
   }
 
   back() {
-    if (this.slideIndex - 1 >= 0) {
-      this.changeSlide(this.slideIndex - 1, true);
+    if (this.cueIndex - 1 >= 0) {
+      this.change(this.cueIndex - 1);
     } else {
       return;
     }
@@ -150,9 +160,7 @@ class PresentableShow extends HTMLElement {
       this.back();
     }
     if (key === 'r') {
-      start = Date.now();
-      // updateClock();
-      this.changeSlide(0);
+      this.change(0);
     }
   }
 
@@ -181,12 +189,12 @@ class PresentableShow extends HTMLElement {
 }
 
 /**
- * Get current slide index from url
+ * Get current cue index from url
  * @returns {number}
  */
-function getUrlSlide() {
-  const slide = window.location.pathname.split('/').slice(-1)[0];
-  return parseInt(slide, 0) || 0;
+function getUrlCue() {
+  const cue = window.location.pathname.split('/').slice(-1)[0];
+  return parseInt(cue, 0) || 0;
 }
 
 window.customElements.define('pres-show', PresentableShow);
