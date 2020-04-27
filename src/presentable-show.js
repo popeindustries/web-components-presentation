@@ -1,4 +1,4 @@
-import './presentable-slide.js';
+import { PresentableSlide } from './presentable-slide.js';
 
 // const RE_MULTIPLE_SPACES = /\s\s+/g;
 const TOUCH_THRESHOLD = 100;
@@ -30,22 +30,29 @@ template.innerHTML = html`
 class PresentableShow extends HTMLElement {
   constructor() {
     super();
-    this.notesWindow = null;
+
+    /** @type { Array<PresentableSlide> } */
     this.slides = [];
     this.slideIndex = 0;
-    this.volume = 1;
-    this.volumeBg = 0.3;
 
-    this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+    this.attachShadow({ mode: 'open' }).appendChild(
+      template.content.cloneNode(true)
+    );
+
+    this.shadowRoot.querySelector('slot')?.addEventListener(
+      'slotchange',
+      (event) => {
+        for (const slottedChild of event.target.assignedElements()) {
+          if (slottedChild instanceof PresentableSlide) {
+            this.slides.push(slottedChild);
+          }
+        }
+      },
+      { once: true }
+    );
   }
 
   connectedCallback() {
-    this.slides = Array.from(this.children);
-
-    for (let i = 0; i < this.slides.length; i++) {
-      this.slides[i].index = i;
-    }
-
     document.addEventListener('keyup', this, false, { passive: true });
     document.documentElement.addEventListener('touchstart', this, false);
     if (isLocal) {
@@ -53,7 +60,7 @@ class PresentableShow extends HTMLElement {
       window.history.replaceState({}, document.title, window.location.href);
     }
 
-    this.changeSlide(startingSlide);
+    // this.changeSlide(startingSlide);
   }
 
   disconnectedCallback() {
@@ -92,36 +99,24 @@ class PresentableShow extends HTMLElement {
 
     this.slideIndex = slideIndex;
     if (isLocal) {
-      window.history.pushState({}, '', window.location.href.replace(/\/\d*$/, `/${slideIndex}`));
+      window.history.pushState(
+        {},
+        '',
+        window.location.href.replace(/\/\d*$/, `/${slideIndex}`)
+      );
     }
   }
 
-  /**
-   * Advance to next step/slide/note
-   */
-  next() {
-    /* if (model.noteIndex + 1 < model.notes[model.slideIndex].length) {
-    changeNote(model.slideIndex, model.slideIndex, model.noteIndex + 1);
-  } else  */ if (
-      this.slideIndex + 1 <
-      this.slides.length
-    ) {
+  forward() {
+    if (this.slideIndex + 1 < this.slides.length) {
       this.changeSlide(this.slideIndex + 1);
     } else {
       return;
     }
   }
 
-  /**
-   * Advance to previous step/slide/note
-   */
-  prev() {
-    /* if (model.noteIndex - 1 >= 0) {
-      changeNote(model.slideIndex, model.slideIndex, model.noteIndex - 1);
-    } else  */ if (
-      this.slideIndex - 1 >=
-      0
-    ) {
+  back() {
+    if (this.slideIndex - 1 >= 0) {
       this.changeSlide(this.slideIndex - 1, true);
     } else {
       return;
@@ -130,17 +125,29 @@ class PresentableShow extends HTMLElement {
 
   /**
    * Handle key down
-   * @param {Event} evt
+   * @param {Event} event
    */
-  onKeyUp(evt) {
-    evt.preventDefault();
-    const key = (evt.key || evt.keyIdentifier).toLowerCase();
+  onKeyUp(event) {
+    event.preventDefault();
+    const key = (event.key || event.keyIdentifier).toLowerCase();
 
-    if (key === 'arrowright' || key === 'arrowup' || key === 'right' || key === 'up' || key === 'pagedown') {
-      this.next();
+    if (
+      key === 'arrowright' ||
+      key === 'arrowup' ||
+      key === 'right' ||
+      key === 'up' ||
+      key === 'pagedown'
+    ) {
+      this.forward();
     }
-    if (key === 'arrowleft' || key === 'arrowdown' || key === 'left' || key === 'down' || key === 'pageup') {
-      this.prev();
+    if (
+      key === 'arrowleft' ||
+      key === 'arrowdown' ||
+      key === 'left' ||
+      key === 'down' ||
+      key === 'pageup'
+    ) {
+      this.back();
     }
     if (key === 'r') {
       start = Date.now();
@@ -151,11 +158,11 @@ class PresentableShow extends HTMLElement {
 
   /**
    * Handle touch
-   * @param {Event} evt
+   * @param {Event} event
    */
-  onTouchStart(evt) {
-    evt.preventDefault();
-    const start = evt.layerX;
+  onTouchStart(event) {
+    event.preventDefault();
+    const start = event.layerX;
     let cb;
 
     document.documentElement.addEventListener(
@@ -165,7 +172,7 @@ class PresentableShow extends HTMLElement {
         const diff = start - evt.layerX;
 
         if (Math.abs(diff) >= TOUCH_THRESHOLD) {
-          diff > 0 ? this.next() : this.prev();
+          diff > 0 ? this.forward() : this.back();
         }
       }),
       false

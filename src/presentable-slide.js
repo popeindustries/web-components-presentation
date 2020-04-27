@@ -1,4 +1,4 @@
-import './presentable-note.js';
+import { PresentableNote } from './presentable-note.js';
 
 const html = String.raw;
 const template = document.createElement('template');
@@ -27,37 +27,40 @@ template.innerHTML = html`
   </div>
 `;
 
-class PresentableSlide extends HTMLElement {
+export class PresentableSlide extends HTMLElement {
   constructor() {
     super();
 
-    this.notes = null;
-    this.index = 0;
+    /** @type { Array<PresentableNote> } */
+    this.notes = [];
+    this.progress = 0;
 
     this.attachShadow({ mode: 'open' }).appendChild(
       template.content.cloneNode(true)
     );
+
+    this.shadowRoot.querySelector('slot[name="notes"]')?.addEventListener(
+      'slotchange',
+      (event) => {
+        for (const slottedChild of event.target.assignedElements()) {
+          if (slottedChild instanceof PresentableNote) {
+            this.notes.push(slottedChild);
+          }
+        }
+      },
+      { once: true }
+    );
   }
 
-  get active() {
-    return this.getAttribute('active');
-  }
+  connectedCallback() {}
 
-  set active(active) {
-    if (active) {
-      this.style.zIndex = 100 - this.index;
-      this.setAttribute('active', '');
-    } else {
-      this.style.zIndex = null;
-      this.removeAttribute('active');
+  forward() {
+    if (this.progress < 1) {
+      this.progress += 1 / this.notes.length;
     }
   }
 
-  connectedCallback() {
-    this.notes = this.querySelector(
-      '[slot="notes"]'
-    )?.assignedSlot.assignedElements();
-  }
+  back() {}
 }
 
 window.customElements.define('pres-slide', PresentableSlide);
