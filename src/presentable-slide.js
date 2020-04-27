@@ -1,11 +1,12 @@
-import "./presentable-note.js";
+import './presentable-note.js';
 
 const html = String.raw;
-const template = document.createElement("template");
+const template = document.createElement('template');
 
 template.innerHTML = html`
   <style>
     :host {
+      display: block;
       height: 100%;
       left: 0;
       opacity: 1;
@@ -14,10 +15,10 @@ template.innerHTML = html`
       visibility: hidden;
       width: 100%;
     }
-    :host(.show) {
+    :host([active]) {
       visibility: visible;
     }
-    :host(.hide) {
+    :host(:not([active])) {
       visibility: hidden;
     }
   </style>
@@ -29,11 +30,27 @@ template.innerHTML = html`
 class PresentableSlide extends HTMLElement {
   constructor() {
     super();
-    this.notes = null;
 
-    this.attachShadow({ mode: "open" }).appendChild(
+    this.notes = null;
+    this.index = 0;
+
+    this.attachShadow({ mode: 'open' }).appendChild(
       template.content.cloneNode(true)
     );
+  }
+
+  get active() {
+    return this.getAttribute('active');
+  }
+
+  set active(active) {
+    if (active) {
+      this.style.zIndex = 100 - this.index;
+      this.setAttribute('active', '');
+    } else {
+      this.style.zIndex = null;
+      this.removeAttribute('active');
+    }
   }
 
   connectedCallback() {
@@ -43,4 +60,4 @@ class PresentableSlide extends HTMLElement {
   }
 }
 
-window.customElements.define("pres-slide", PresentableSlide);
+window.customElements.define('pres-slide', PresentableSlide);

@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
 :root {
+  --colour-bg: #fefefe;
+  --colour-text: #0b1728;
 }
 
 *,
@@ -114,15 +116,15 @@ select {
 html,
 body {
   width: 100vw;
-  height: 200vh;
+  height: 100vh;
 }
 
 html {
-  background-color: #fefefe;
+  background-color: var(--colour-bg);
 }
 
 body {
-  color: #0b1728;
+  color: var(--colour-text);
   font-family: "Avenir", sans-serif;
   font-size: 16px;
   font-variant: normal;
