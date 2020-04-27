@@ -1,0 +1,217 @@
+@charset "UTF-8";
+
+:root {
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+a {
+  background: transparent;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+img {
+  border: 0;
+}
+
+svg {
+  overflow: visible;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src: url("assets/fonts/AvenirNext-Medium.woff2") format("woff2"),
+    url("assets/fonts/AvenirNext-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Avenir Next";
+  src: url("assets/fonts/AvenirNext-Heavy.woff2") format("woff2"),
+    url("assets/fonts/AvenirNext-Heavy.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Avenir Next";
+  src: url("assets/fonts/AvenirNext-Regular.woff2") format("woff2"),
+    url("assets/fonts/AvenirNext-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Avenir Next";
+  src: url("assets/fonts/AvenirNext-Bold.woff2") format("woff2"),
+    url("assets/fonts/AvenirNext-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Hack";
+  src: url("assets/fonts/Hack-Regular.woff2") format("woff2"),
+    url("assets/fonts/Hack-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+html,
+body {
+  width: 100vw;
+  height: 200vh;
+}
+
+html {
+  background-color: #fefefe;
+}
+
+body {
+  color: #0b1728;
+  font-family: "Avenir", sans-serif;
+  font-size: 16px;
+  font-variant: normal;
+  font-weight: 500;
+  overflow: hidden;
+  z-index: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4vw;
+  font-weight: 200;
+  padding: 0 5vw;
+  text-align: center;
+  width: 100%;
+}
+
+h2 {
+  font-size: 3.5vw;
+  font-weight: 600;
+}
+
+p,
+ul,
+ol {
+  font-size: 2.5vw;
+}
+
+code {
+  font-family: "Hack", monospace;
+  font-size: 90%;
+}
+
+pre {
+  margin: 1vw 2vw 0;
+  width: auto;
+}
+pre code {
+  font-size: 1.5vw;
+  margin: 0 0 0 -6em;
+  padding: 0 !important;
+  background-color: transparent !important;
+  width: auto;
+}
+pre.inline {
+  display: inline-block;
+  margin: 0;
+  vertical-align: top;
+}
+pre.inline code {
+  display: inline-block;
+  margin-left: 0;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+}
+figure img {
+  display: block;
+  width: 100%;
+}
+
+figcaption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fc2e61;
+  box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.2);
+  color: #fefefe;
+  font-size: 1.5vw;
+  padding: 0.25vw 0.5vw;
+  white-space: nowrap;
+}
+
+video {
+  display: block;
+}
