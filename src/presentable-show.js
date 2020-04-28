@@ -16,43 +16,6 @@ template.innerHTML = html`
     *:before {
       box-sizing: border-box;
     }
-    article,
-    aside,
-    details,
-    figcaption,
-    figure,
-    footer,
-    header,
-    nav,
-    section,
-    summary {
-      display: block;
-    }
-    audio,
-    canvas,
-    progress,
-    video {
-      display: inline-block;
-      vertical-align: baseline;
-    }
-    audio:not([controls]) {
-      display: none;
-      height: 0;
-    }
-    a {
-      background: transparent;
-    }
-    b,
-    strong {
-      font-weight: bold;
-    }
-    img {
-      border: 0;
-    }
-    svg {
-      overflow: visible;
-    }
-
     :host {
       contain: content;
       display: block;
@@ -74,7 +37,7 @@ template.innerHTML = html`
       top: 0;
     }
     #cuenotes {
-      background-color: white;
+      background-color: rgba(255,255,255,0.85);
       bottom: 0;
       color: #0b1728;
       display: none;
@@ -194,7 +157,7 @@ class PresentableShow extends HTMLElement {
   }
 
   forward() {
-    if (this.cueIndex + 1 <= this.cueTotal) {
+    if (this.cueIndex + 1 < this.cueTotal) {
       this.change(this.cueIndex + 1);
     }
   }

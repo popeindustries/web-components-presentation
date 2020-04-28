@@ -12,7 +12,7 @@ template.innerHTML = html`
       display: block;
       left: 0;
       opacity: 1;
-      padding: 1.2vw;
+      padding: 1.2vw 2vw;
       position: absolute;
       right: 0;
       top: 0;
@@ -37,7 +37,6 @@ export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
     /** @type { Array<PresentableCue> } */
     this.cues = [];
     this.cueRange = [0, 0];
-    this.onCue = this.onCue.bind(this);
 
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
 
@@ -65,31 +64,33 @@ export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
   }
 
   connectedCallback() {
-    this.parentElement.addEventListener('cue', this.onCue);
+    this.parentElement.addEventListener('cue', this);
   }
 
   disconnectedCallback() {
-    this.parentElement.removeEventListener('cue', this.onCue);
+    this.parentElement.removeEventListener('cue', this);
   }
 
   /**
    * Handle cue change event
    * @param { CustomEvent<{ cueIndex: number, oldCueIndex: number }> } event
    */
-  onCue(event) {
-    const { cueIndex, oldCueIndex } = event.detail;
-    const hasOldCue = oldCueIndex >= this.cueRange[0] && oldCueIndex < this.cueRange[1];
-    const hasCue = cueIndex >= this.cueRange[0] && cueIndex < this.cueRange[1];
+  handleEvent(event) {
+    if (event.type === 'cue') {
+      const { cueIndex, oldCueIndex } = event.detail;
+      const hasOldCue = oldCueIndex >= this.cueRange[0] && oldCueIndex < this.cueRange[1];
+      const hasCue = cueIndex >= this.cueRange[0] && cueIndex < this.cueRange[1];
 
-    if (hasOldCue) {
-      this.cues[oldCueIndex - this.cueRange[0]].active = false;
+      if (hasOldCue) {
+        this.cues[oldCueIndex - this.cueRange[0]].active = false;
+      }
+      if (hasCue) {
+        const cue = this.cues[cueIndex - this.cueRange[0]];
+        this.setCueSteps(cue.stepIndex);
+        cue.active = true;
+      }
+      this.active = hasCue;
     }
-    if (hasCue) {
-      const cue = this.cues[cueIndex - this.cueRange[0]];
-      this.setCueSteps(cue.stepIndex);
-      cue.active = true;
-    }
-    this.active = hasCue;
   }
 
   /**

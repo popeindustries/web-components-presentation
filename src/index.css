@@ -96,10 +96,27 @@ h2 {
   font-weight: 600;
 }
 
+h3 {
+  font-size: 3vw;
+}
+
 p,
 ul,
 ol {
   font-size: 2.5vw;
+}
+
+img {
+  border: 0;
+}
+
+svg {
+  overflow: visible;
+}
+
+b,
+strong {
+  font-weight: bold;
 }
 
 li {

@@ -9,13 +9,15 @@
     <link rel="stylesheet" type="text/css" href="src/index.css" />
     <link rel="stylesheet" type="text/css" href="assets/tomorrow-night-eighties.css" />
     <link rel="stylesheet" type="text/css" href="src/slides.css" />
-    <script type="module">hljs.initHighlightingOnLoad();</script>
+    <script type="module">
+      hljs.initHighlightingOnLoad();
+    </script>
   </head>
   <body>
     <pres-show>
       <pres-slide id="title">
-        <h1>&lt;web-components&gt;</h1>
-        <pres-cue slot="cues">It's showtime!</pres-cue>
+        <h1><code>&lt;web-components&gt;</code></h1>
+        <pres-cue slot="cues">Showtime!</pres-cue>
       </pres-slide>
 
       <pres-slide id="definition">
@@ -33,20 +35,30 @@
       </pres-slide>
 
       <pres-slide id="exposed">
-        <p class="warning">Web Components aim to expose internal DOM APIs and behaviour to developers, not "fix" or re-imagine the way the DOM currently works!</p>
+        <p class="warning">
+          Web Components aim to expose internal DOM APIs and behaviour to developers, not "fix" or re-imagine the way
+          the DOM currently works!
+        </p>
         <pres-cue slot="cues">Internal APIs exposed</pres-cue>
       </pres-slide>
 
       <pres-slide id="html-templates">
         <h2>HTML Templates</h2>
-        <p>Two new HTML elements for describing unrendered, <em>static</em> markup that may be efficiently reused multiple times:</p>
+        <p>
+          Two new HTML elements for describing unrendered, <em>static</em> markup that may be efficiently reused
+          multiple times:
+        </p>
         <ul>
           <li><code>&lt;template&gt;</code> - HTML Content Template element</li>
           <li><code>&lt;slot&gt;</code> - HTML Slot element</li>
         </ul>
         <pres-cue slot="cues"></pres-cue>
-        <pres-cue slot="cues" step>&lt;template&gt; parsed but not rendered until contents are cloned and inserted into DOM</pres-cue>
-        <pres-cue slot="cues" step>&lt;slot&gt; placeholder inside web component for accepting user markup into a Shadow DOM</pres-cue>
+        <pres-cue slot="cues" step
+          >&lt;template&gt; parsed but not rendered until contents are cloned and inserted into DOM</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >&lt;slot&gt; placeholder inside web component for accepting user markup into a Shadow DOM</pres-cue
+        >
       </pres-slide>
 
       <pres-slide id="template">
@@ -154,6 +166,12 @@
         <pres-cue slot="cues">highlight</pres-cue>
       </pres-slide>
 
+      <pres-slide id="ce-upgrade">
+        <h3>Custom Elements: upgrade</h3>
+        <pres-cue slot="cues"></pres-cue>
+        <pres-cue slot="cues">css :defined</pres-cue>
+      </pres-slide>
+
       <pres-slide id="ce-reactivity">
         <h3>Custom Elements: reactivity</h3>
         <pre class="code"><code class="js">
@@ -223,6 +241,241 @@
           }
         </code></pre>
         <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="ce-built-ins">
+        <h3>Custom Elements: extending built-ins</h3>
+        <pre class="code"><code class="js">
+          class MyButton extends HTMLButtonElement {}
+          window.customElements.define('my-button', MyButton, { extends: 'button' })
+        </code></pre>
+        <pre class="code"><code class="html">
+          &lt;button is=&quot;my-button&quot;&gt;&lt;/button&gt;
+        </code></pre>
+        <pres-cue slot="cues">autonomous vs customized built-ins</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="shadow-dom">
+        <h2>Shadow DOM</h2>
+        <p>A hidden DOM tree and scoped styles for your custom-elements.</p>
+        <p><code>&lt;video&gt;&lt;/video&gt;</code></p>
+        <pres-cue slot="cues">encapsulation</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="sd-init">
+        <h3>Shadow DOM: initialisation</h3>
+        <pre class="code"><code class="js">
+          const template = document.createElement('template');
+          template.innerHTML = '&lt;h2 id="title"&gt;My Component&lt;/h2&gt;';
+
+          class MyComponent extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="sd-styling">
+        <h3>Shadow DOM: styling</h3>
+        <pre class="code"><code class="js">
+          const template = document.createElement('template');
+          template.innerHTML = `
+            &lt;style&gt;
+              :host {
+                display: block;
+              }
+              :host([active]) {
+                color: chartreuse;
+              }
+              :host-context(.dark) {
+                color: antiquewhite;
+              }
+              #title {
+                font-size: 24px;
+              }
+            &lt;/style&gt;
+            &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
+          `;
+
+          class MyComponent extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues">inline default display</pres-cue>
+        <pres-cue slot="cues">link tag also scoped</pres-cue>
+        <pres-cue slot="cues">specificity</pres-cue>
+        <pres-cue slot="cues">specificity</pres-cue>
+        <pres-cue slot="cues">inline style perf</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="sd-slots">
+        <h3>Shadow DOM: slots</h3>
+        <pre class="code"><code class="js">
+          const template = document.createElement('template');
+          template.innerHTML = `
+            &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
+            &lt;slot&gt;Default content&lt;/slot&gt;
+            &lt;ul&gt;&lt;slot name=&quot;items&quot;&gt;&lt;/slot&gt;&lt;/ul&gt;
+          `;
+
+          class MyComponent extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+            }
+          }
+        </code></pre>
+        <pre class="code"><code class="html">
+          &lt;my-component&gt;
+            &lt;p&gt;Some body content&lt;/p&gt;
+            &lt;li slot=&quot;items&quot;&gt;one&lt;/li&gt;
+            &lt;li slot=&quot;items&quot;&gt;&lt;em&gt;two&lt;/em&gt;&lt;/li&gt;
+          &lt;/my-component&gt;
+        </code></pre>
+        <pre class="code"><code class="html">
+          &lt;my-component&gt;
+            &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
+            &lt;p&gt;Some body content&lt;/p&gt;
+            &lt;ul&gt;
+              &lt;li slot=&quot;items&quot;&gt;one&lt;/li&gt;
+              &lt;li slot=&quot;items&quot;&gt;two&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/my-component&gt;
+        </code></pre>
+        <pres-cue slot="cues">top level children only</pres-cue>
+        <pres-cue slot="cues">fallback content</pres-cue>
+        <pres-cue slot="cues">default slot</pres-cue>
+        <pres-cue slot="cues">named slot</pres-cue>
+        <pres-cue slot="cues">slot collections</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="sd-slots-styling">
+        <h3>Shadow DOM: slots styling</h3>
+        <pre class="code"><code class="css">
+          ::slotted(p) {
+            color: hotpink;
+          }
+          ::slotted(em) {
+            display: inline-block;
+            padding: 1em;
+          }
+        </code></pre>
+        <pres-cue slot="cues">Slots distributed, not moved, so styles applied before distribution still apply</pres-cue>
+        <pres-cue slot="cues">Only top-level</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="sd-slots-api">
+        <h3>Shadow DOM: slots API</h3>
+        <pre class="code"><code class="js">
+          class MyComponent extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+              this.shadowRoot.querySelector('slot')?.addEventListener(
+                'slotchange',
+                (event) => {
+                  for (const slottedChild of event.target.assignedElements()) {
+                    // Do something with slotted child
+                  }
+                },
+                { once: true }
+              );
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="presentable">
+        <h2>Presenting: <code>Presentable</code>!</h2>
+        <pre class="code"><code class="html">
+          &lt;pres-show&gt;
+            &lt;pres-slide id=&quot;title&quot;&gt;
+              &lt;h1&gt;&lt;code&gt;&amp;lt;web-components&amp;gt;&lt;/code&gt;&lt;/h1&gt;
+              &lt;pres-cue slot=&quot;cues&quot;&gt;Showtime!&lt;/pres-cue&gt;
+            &lt;/pres-slide&gt;
+          &lt;/pres-show&gt;
+        </code></pre>
+        <pres-cue slot="cues">Welcome to my over-engineered, web-components-based, slide framework</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="pres-template">
+        <h3>Presentable: templates</h3>
+        <pre class="code"><code class="js">
+          const html = String.raw;
+          const template = document.createElement(&#39;template&#39;);
+          template.innerHTML = html`
+            &lt;style&gt;
+              :host {
+                bottom: 0;
+                contain: content;
+                display: block;
+                left: 0;
+                opacity: 1;
+                padding: 1.2vw 2vw;
+                position: absolute;
+                right: 0;
+                top: 0;
+                transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
+                visibility: hidden;
+              }
+              :host([active]) {
+                visibility: visible;
+              }
+              :host(:not([active])) {
+                visibility: hidden;
+              }
+            &lt;/style&gt;
+            &lt;slot&gt;&lt;/slot&gt;
+            &lt;slot name=&quot;cues&quot;&gt;&lt;/slot&gt;
+          `;
+        </code></pre>
+        <pres-cue slot="cues">presentable-slide.js</pres-cue>
+        <pres-cue slot="cues">highlight</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="pres-mixin">
+        <h3>Presentable: element mixin</h3>
+        <pre class="code"><code class="js">
+          export function ActiveElementMixin(baseClass) {
+            return class ActiveElement extends baseClass {
+              get active() {
+                return this.getAttribute('active');
+              }
+
+              set active(value) {
+                if (value) {
+                  this.setAttribute('active', '');
+                  this.dispatchEvent(
+                    new Event('active', { bubbles: true, cancelable: true })
+                  );
+                } else {
+                  this.removeAttribute('active');
+                }
+              }
+            };
+          }
+        </code></pre>
+        <pre class="code"><code class="js">
+          handleEvent(event) {
+            switch (event.type) {
+              case 'active': {
+                if (event.target instanceof PresentableCue) {
+                  this.elCueNotes.innerHTML = event.target.innerHTML;
+                }
+                break;
+              }
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues">active-element-mixin.js</pres-cue>
+        <pres-cue slot="cues">presentable-show.js</pres-cue>
       </pres-slide>
     </pres-show>
   </body>
