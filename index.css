@@ -5,114 +5,41 @@
   --colour-text: #0b1728;
 }
 
-*,
-*:after,
-*:before {
-  box-sizing: border-box;
-}
-
-html {
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-nav,
-section,
-summary {
-  display: block;
-}
-
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
-  vertical-align: baseline;
-}
-
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
-a {
-  background: transparent;
-}
-
-b,
-strong {
-  font-weight: bold;
-}
-
-img {
-  border: 0;
-}
-
-svg {
-  overflow: visible;
-}
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit;
-  font: inherit;
-  margin: 0;
-}
-
-button,
-select {
-  text-transform: none;
-}
-
 @font-face {
-  font-family: "Avenir Next";
-  src: url("assets/fonts/AvenirNext-Medium.woff2") format("woff2"),
-    url("assets/fonts/AvenirNext-Medium.woff") format("woff");
+  font-family: 'Avenir Next';
+  src: url('assets/fonts/AvenirNext-Medium.woff2') format('woff2'),
+    url('assets/fonts/AvenirNext-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
-  font-family: "Avenir Next";
-  src: url("assets/fonts/AvenirNext-Heavy.woff2") format("woff2"),
-    url("assets/fonts/AvenirNext-Heavy.woff") format("woff");
+  font-family: 'Avenir Next';
+  src: url('assets/fonts/AvenirNext-Heavy.woff2') format('woff2'),
+    url('assets/fonts/AvenirNext-Heavy.woff') format('woff');
   font-weight: 900;
   font-style: normal;
 }
 @font-face {
-  font-family: "Avenir Next";
-  src: url("assets/fonts/AvenirNext-Regular.woff2") format("woff2"),
-    url("assets/fonts/AvenirNext-Regular.woff") format("woff");
+  font-family: 'Avenir Next';
+  src: url('assets/fonts/AvenirNext-Regular.woff2') format('woff2'),
+    url('assets/fonts/AvenirNext-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: "Avenir Next";
-  src: url("assets/fonts/AvenirNext-Bold.woff2") format("woff2"),
-    url("assets/fonts/AvenirNext-Bold.woff") format("woff");
+  font-family: 'Avenir Next';
+  src: url('assets/fonts/AvenirNext-Bold.woff2') format('woff2'),
+    url('assets/fonts/AvenirNext-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
-  font-family: "Hack";
-  src: url("assets/fonts/Hack-Regular.woff2") format("woff2"),
-    url("assets/fonts/Hack-Regular.woff") format("woff");
+  font-family: 'Hack';
+  src: url('assets/fonts/Hack-Regular.woff2') format('woff2'), url('assets/fonts/Hack-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
+
 html,
 body {
   width: 100vw;
@@ -125,12 +52,17 @@ html {
 
 body {
   color: var(--colour-text);
-  font-family: "Avenir", sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: 16px;
   font-variant: normal;
   font-weight: 500;
+  margin: 0;
   overflow: hidden;
   z-index: 0;
+}
+
+pres-show {
+  height: 100%;
 }
 
 h1,
@@ -167,7 +99,7 @@ ol {
 }
 
 code {
-  font-family: "Hack", monospace;
+  font-family: 'Hack', monospace;
   font-size: 90%;
 }
 
@@ -216,4 +148,12 @@ figcaption {
 
 video {
   display: block;
+}
+
+#title[active] {
+  opacity: 1;
+}
+
+#title:not([active]) {
+  opacity: 0;
 }

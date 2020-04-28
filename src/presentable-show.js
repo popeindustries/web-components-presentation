@@ -11,7 +11,50 @@ const template = document.createElement('template');
 
 template.innerHTML = html`
   <style>
+    *,
+    *:after,
+    *:before {
+      box-sizing: border-box;
+    }
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    nav,
+    section,
+    summary {
+      display: block;
+    }
+    audio,
+    canvas,
+    progress,
+    video {
+      display: inline-block;
+      vertical-align: baseline;
+    }
+    audio:not([controls]) {
+      display: none;
+      height: 0;
+    }
+    a {
+      background: transparent;
+    }
+    b,
+    strong {
+      font-weight: bold;
+    }
+    img {
+      border: 0;
+    }
+    svg {
+      overflow: visible;
+    }
+
     :host {
+      contain: content;
       display: block;
       height: 56.25vw;
       left: 0;
@@ -20,8 +63,33 @@ template.innerHTML = html`
       top: 0;
       width: 100%;
     }
+    :host([local]) #cuenotes {
+      display: block;
+      font-size: 1.8vw;
+      padding: 1em;
+    }
+    :host([showtime]) #cuenotes {
+      font-size: 4vw;
+      height: 100%;
+      top: 0;
+    }
+    #cuenotes {
+      background-color: white;
+      bottom: 0;
+      color: #0b1728;
+      display: none;
+      font-family: sans-serif;
+      font-weight: 400;
+      left: 0;
+      position: absolute;
+      right: 0;
+      text-align: left;
+      width: 100%;
+      z-index: 999;
+    }
   </style>
   <slot></slot>
+  <div id="cuenotes"></div>
   </div>
 `;
 
@@ -32,10 +100,10 @@ class PresentableShow extends HTMLElement {
     this.cueIndex = -1;
     this.cueTotal = 0;
 
-    this.attachShadow({ mode: 'open' }).appendChild(
-      template.content.cloneNode(true)
-    );
+    this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+    this.elCueNotes = this.shadowRoot.querySelector('#cuenotes');
 
+    // Parse slides when slotted
     this.shadowRoot.querySelector('slot')?.addEventListener(
       'slotchange',
       (event) => {
@@ -60,6 +128,12 @@ class PresentableShow extends HTMLElement {
   }
 
   connectedCallback() {
+    if (isLocal) {
+      this.setAttribute('local', '');
+    }
+    if (isShowtime) {
+      this.setAttribute('showtime', '');
+    }
     this.addEventListener('active', this, false);
     document.addEventListener('keyup', this, false, { passive: true });
     document.documentElement.addEventListener('touchstart', this, false);
@@ -79,7 +153,7 @@ class PresentableShow extends HTMLElement {
     switch (event.type) {
       case 'active': {
         if (event.target instanceof PresentableCue) {
-          console.log(event.target.innerHTML);
+          this.elCueNotes.innerHTML = event.target.innerHTML;
         }
         break;
       }
@@ -100,63 +174,49 @@ class PresentableShow extends HTMLElement {
     }
   }
 
+  /**
+   * Change to new "cueIndex"
+   * @param { number } cueIndex
+   */
   change(cueIndex) {
-    this.dispatchEvent(
-      new CustomEvent('cue', {
-        bubbles: true,
-        detail: { cueIndex, oldCueIndex: this.cueIndex },
-      })
-    );
-    this.cueIndex = cueIndex;
-    if (isLocal) {
-      window.history.pushState(
-        {},
-        '',
-        window.location.href.replace(/\/\d*$/, `/${cueIndex}`)
+    if (cueIndex <= this.cueTotal) {
+      this.dispatchEvent(
+        new CustomEvent('cue', {
+          composed: false,
+          detail: { cueIndex, oldCueIndex: this.cueIndex },
+        })
       );
+      this.cueIndex = cueIndex;
+      if (isLocal) {
+        window.history.pushState({}, '', window.location.href.replace(/\/\d*$/, `/${cueIndex}`));
+      }
     }
   }
 
   forward() {
     if (this.cueIndex + 1 <= this.cueTotal) {
       this.change(this.cueIndex + 1);
-    } else {
-      return;
     }
   }
 
   back() {
     if (this.cueIndex - 1 >= 0) {
       this.change(this.cueIndex - 1);
-    } else {
-      return;
     }
   }
 
   /**
    * Handle key down
-   * @param {Event} event
+   * @param { Event } event
    */
   onKeyUp(event) {
     event.preventDefault();
     const key = (event.key || event.keyIdentifier).toLowerCase();
 
-    if (
-      key === 'arrowright' ||
-      key === 'arrowup' ||
-      key === 'right' ||
-      key === 'up' ||
-      key === 'pagedown'
-    ) {
+    if (key === 'arrowright' || key === 'arrowup' || key === 'right' || key === 'up' || key === 'pagedown') {
       this.forward();
     }
-    if (
-      key === 'arrowleft' ||
-      key === 'arrowdown' ||
-      key === 'left' ||
-      key === 'down' ||
-      key === 'pageup'
-    ) {
+    if (key === 'arrowleft' || key === 'arrowdown' || key === 'left' || key === 'down' || key === 'pageup') {
       this.back();
     }
     if (key === 'r') {
@@ -166,7 +226,7 @@ class PresentableShow extends HTMLElement {
 
   /**
    * Handle touch
-   * @param {Event} event
+   * @param { Event } event
    */
   onTouchStart(event) {
     event.preventDefault();
@@ -190,7 +250,7 @@ class PresentableShow extends HTMLElement {
 
 /**
  * Get current cue index from url
- * @returns {number}
+ * @returns { number }
  */
 function getUrlCue() {
   const cue = window.location.pathname.split('/').slice(-1)[0];

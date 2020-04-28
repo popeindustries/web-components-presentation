@@ -15,11 +15,11 @@ template.innerHTML = html`
 export class PresentableCue extends ActiveElementMixin(HTMLElement) {
   constructor() {
     super();
-    this.isStep = false;
 
-    this.attachShadow({ mode: 'open' }).appendChild(
-      template.content.cloneNode(true)
-    );
+    this.isStep = false;
+    this.stepIndex = 0;
+
+    this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
   }
 
   connectedCallback() {
