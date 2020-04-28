@@ -1,0 +1,28 @@
+#title[active],
+#definition[active] {
+  opacity: 1;
+}
+#title:not([active]),
+#definition:not([active]) {
+  opacity: 0;
+}
+
+#definition ul {
+  margin: 2vw 3vw;
+  padding: 0;
+}
+#definition li {
+  transition: opacity 300ms linear;
+  margin: 5vw 0;
+  opacity: 0;
+  font-style: italic;
+}
+#definition[step-1] li:nth-child(1) {
+  opacity: 1;
+}
+#definition[step-2] li:nth-child(2) {
+  opacity: 1;
+}
+#definition[step-3] li:nth-child(3) {
+  opacity: 1;
+}

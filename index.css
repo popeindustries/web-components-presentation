@@ -98,6 +98,10 @@ ol {
   font-size: 2.5vw;
 }
 
+li {
+  list-style: none;
+}
+
 code {
   font-family: 'Hack', monospace;
   font-size: 90%;
@@ -148,12 +152,4 @@ figcaption {
 
 video {
   display: block;
-}
-
-#title[active] {
-  opacity: 1;
-}
-
-#title:not([active]) {
-  opacity: 0;
 }

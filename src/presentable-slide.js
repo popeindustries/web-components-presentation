@@ -7,17 +7,17 @@ const template = document.createElement('template');
 template.innerHTML = html`
   <style>
     :host {
+      bottom: 0;
       contain: content;
       display: block;
-      height: 100%;
       left: 0;
       opacity: 1;
       padding: 1.2vw;
       position: absolute;
+      right: 0;
       top: 0;
       transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
       visibility: hidden;
-      width: 100%;
     }
     :host([active]) {
       visibility: visible;
@@ -53,9 +53,9 @@ export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
 
             if (cue.isStep) {
               stepIndex++;
-              cue.stepIndex = stepIndex;
             }
 
+            cue.stepIndex = stepIndex;
             this.cues.push(cue);
           }
         }
@@ -86,11 +86,7 @@ export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
     }
     if (hasCue) {
       const cue = this.cues[cueIndex - this.cueRange[0]];
-
-      if (cue.isStep) {
-        this.setCueSteps(cue.stepIndex);
-      }
-
+      this.setCueSteps(cue.stepIndex);
       cue.active = true;
     }
     this.active = hasCue;
@@ -113,7 +109,7 @@ export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
 
     // Add step-* attributes
     for (let i = 1; i <= stepIndex; i++) {
-      this.setAttribute(`step-${i}`);
+      this.setAttribute(`step-${i}`, '');
     }
   }
 }

@@ -7,6 +7,7 @@
     <script type="module" src="index.js"></script>
     <link rel="stylesheet" type="text/css" href="index.css" />
     <link rel="stylesheet" type="text/css" href="assets/github.css" />
+    <link rel="stylesheet" type="text/css" href="slides.css" />
   </head>
   <body>
     <pres-show>
@@ -16,8 +17,36 @@
       </pres-slide>
 
       <pres-slide id="definition">
-        <pres-cue slot="cues"></pres-cue>
+        <h2>Web Component (<em>wɛb kəmˈpəʊnənt</em>), noun:</h2>
+        <p>A collection of technologies used to create reusable HTML elements with encapsulated functionality.</p>
+        <pres-cue slot="cues">What are web components?</pres-cue>
+        <ul>
+          <li>HTML Templates</li>
+          <li>Custom Elements</li>
+          <li>Shadow DOM</li>
+        </ul>
+        <pres-cue slot="cues" step>HTML Templates</pres-cue>
+        <pres-cue slot="cues" step>Custom Elements</pres-cue>
+        <pres-cue slot="cues" step>Shadow DOM</pres-cue>
       </pres-slide>
+
+      <pres-slide id="exposed">
+        <p class="warning">Web Components aim to expose internal DOM APIs and behaviour to developers, not "fix" or re-imagine the way the DOM currently works!</p>
+        <pres-cue slot="cues">Internal APIs exposed</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="templates">
+        <h2>HTML Templates</h2>
+        <p>Two new HTML elements for describing unrendered, <em>static</em> markup that may be efficiently reused multiple times:</p>
+        <ul>
+          <li><code>&lt;template&gt;</code> - HTML Content Template element</li>
+          <li><code>&lt;slot&gt;</code> - HTML Slot element</li>
+        </ul>
+        <pres-cue slot="cues"></pres-cue>
+        <pres-cue slot="cues" step>&lt;template&gt; parsed but not rendered until contents are cloned and inserted into DOM</pres-cue>
+        <pres-cue slot="cues" step>&lt;slot&gt; placeholder inside web component for accepting user markup into a Shadow DOM</pres-cue>
+      </pres-slide>
+
     </pres-show>
   </body>
 </html>

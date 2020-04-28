@@ -9,7 +9,6 @@ template.innerHTML = html`
       display: none;
     }
   </style>
-  <slot></slot>
 `;
 
 export class PresentableCue extends ActiveElementMixin(HTMLElement) {
