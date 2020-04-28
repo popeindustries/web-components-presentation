@@ -7,35 +7,36 @@
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url('assets/fonts/AvenirNext-Medium.woff2') format('woff2'),
-    url('assets/fonts/AvenirNext-Medium.woff') format('woff');
+  src: url('../assets/fonts/AvenirNext-Medium.woff2') format('woff2'),
+    url('../assets/fonts/AvenirNext-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: 'Avenir Next';
-  src: url('assets/fonts/AvenirNext-Heavy.woff2') format('woff2'),
-    url('assets/fonts/AvenirNext-Heavy.woff') format('woff');
+  src: url('../assets/fonts/AvenirNext-Heavy.woff2') format('woff2'),
+    url('../assets/fonts/AvenirNext-Heavy.woff') format('woff');
   font-weight: 900;
   font-style: normal;
 }
 @font-face {
   font-family: 'Avenir Next';
-  src: url('assets/fonts/AvenirNext-Regular.woff2') format('woff2'),
-    url('assets/fonts/AvenirNext-Regular.woff') format('woff');
+  src: url('../assets/fonts/AvenirNext-Regular.woff2') format('woff2'),
+    url('../assets/fonts/AvenirNext-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Avenir Next';
-  src: url('assets/fonts/AvenirNext-Bold.woff2') format('woff2'),
-    url('assets/fonts/AvenirNext-Bold.woff') format('woff');
+  src: url('../assets/fonts/AvenirNext-Bold.woff2') format('woff2'),
+    url('../assets/fonts/AvenirNext-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'Hack';
-  src: url('assets/fonts/Hack-Regular.woff2') format('woff2'), url('assets/fonts/Hack-Regular.woff') format('woff');
+  src: url('../assets/fonts/Hack-Regular.woff2') format('woff2'),
+    url('../assets/fonts/Hack-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -63,6 +64,9 @@ body {
 
 pres-show {
   height: 100%;
+}
+pres-show:not(:defined) {
+  display: none;
 }
 
 h1,
@@ -108,14 +112,14 @@ code {
 }
 
 pre {
-  margin: 1vw 2vw 0;
+  /* margin: 1vw 2vw 0; */
   width: auto;
 }
 pre code {
   font-size: 1.5vw;
-  margin: 0 0 0 -6em;
-  padding: 0 !important;
-  background-color: transparent !important;
+  /* margin: 0 0 0 -6em; */
+  /* padding: 0 !important; */
+  /* background-color: transparent !important; */
   width: auto;
 }
 pre.inline {

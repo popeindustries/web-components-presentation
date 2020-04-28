@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>&lt;web-components&gt;</title>
-    <script type="module" src="index.js"></script>
-    <link rel="stylesheet" type="text/css" href="index.css" />
-    <link rel="stylesheet" type="text/css" href="assets/github.css" />
-    <link rel="stylesheet" type="text/css" href="slides.css" />
+    <script type="module" src="assets/highlight.js"></script>
+    <script type="module" src="src/presentable-show.js"></script>
+    <link rel="stylesheet" type="text/css" href="src/index.css" />
+    <link rel="stylesheet" type="text/css" href="assets/tomorrow-night-eighties.css" />
+    <link rel="stylesheet" type="text/css" href="src/slides.css" />
+    <script type="module">hljs.initHighlightingOnLoad();</script>
   </head>
   <body>
     <pres-show>
@@ -35,7 +37,7 @@
         <pres-cue slot="cues">Internal APIs exposed</pres-cue>
       </pres-slide>
 
-      <pres-slide id="templates">
+      <pres-slide id="html-templates">
         <h2>HTML Templates</h2>
         <p>Two new HTML elements for describing unrendered, <em>static</em> markup that may be efficiently reused multiple times:</p>
         <ul>
@@ -47,6 +49,181 @@
         <pres-cue slot="cues" step>&lt;slot&gt; placeholder inside web component for accepting user markup into a Shadow DOM</pres-cue>
       </pres-slide>
 
+      <pres-slide id="template">
+        <h3>&lt;template&gt;</h3>
+        <pre class="code"><code class="html">
+          &lt;template id="tmpl"&gt;
+            &lt;h1&gt;Some title&lt;/h1&gt;
+            &lt;p&gt;Some body text...&lt;/p&gt;
+          &lt;/template&gt;
+        </code></pre>
+        <pre class="code"><code class="js">
+          const tmpl = document.querySelector('#tmpl');
+          // Clone the template content to reuse it multiple times
+          document.body.appendChild(tmpl.content.cloneNode(true));
+        </code></pre>
+        <pres-cue slot="cues">lit-html</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="slot">
+        <h3>&lt;slot&gt;</h3>
+        <pre class="code"><code class="html">
+          &lt;template id="tmpl"&gt;
+            &lt;h1&gt;Some title&lt;/h1&gt;
+            &lt;slot&gt;Waiting for body text...&lt;/slot&gt;
+          &lt;/template&gt;
+        </code></pre>
+        <pre class="code"><code class="js">
+          const tmpl = document.querySelector('#tmpl');
+          // Clone the template content to use in a custom element's Shadow DOM
+          this.attachShadow({ mode: 'open' }).appendChild(tmpl.content.cloneNode(true));
+        </code></pre>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="custom-elements">
+        <h2>Custom Elements</h2>
+        <p>APIs for creating HTML elements with custom behaviour.</p>
+        <p><code>&lt;my-element&gt;&lt;/my-element&gt;</code></p>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="ce-step1">
+        <h3>Custom Elements step #1: extend HTMLElement</h3>
+        <pre class="code"><code class="js">
+          class MyComponent extends HTMLElement {
+            constructor() {
+              super();
+              this.innerHTML = '&lt;h1&gt;Some title&lt;/h1&gt;&lt;p&gt;Some body text...&lt;/p&gt;'
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="ce-step2">
+        <h3>Custom Elements step #2: register tag name</h3>
+        <pre class="code"><code class="js">
+          window.customElements.define('my-component', MyComponent);
+        </code></pre>
+        <p class="warning">Tag names must contain at least one '-' character</p>
+        <p class="warning">A tag name and Constructor can only be registered once</p>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="ce-step3">
+        <h3>Custom Elements step #3: add element to DOM</h3>
+        <pre class="code"><code class="html">
+          &lt;html&gt;
+            &lt;body&gt;
+              &lt;!-- server-rendered markup --&gt;
+              &lt;my-component fancy&gt;&lt;/my-component&gt;
+            &lt;/body&gt;
+          &lt;/html&gt;
+        </code></pre>
+        <pre class="code"><code class="js">
+          const myComponent = document.createElement('my-component');
+          myComponent.setAttribute('fancy', '');
+          document.body.appendChild(myComponent);
+        </code></pre>
+        <pres-cue slot="cues"></pres-cue>
+        <pre class="code"><code class="js">
+          document.body.innerHTML = '&lt;my-component fancy&gt;&lt;/my-component&gt;';
+        </code></pre>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
+
+      <pres-slide id="ce-lifecycle">
+        <h3>Custom Elements: lifecycle</h3>
+        <pre class="code"><code class="js">
+          class MyComponent extends HTMLElement {
+            constructor() {
+              super(); // required!
+              this.fancy = false;
+              // inspection of attributes or children not allowed!
+            }
+            connectedCallback() {
+              this.fancy = this.getAttribute('fancy') !== null;
+              this.addEventListener('click', this, false);
+            }
+            disconnectedCallback() {
+              this.removeEventListener('click', this, false);
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues">highlight</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="ce-reactivity">
+        <h3>Custom Elements: reactivity</h3>
+        <pre class="code"><code class="js">
+          class MyComponent extends HTMLElement {
+            static get observedAttributes() {
+              return ['active'];
+            }
+            constructor() {
+              super();
+              this._fancy = false;
+            }
+            get active() {
+              return this.hasAttribute('active');
+            }
+            set active(value) {
+              value ? this.setAttribute('active', '') : this.removeAttribute('active');
+            }
+            get fancy() {
+              return this._fancy;
+            }
+            set fancy(value) {
+              const oldValue = this._fancy;
+              this._fancy = value;
+              this.updated('fancy', oldValue);
+            }
+            attributeChangedCallback(name, oldValue, newValue) {
+              this.updated(name, oldValue);
+            }
+            updated(propName, oldValue) {
+              console.log(`property ${propName} updated from ${oldValue} to ${this[propName]}`);
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues">observe vs. reflect</pres-cue>
+      </pres-slide>
+
+      <pres-slide id="ce-base">
+        <h3>Custom Elements: base classes</h3>
+        <pre class="code"><code class="js">
+          import { LiElement } from 'lit-element';
+          class MyComponent extends LitElement {
+            static get properties() {
+              return {
+                fancy: { type: Boolean, reflect: true }
+              }
+            }
+            constructor() {
+              super();
+              this.fancy = false;
+            }
+          }
+        </code></pre>
+        <pre class="code"><code class="js">
+          import { ReactiveElement } from '@nrk/reactive-element';
+          class MyComponent extends ReactiveElement {
+            static get reactiveProperties() {
+              return {
+                attributes: {
+                  fancy: Boolean
+                }
+              }
+            }
+            constructor() {
+              super();
+              this.fancy = false;
+            }
+          }
+        </code></pre>
+        <pres-cue slot="cues"></pres-cue>
+      </pres-slide>
     </pres-show>
   </body>
 </html>
