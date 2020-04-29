@@ -35,7 +35,7 @@
 }
 
 #definition {
-  background-color: chocolate;
+  background-color: gainsboro;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -179,7 +179,11 @@
 #ce-step2,
 #ce-step3,
 #ce-lifecycle,
-#ce-upgrade {
+#ce-upgrade,
+#ce-ready,
+#ce-reactivity,
+#ce-base,
+#ce-built-ins {
   background-color: var(--colour-custom-elements);
   display: flex;
   flex-direction: column;
@@ -189,12 +193,11 @@
 #custom-elements > p {
   color: lightseagreen;
   font-size: 3vw;
-  margin-left: 27%;
+  text-align: center;
 }
 
 #ce-step2 .warnings {
   display: flex;
-  opa
 }
 #ce-step2 .warnings p {
   margin: 1em;
@@ -260,3 +263,256 @@
   border-color: rgba(255, 255, 0, 0);
 }
 
+#ce-upgrade pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#ce-upgrade[step-1] pre {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ce-ready table,
+#ce-ready pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#ce-ready table {
+  background-color: azure;
+  border-spacing: 0.5em;
+  border-radius: var(--bod-border-radius);
+  box-shadow: var(--box-shadow);
+}
+#ce-ready table tbody {
+  background-color: paleturquoise;
+}
+#ce-ready table tr:nth-of-type(1) {
+  text-align: left;
+}
+#ce-ready table tr {
+}
+#ce-ready table td {
+  padding: 0.4em 1em;
+}
+#ce-ready[step-1] table {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ce-ready[step-2] pre {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ce-reactivity .highlight {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-reactivity[step-1] .highlight.one {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-reactivity[step-1] .highlight.two,
+#ce-reactivity[step-1] .highlight.three,
+#ce-reactivity[step-1] .highlight.four,
+#ce-reactivity[step-1] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-reactivity[step-2] .highlight.two {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-reactivity[step-2] .highlight.one,
+#ce-reactivity[step-2] .highlight.three,
+#ce-reactivity[step-2] .highlight.four,
+#ce-reactivity[step-2] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-reactivity[step-3] .highlight.three {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-reactivity[step-3] .highlight.one,
+#ce-reactivity[step-3] .highlight.two,
+#ce-reactivity[step-3] .highlight.four,
+#ce-reactivity[step-3] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-reactivity[step-4] .highlight.four {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-reactivity[step-4] .highlight.one,
+#ce-reactivity[step-4] .highlight.two,
+#ce-reactivity[step-4] .highlight.three,
+#ce-reactivity[step-4] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-reactivity[step-5] .highlight.five {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-reactivity[step-5] .highlight.one,
+#ce-reactivity[step-5] .highlight.two,
+#ce-reactivity[step-5] .highlight.three,
+#ce-reactivity[step-5] .highlight.four {
+  border-color: rgba(255, 255, 0, 0);
+}
+
+#ce-base pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#ce-base[step-1] pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ce-base[step-2] pre:nth-of-type(2) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ce-built-ins .nope {
+  font-size: 15vw;
+  left: 50%;
+  margin: 0;
+  position: absolute;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+}
+#ce-built-ins[step-1] .nope {
+  visibility: visible;
+}
+
+#shadow-dom,
+#sd-init,
+#sd-styling,
+#sd-slots,
+#sd-slots-styling,
+#sd-slots-api {
+  background-color: var(--colour-shadow-dom);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#shadow-dom > p {
+  color: seagreen;
+  font-size: 3vw;
+  text-align: center;
+}
+
+#sd-init .highlight {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-init[step-1] .highlight {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+
+#sd-styling .highlight {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-styling[step-1] .highlight.one {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-styling[step-1] .highlight.two,
+#sd-styling[step-1] .highlight.three,
+#sd-styling[step-1] .highlight.four,
+#sd-styling[step-1] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-styling[step-2] .highlight.two {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-styling[step-2] .highlight.one,
+#sd-styling[step-2] .highlight.three,
+#sd-styling[step-2] .highlight.four,
+#sd-styling[step-2] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-styling[step-3] .highlight.three {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-styling[step-3] .highlight.one,
+#sd-styling[step-3] .highlight.two,
+#sd-styling[step-3] .highlight.four,
+#sd-styling[step-3] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-styling[step-4] .highlight.four {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-styling[step-4] .highlight.one,
+#sd-styling[step-4] .highlight.two,
+#sd-styling[step-4] .highlight.three,
+#sd-styling[step-4] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-styling[step-5] .highlight.five {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-styling[step-5] .highlight.one,
+#sd-styling[step-5] .highlight.two,
+#sd-styling[step-5] .highlight.three,
+#sd-styling[step-5] .highlight.four {
+  border-color: rgba(255, 255, 0, 0);
+}
+
+#sd-slots pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#sd-slots .highlight {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-slots .side-by-side {
+  display: flex;
+}
+#sd-slots .side-by-side pre:nth-of-type(1) {
+  flex-grow: 1;
+  margin-right: 1em;
+}
+#sd-slots .side-by-side pre:nth-of-type(2) {
+  flex-grow: 1;
+  margin-left: 1em;
+}
+#sd-slots[step-1] > pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#sd-slots[step-2] .highlight.one {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-slots[step-2] .highlight.two {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-slots[step-3] .highlight.two {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-slots[step-3] .highlight.one {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-slots[step-4] .side-by-side pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#sd-slots[step-4] .highlight.one,
+#sd-slots[step-4] .highlight.two {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-slots[step-5] .side-by-side pre:nth-of-type(2) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#sd-slots-styling pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#sd-slots-styling[step-1] pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#sd-slots-styling[step-2] pre:nth-of-type(2) {
+  opacity: 1;
+  transform: translateY(0);
+}

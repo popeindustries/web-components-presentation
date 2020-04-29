@@ -76,7 +76,7 @@ header {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 2em;
+  padding: 2em 0;
 }
 header h2,
 header h3 {
@@ -154,10 +154,13 @@ pre {
   width: auto;
 }
 pre code {
-  font-size: 1.5vw;
+  font-size: 1.4vw;
   margin: 0 0 0 -3em;
   background-color: transparent !important;
   width: auto;
+}
+pre code.compact {
+  font-size: 1.2vw;
 }
 pre code span.highlight {
   border: 2px dashed rgba(255, 255, 0, 0.8);
@@ -165,12 +168,16 @@ pre code span.highlight {
   display: inline-block;
 }
 pre.inline {
+  background-color: transparent;
+  box-shadow: none;
   display: inline-block;
   margin: 0;
   vertical-align: top;
 }
 pre.inline code {
   display: inline-block;
+  font-size: inherit;
+  padding: 0;
   margin-left: 0;
 }
 

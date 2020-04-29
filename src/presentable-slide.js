@@ -1,5 +1,5 @@
-import { VisibleElementMixin } from './visible-element-mixin.js';
 import { PresentableCue } from './presentable-cue.js';
+import { VisibleElementMixin } from './visible-element-mixin.js';
 
 const html = String.raw;
 const template = document.createElement('template');
@@ -12,7 +12,7 @@ template.innerHTML = html`
       display: block;
       left: 0;
       opacity: 0;
-      padding: 2vw;
+      padding: 2vw 4vw;
       position: absolute;
       right: 0;
       top: 0;
