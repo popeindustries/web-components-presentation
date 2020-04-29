@@ -23,6 +23,9 @@ template.innerHTML = html`
       opacity: 1;
       visibility: visible;
     }
+    :host-context(.notes) {
+      display: none !important;
+    }
   </style>
   <slot></slot>
   <slot name="cues"></slot>

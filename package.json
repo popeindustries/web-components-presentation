@@ -6,6 +6,8 @@
     "dvlp": "^8.2.0"
   },
   "scripts": {
-    "dev": "dvlp --port 8888"
+    "dev": "dvlp --port 8888",
+    "open": "open -a \"Google Chrome\" http://localhost:8888?showtime",
+    "start": "npm run open && npm run dev -- --silent"
   }
 }

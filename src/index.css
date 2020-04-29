@@ -2,7 +2,7 @@
 
 :root {
   --box-shadow: 0.1em 0.2em 0.4em rgba(0, 0, 0, 0.4);
-  --bod-border-radius: 4px;
+  --box-border-radius: 4px;
   --colour-bg: #fefefe;
   --colour-text: #0b1728;
   --colour-bg-code: #2d2d2d;
@@ -74,8 +74,11 @@ pres-show:not(:defined) {
 
 header {
   align-items: center;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1vh;
+  padding-bottom: 1vh;
 }
 header h2,
 header h3 {
@@ -100,28 +103,29 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 5vw;
+  font-size: 12vh;
   font-weight: 900;
-  padding: 0 5vw;
+  padding: 0 5vh;
   text-align: center;
   width: 100%;
 }
 
 h2 {
-  font-size: 3.5vw;
+  font-size: 7vh;
   font-weight: 600;
   line-height: 1.2;
 }
 
 h3 {
+  font-size: 5vh;
   line-height: 1.2;
-  font-size: 3vw;
 }
 
 p,
 ul,
 ol {
-  font-size: 2.5vw;
+  font-size: 4vh;
+  margin: 1em 0;
 }
 
 img {
@@ -143,23 +147,24 @@ li {
 
 code {
   font-family: 'Hack', monospace;
-  font-size: 90%;
+  font-size: inherit;
 }
 
 pre {
   background-color: var(--colour-bg-code);
-  border-radius: var(--bod-border-radius);
+  border-radius: var(--box-border-radius);
   box-shadow: var(--box-shadow);
+  margin: 2vh 0;
   width: auto;
 }
 pre code {
-  font-size: 1.4vw;
-  margin: 0 0 0 -3em;
+  font-size: 2vh;
+  margin: 0 0 0 -2em;
   background-color: transparent !important;
   width: auto;
 }
 pre code.compact {
-  font-size: 1.2vw;
+  font-size: 1.8vh;
 }
 pre code span.highlight {
   border: 2px dashed rgba(255, 255, 0, 0.8);
@@ -184,23 +189,33 @@ pre.inline code {
   text-decoration: underline;
 }
 
+.side-by-side {
+  display: flex;
+}
+.side-by-side *:nth-of-type(1) {
+  flex-grow: 1;
+}
+.side-by-side *:nth-of-type(2) {
+  flex-grow: 1;
+}
+
 .warning {
   background-color: lightgoldenrodyellow;
-  border-radius: var(--bod-border-radius);
+  border-radius: var(--box-border-radius);
   box-shadow: var(--box-shadow);
   font-style: italic;
-  padding: 1em;
+  padding: 0.8em;
   position: relative;
 }
 .warning:before {
   content: '⚠️';
   animation: 1s ease 0s infinite alternate pulse;
-  font-size: 2em;
+  font-size: 6vh;
   font-style: normal;
-  left: -0.5em;
+  left: -0.4em;
   position: absolute;
   text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
-  top: -0.7em;
+  top: -0.6em;
 }
 
 @keyframes pulse {
@@ -209,5 +224,38 @@ pre.inline code {
   }
   to {
     transform: scale(0.8);
+  }
+}
+
+@media (orientation: portrait) {
+  header {
+    margin-bottom: 2vw;
+    padding-bottom: 2vw;
+  }
+  h1 {
+    font-size: 6vw;
+  }
+  h2 {
+    font-size: 3.5vw;
+  }
+  h3 {
+    font-size: 3vw;
+  }
+  p,
+  ul,
+  ol {
+    font-size: 2.5vw;
+  }
+  pre {
+    margin: 1vw 0;
+  }
+  pre code {
+    font-size: 1.4vw;
+  }
+  pre code.compact {
+    font-size: 1.2vw;
+  }
+  .warning:before {
+    font-size: 3vw;
   }
 }
