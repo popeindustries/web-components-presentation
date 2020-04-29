@@ -1,28 +1,262 @@
-#title[active],
-#definition[active] {
-  opacity: 1;
-}
-#title:not([active]),
-#definition:not([active]) {
-  opacity: 0;
+/* fun colors
+  lightsalmon
+  lightcoral
+  coral
+  tomato
+  lemonchiffon
+  lightgoldenrodyellow
+  papayawhip
+  peachpuff
+  chartreuse
+  springgreen
+  aquamarine
+  powderblue
+  orchid
+  hotpink
+  honeydew
+  mintcream
+  lavenderblush
+  mistyrose
+  blanchedalmond
+  bisque
+  chocolate
+  gold
+ */
+
+:root {
+  --colour-html-templates: gold;
+  --colour-custom-elements: aqua;
+  --colour-shadow-dom: chartreuse;
+  --transition-slide: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+#title {
+  background-color: hotpink;
+}
+
+#definition {
+  background-color: chocolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2vw 5vw;
+}
+#definition p {
+  width: 75%;
+}
 #definition ul {
-  margin: 2vw 3vw;
+  display: flex;
+  justify-content: space-around;
   padding: 0;
 }
 #definition li {
-  transition: opacity 300ms linear;
-  margin: 5vw 0;
+  box-shadow: var(--box-shadow);
+  font-weight: 700;
+  margin: 2vw 0;
   opacity: 0;
-  font-style: italic;
+  padding: 0.8em;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
 }
 #definition[step-1] li:nth-child(1) {
+  background-color: var(--colour-html-templates);
   opacity: 1;
+  transform: translateY(0);
 }
 #definition[step-2] li:nth-child(2) {
+  background-color: var(--colour-custom-elements);
   opacity: 1;
+  transform: translateY(0);
 }
 #definition[step-3] li:nth-child(3) {
+  background-color: var(--colour-shadow-dom);
   opacity: 1;
+  transform: translateY(0);
 }
+
+#exposed {
+  align-items: center;
+  background-color: crimson;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#exposed .warning {
+  opacity: 0;
+  transform: translateX(200%);
+  transition: var(--transition-slide);
+  width: 50%;
+}
+#exposed[show] .warning {
+  opacity: 1;
+  transform: translateX(0);
+}
+#exposed[hide] .warning {
+  opacity: 1;
+  transform: translateX(-200%);
+}
+
+#html-templates {
+  background-color: var(--colour-html-templates);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#html-templates ul {
+  display: flex;
+}
+#html-templates li {
+  box-shadow: var(--box-shadow);
+  font-weight: 700;
+  margin: 2vw;
+  opacity: 0;
+  padding: 0.8em;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+  width: 50%;
+}
+#html-templates li code {
+  display: block;
+  margin-bottom: 0.5em;
+}
+#html-templates[step-1] li:nth-child(1) {
+  background-color: papayawhip;
+  opacity: 1;
+  transform: translateY(0);
+}
+#html-templates[step-2] li:nth-child(2) {
+  background-color: peachpuff;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ht-template {
+  background-color: papayawhip;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#ht-template pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#ht-template[step-1] pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ht-template[step-2] pre:nth-of-type(2) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ht-template[step-3] pre:nth-of-type(3) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ht-slot {
+  background-color: peachpuff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#ht-slot pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#ht-slot[step-1] pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ht-slot[step-2] pre:nth-of-type(2) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#custom-elements,
+#ce-step1,
+#ce-step2,
+#ce-step3,
+#ce-lifecycle,
+#ce-upgrade {
+  background-color: var(--colour-custom-elements);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#custom-elements > p {
+  color: lightseagreen;
+  font-size: 3vw;
+  margin-left: 27%;
+}
+
+#ce-step2 .warnings {
+  display: flex;
+  opa
+}
+#ce-step2 .warnings p {
+  margin: 1em;
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#ce-step2[step-1] .warnings p:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ce-step2[step-2] .warnings p:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ce-step3 pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
+#ce-step3[step-1] pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ce-step3[step-2] pre:nth-of-type(2) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ce-step3[step-3] pre:nth-of-type(3) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ce-lifecycle {
+  background-color: var(--colour-custom-elements);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#ce-lifecycle .highlight {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-lifecycle[step-1] .highlight.one {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-lifecycle[step-1] .highlight.two,
+#ce-lifecycle[step-1] .highlight.three {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-lifecycle[step-2] .highlight.two {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-lifecycle[step-2] .highlight.one,
+#ce-lifecycle[step-2] .highlight.three {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-lifecycle[step-3] .highlight.three {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-lifecycle[step-3] .highlight.one,
+#ce-lifecycle[step-3] .highlight.two {
+  border-color: rgba(255, 255, 0, 0);
+}
+

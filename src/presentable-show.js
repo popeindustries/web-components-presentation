@@ -28,8 +28,8 @@ template.innerHTML = html`
     }
     :host([local]) #cuenotes {
       display: block;
-      font-size: 1.8vw;
-      padding: 1em;
+      font-size: 1.2vw;
+      padding: 0.4em 1em;
     }
     :host([showtime]) #cuenotes {
       font-size: 4vw;

@@ -21,7 +21,7 @@
       </pres-slide>
 
       <pres-slide id="definition">
-        <h2>Web Component (<em>wɛb kəmˈpəʊnənt</em>), noun:</h2>
+        <h2>Web Component<br />(<em>wɛb kəmˈpəʊnənt</em>)<br />noun</h2>
         <p>A collection of technologies used to create reusable HTML elements with encapsulated functionality.</p>
         <pres-cue slot="cues">What are web components?</pres-cue>
         <ul>
@@ -36,21 +36,23 @@
 
       <pres-slide id="exposed">
         <p class="warning">
-          Web Components aim to expose internal DOM APIs and behaviour to developers, not "fix" or re-imagine the way
-          the DOM currently works!
+          Web Components aim to expose internal DOM APIs and behaviour to developers, not
+          <strong class="underline">fix</strong> or re-imagine the way the DOM currently works!
         </p>
         <pres-cue slot="cues">Internal APIs exposed</pres-cue>
       </pres-slide>
 
       <pres-slide id="html-templates">
-        <h2>HTML Templates</h2>
-        <p>
-          Two new HTML elements for describing unrendered, <em>static</em> markup that may be efficiently reused
-          multiple times:
-        </p>
+        <header>
+          <h2>HTML Templates</h2>
+          <p>
+            Two new HTML elements for describing unrendered, <strong class="underline">static</strong> markup that may
+            be efficiently reused multiple times:
+          </p>
+        </header>
         <ul>
-          <li><code>&lt;template&gt;</code> - HTML Content Template element</li>
-          <li><code>&lt;slot&gt;</code> - HTML Slot element</li>
+          <li><code>&lt;template&gt;</code> HTML Content Template element</li>
+          <li><code>&lt;slot&gt;</code> HTML Slot element</li>
         </ul>
         <pres-cue slot="cues"></pres-cue>
         <pres-cue slot="cues" step
@@ -61,8 +63,8 @@
         >
       </pres-slide>
 
-      <pres-slide id="template">
-        <h3>&lt;template&gt;</h3>
+      <pres-slide id="ht-template">
+        <h3><code>&lt;template&gt;</code></h3>
         <pre class="code"><code class="html">
           &lt;template id="tmpl"&gt;
             &lt;h1&gt;Some title&lt;/h1&gt;
@@ -74,14 +76,24 @@
           // Clone the template content to reuse it multiple times
           document.body.appendChild(tmpl.content.cloneNode(true));
         </code></pre>
-        <pres-cue slot="cues">lit-html</pres-cue>
+        <pre class="code"><code class="html">
+          &lt;!-- template instantiation proposal --&gt;
+          &lt;template id="tmpl"&gt;
+            &lt;h1&gt;{{ title }}&lt;/h1&gt;
+            &lt;p&gt;{{ body }}&lt;/p&gt;
+          &lt;/template&gt;
+        </code></pre>
+        <pres-cue slot="cues" step>template tag</pres-cue>
+        <pres-cue slot="cues" step>clone contents</pres-cue>
+        <pres-cue slot="cues" step>template Instantiation lit-html</pres-cue>
       </pres-slide>
 
-      <pres-slide id="slot">
-        <h3>&lt;slot&gt;</h3>
+      <pres-slide id="ht-slot">
+        <h3><code>&lt;slot&gt;</code></h3>
         <pre class="code"><code class="html">
           &lt;template id="tmpl"&gt;
             &lt;h1&gt;Some title&lt;/h1&gt;
+            &lt;!-- placeholder with fallback content --&gt;
             &lt;slot&gt;Waiting for body text...&lt;/slot&gt;
           &lt;/template&gt;
         </code></pre>
@@ -90,18 +102,26 @@
           // Clone the template content to use in a custom element's Shadow DOM
           this.attachShadow({ mode: 'open' }).appendChild(tmpl.content.cloneNode(true));
         </code></pre>
-        <pres-cue slot="cues"></pres-cue>
+        <pres-cue slot="cues" step></pres-cue>
+        <pres-cue slot="cues" step></pres-cue>
       </pres-slide>
 
       <pres-slide id="custom-elements">
-        <h2>Custom Elements</h2>
-        <p>APIs for creating HTML elements with custom behaviour.</p>
+        <header>
+          <h2>Custom Elements</h2>
+          <p>APIs for creating HTML elements with custom behaviour.</p>
+        </header>
         <p><code>&lt;my-element&gt;&lt;/my-element&gt;</code></p>
         <pres-cue slot="cues"></pres-cue>
       </pres-slide>
 
       <pres-slide id="ce-step1">
-        <h3>Custom Elements step #1: extend HTMLElement</h3>
+        <header>
+          <h3>Custom Elements #1</h3>
+          <p>
+            Extend <em><code>HTMLElement</code></em>
+          </p>
+        </header>
         <pre class="code"><code class="js">
           class MyComponent extends HTMLElement {
             constructor() {
@@ -114,17 +134,32 @@
       </pres-slide>
 
       <pres-slide id="ce-step2">
-        <h3>Custom Elements step #2: register tag name</h3>
+        <header>
+          <h3>Custom Elements #2</h3>
+          <p>Register tag name</p>
+        </header>
         <pre class="code"><code class="js">
           window.customElements.define('my-component', MyComponent);
         </code></pre>
-        <p class="warning">Tag names must contain at least one '-' character</p>
-        <p class="warning">A tag name and Constructor can only be registered once</p>
+        <div class="warnings">
+          <p class="warning">
+            Tag names must contain at least one '<strong><code>-</code></strong
+            >' character
+          </p>
+          <p class="warning">
+            A tag name and <code>Constructor</code> can only be registered <strong class="underline">once</strong>
+          </p>
+        </div>
         <pres-cue slot="cues"></pres-cue>
+        <pres-cue slot="cues" step></pres-cue>
+        <pres-cue slot="cues" step></pres-cue>
       </pres-slide>
 
       <pres-slide id="ce-step3">
-        <h3>Custom Elements step #3: add element to DOM</h3>
+        <header>
+          <h3>Custom Elements #3</h3>
+          <p>Add element to DOM</p>
+        </header>
         <pre class="code"><code class="html">
           &lt;html&gt;
             &lt;body&gt;
@@ -133,41 +168,51 @@
             &lt;/body&gt;
           &lt;/html&gt;
         </code></pre>
+        <pres-cue slot="cues" step></pres-cue>
         <pre class="code"><code class="js">
           const myComponent = document.createElement('my-component');
           myComponent.setAttribute('fancy', '');
           document.body.appendChild(myComponent);
         </code></pre>
-        <pres-cue slot="cues"></pres-cue>
+        <pres-cue slot="cues" step></pres-cue>
         <pre class="code"><code class="js">
           document.body.innerHTML = '&lt;my-component fancy&gt;&lt;/my-component&gt;';
         </code></pre>
-        <pres-cue slot="cues"></pres-cue>
+        <pres-cue slot="cues" step></pres-cue>
       </pres-slide>
 
       <pres-slide id="ce-lifecycle">
-        <h3>Custom Elements: lifecycle</h3>
+        <header>
+          <h3>Custom Elements</h3>
+          <p>Element Lifecycle</p>
+        </header>
         <pre class="code"><code class="js">
           class MyComponent extends HTMLElement {
-            constructor() {
+            <span class="highlight one">constructor()</span> {
               super(); // required!
               this.fancy = false;
               // inspection of attributes or children not allowed!
             }
-            connectedCallback() {
+            <span class="highlight two">connectedCallback()</span> {
               this.fancy = this.getAttribute('fancy') !== null;
               this.addEventListener('click', this, false);
             }
-            disconnectedCallback() {
+            <span class="highlight three">disconnectedCallback()</span> {
               this.removeEventListener('click', this, false);
             }
           }
         </code></pre>
-        <pres-cue slot="cues">highlight</pres-cue>
+        <pres-cue slot="cues"></pres-cue>
+        <pres-cue slot="cues" step>highlight</pres-cue>
+        <pres-cue slot="cues" step>highlight</pres-cue>
+        <pres-cue slot="cues" step>highlight</pres-cue>
       </pres-slide>
 
       <pres-slide id="ce-upgrade">
-        <h3>Custom Elements: upgrade</h3>
+        <header>
+          <h3>Custom Elements</h3>
+          <p>Element upgrade</p>
+        </header>
         <pres-cue slot="cues"></pres-cue>
         <pres-cue slot="cues">css :defined</pres-cue>
       </pres-slide>

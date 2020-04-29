@@ -1,8 +1,11 @@
 @charset "UTF-8";
 
 :root {
+  --box-shadow: 0.1em 0.2em 0.4em rgba(0, 0, 0, 0.4);
+  --bod-border-radius: 4px;
   --colour-bg: #fefefe;
   --colour-text: #0b1728;
+  --colour-bg-code: #2d2d2d;
 }
 
 @font-face {
@@ -69,6 +72,20 @@ pres-show:not(:defined) {
   display: none;
 }
 
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 2em;
+}
+header h2,
+header h3 {
+  flex-basis: 25%;
+}
+header p {
+  flex-basis: 75%;
+}
+
 h1,
 h2,
 h3,
@@ -94,9 +111,11 @@ h1 {
 h2 {
   font-size: 3.5vw;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 h3 {
+  line-height: 1.2;
   font-size: 3vw;
 }
 
@@ -129,15 +148,21 @@ code {
 }
 
 pre {
-  /* margin: 1vw 2vw 0; */
+  background-color: var(--colour-bg-code);
+  border-radius: var(--bod-border-radius);
+  box-shadow: var(--box-shadow);
   width: auto;
 }
 pre code {
   font-size: 1.5vw;
-  /* margin: 0 0 0 -6em; */
-  /* padding: 0 !important; */
-  /* background-color: transparent !important; */
+  margin: 0 0 0 -3em;
+  background-color: transparent !important;
   width: auto;
+}
+pre code span.highlight {
+  border: 2px dashed rgba(255, 255, 0, 0.8);
+  border-radius: 2px;
+  display: inline-block;
 }
 pre.inline {
   display: inline-block;
@@ -149,28 +174,34 @@ pre.inline code {
   margin-left: 0;
 }
 
-figure {
-  margin: 0;
-  padding: 0;
-}
-figure img {
-  display: block;
-  width: 100%;
+.underline {
+  text-decoration: underline;
 }
 
-figcaption {
+.warning {
+  background-color: lightgoldenrodyellow;
+  border-radius: var(--bod-border-radius);
+  box-shadow: var(--box-shadow);
+  font-style: italic;
+  padding: 1em;
+  position: relative;
+}
+.warning:before {
+  content: '⚠️';
+  animation: 1s ease 0s infinite alternate pulse;
+  font-size: 2em;
+  font-style: normal;
+  left: -0.5em;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fc2e61;
-  box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.2);
-  color: #fefefe;
-  font-size: 1.5vw;
-  padding: 0.25vw 0.5vw;
-  white-space: nowrap;
+  text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+  top: -0.7em;
 }
 
-video {
-  display: block;
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.8);
+  }
 }

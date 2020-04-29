@@ -1,4 +1,4 @@
-import { ActiveElementMixin } from './active-element-mixin.js';
+import { VisibleElementMixin } from './visible-element-mixin.js';
 import { PresentableCue } from './presentable-cue.js';
 
 const html = String.raw;
@@ -11,26 +11,24 @@ template.innerHTML = html`
       contain: content;
       display: block;
       left: 0;
-      opacity: 1;
-      padding: 1.2vw 2vw;
+      opacity: 0;
+      padding: 2vw;
       position: absolute;
       right: 0;
       top: 0;
       transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
       visibility: hidden;
     }
-    :host([active]) {
+    :host([show]) {
+      opacity: 1;
       visibility: visible;
-    }
-    :host(:not([active])) {
-      visibility: hidden;
     }
   </style>
   <slot></slot>
   <slot name="cues"></slot>
 `;
 
-export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
+export class PresentableSlide extends VisibleElementMixin(HTMLElement) {
   constructor() {
     super();
 
@@ -80,6 +78,7 @@ export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
       const { cueIndex, oldCueIndex } = event.detail;
       const hasOldCue = oldCueIndex >= this.cueRange[0] && oldCueIndex < this.cueRange[1];
       const hasCue = cueIndex >= this.cueRange[0] && cueIndex < this.cueRange[1];
+      const isCurrentlyVisible = this.visible === 1;
 
       if (hasOldCue) {
         this.cues[oldCueIndex - this.cueRange[0]].active = false;
@@ -89,7 +88,8 @@ export class PresentableSlide extends ActiveElementMixin(HTMLElement) {
         this.setCueSteps(cue.stepIndex);
         cue.active = true;
       }
-      this.active = hasCue;
+
+      this.visible = hasCue ? 1 : isCurrentlyVisible ? -1 : 0;
     }
   }
 
