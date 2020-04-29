@@ -76,7 +76,6 @@ header {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 2em 0;
 }
 header h2,
 header h3 {
@@ -101,8 +100,8 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 4vw;
-  font-weight: 200;
+  font-size: 5vw;
+  font-weight: 900;
   padding: 0 5vw;
   text-align: center;
   width: 100%;

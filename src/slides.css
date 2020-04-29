@@ -27,6 +27,7 @@
   --colour-html-templates: gold;
   --colour-custom-elements: aqua;
   --colour-shadow-dom: chartreuse;
+  --colour-presentable: hotpink;
   --transition-slide: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
@@ -40,6 +41,9 @@
   flex-direction: column;
   justify-content: center;
   padding: 2vw 5vw;
+}
+#definition h2 span {
+  font-weight: 200;
 }
 #definition p {
   width: 75%;
@@ -85,7 +89,7 @@
   opacity: 0;
   transform: translateX(200%);
   transition: var(--transition-slide);
-  width: 50%;
+  width: 60%;
 }
 #exposed[show] .warning {
   opacity: 1;
@@ -136,6 +140,9 @@
   flex-direction: column;
   justify-content: center;
 }
+#ht-template h3 {
+  margin-bottom: 1em;
+}
 #ht-template pre {
   opacity: 0;
   transition: var(--transition-slide);
@@ -160,18 +167,8 @@
   flex-direction: column;
   justify-content: center;
 }
-#ht-slot pre {
-  opacity: 0;
-  transition: var(--transition-slide);
-  transform: translateY(100%);
-}
-#ht-slot[step-1] pre:nth-of-type(1) {
-  opacity: 1;
-  transform: translateY(0);
-}
-#ht-slot[step-2] pre:nth-of-type(2) {
-  opacity: 1;
-  transform: translateY(0);
+#ht-slot h3 {
+  margin-bottom: 1em;
 }
 
 #custom-elements,
@@ -181,6 +178,7 @@
 #ce-lifecycle,
 #ce-upgrade,
 #ce-ready,
+#ce-state,
 #ce-reactivity,
 #ce-base,
 #ce-built-ins {
@@ -314,7 +312,8 @@
 #ce-reactivity[step-1] .highlight.two,
 #ce-reactivity[step-1] .highlight.three,
 #ce-reactivity[step-1] .highlight.four,
-#ce-reactivity[step-1] .highlight.five {
+#ce-reactivity[step-1] .highlight.five,
+#ce-reactivity[step-1] .highlight.six {
   border-color: rgba(255, 255, 0, 0);
 }
 #ce-reactivity[step-2] .highlight.two {
@@ -323,7 +322,8 @@
 #ce-reactivity[step-2] .highlight.one,
 #ce-reactivity[step-2] .highlight.three,
 #ce-reactivity[step-2] .highlight.four,
-#ce-reactivity[step-2] .highlight.five {
+#ce-reactivity[step-2] .highlight.five,
+#ce-reactivity[step-2] .highlight.six {
   border-color: rgba(255, 255, 0, 0);
 }
 #ce-reactivity[step-3] .highlight.three {
@@ -332,7 +332,8 @@
 #ce-reactivity[step-3] .highlight.one,
 #ce-reactivity[step-3] .highlight.two,
 #ce-reactivity[step-3] .highlight.four,
-#ce-reactivity[step-3] .highlight.five {
+#ce-reactivity[step-3] .highlight.five,
+#ce-reactivity[step-3] .highlight.six {
   border-color: rgba(255, 255, 0, 0);
 }
 #ce-reactivity[step-4] .highlight.four {
@@ -341,7 +342,8 @@
 #ce-reactivity[step-4] .highlight.one,
 #ce-reactivity[step-4] .highlight.two,
 #ce-reactivity[step-4] .highlight.three,
-#ce-reactivity[step-4] .highlight.five {
+#ce-reactivity[step-4] .highlight.five,
+#ce-reactivity[step-4] .highlight.six {
   border-color: rgba(255, 255, 0, 0);
 }
 #ce-reactivity[step-5] .highlight.five {
@@ -350,7 +352,18 @@
 #ce-reactivity[step-5] .highlight.one,
 #ce-reactivity[step-5] .highlight.two,
 #ce-reactivity[step-5] .highlight.three,
-#ce-reactivity[step-5] .highlight.four {
+#ce-reactivity[step-5] .highlight.four,
+#ce-reactivity[step-5] .highlight.six {
+  border-color: rgba(255, 255, 0, 0);
+}
+#ce-reactivity[step-6] .highlight.six {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#ce-reactivity[step-6] .highlight.one,
+#ce-reactivity[step-6] .highlight.two,
+#ce-reactivity[step-6] .highlight.three,
+#ce-reactivity[step-6] .highlight.four,
+#ce-reactivity[step-6] .highlight.five {
   border-color: rgba(255, 255, 0, 0);
 }
 
@@ -406,52 +419,65 @@
   border-color: rgba(255, 255, 0, 0.8);
 }
 
+#sd-styling pre {
+  opacity: 0;
+  transition: var(--transition-slide);
+  transform: translateY(100%);
+}
 #sd-styling .highlight {
   border-color: rgba(255, 255, 0, 0);
 }
-#sd-styling[step-1] .highlight.one {
+#sd-styling[step-1] pre:nth-of-type(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+#sd-styling[step-2] .highlight.one {
   border-color: rgba(255, 255, 0, 0.8);
 }
-#sd-styling[step-1] .highlight.two,
-#sd-styling[step-1] .highlight.three,
-#sd-styling[step-1] .highlight.four,
-#sd-styling[step-1] .highlight.five {
-  border-color: rgba(255, 255, 0, 0);
-}
-#sd-styling[step-2] .highlight.two {
-  border-color: rgba(255, 255, 0, 0.8);
-}
-#sd-styling[step-2] .highlight.one,
+#sd-styling[step-2] .highlight.two,
 #sd-styling[step-2] .highlight.three,
 #sd-styling[step-2] .highlight.four,
 #sd-styling[step-2] .highlight.five {
   border-color: rgba(255, 255, 0, 0);
 }
-#sd-styling[step-3] .highlight.three {
+#sd-styling[step-3] .highlight.two {
   border-color: rgba(255, 255, 0, 0.8);
 }
 #sd-styling[step-3] .highlight.one,
-#sd-styling[step-3] .highlight.two,
+#sd-styling[step-3] .highlight.three,
 #sd-styling[step-3] .highlight.four,
 #sd-styling[step-3] .highlight.five {
   border-color: rgba(255, 255, 0, 0);
 }
-#sd-styling[step-4] .highlight.four {
-  border-color: rgba(255, 255, 0, 0.8);
+#sd-styling[step-4] pre:nth-of-type(2) {
+  opacity: 1;
+  transform: translateY(0);
 }
-#sd-styling[step-4] .highlight.one,
-#sd-styling[step-4] .highlight.two,
-#sd-styling[step-4] .highlight.three,
-#sd-styling[step-4] .highlight.five {
-  border-color: rgba(255, 255, 0, 0);
-}
-#sd-styling[step-5] .highlight.five {
+#sd-styling[step-5] .highlight.three {
   border-color: rgba(255, 255, 0, 0.8);
 }
 #sd-styling[step-5] .highlight.one,
 #sd-styling[step-5] .highlight.two,
-#sd-styling[step-5] .highlight.three,
-#sd-styling[step-5] .highlight.four {
+#sd-styling[step-5] .highlight.four,
+#sd-styling[step-5] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-styling[step-6] .highlight.four {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-styling[step-6] .highlight.one,
+#sd-styling[step-6] .highlight.two,
+#sd-styling[step-6] .highlight.three,
+#sd-styling[step-6] .highlight.five {
+  border-color: rgba(255, 255, 0, 0);
+}
+#sd-styling[step-7] .highlight.five {
+  border-color: rgba(255, 255, 0, 0.8);
+}
+#sd-styling[step-7] .highlight.one,
+#sd-styling[step-7] .highlight.two,
+#sd-styling[step-7] .highlight.three,
+#sd-styling[step-7] .highlight.four {
   border-color: rgba(255, 255, 0, 0);
 }
 
@@ -515,4 +541,17 @@
 #sd-slots-styling[step-2] pre:nth-of-type(2) {
   opacity: 1;
   transform: translateY(0);
+}
+
+#presentable,
+#pres-template,
+#pres-mixin {
+  background-color: var(--colour-presentable);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#pres-template > p {
+  margin-top: 0;
 }
