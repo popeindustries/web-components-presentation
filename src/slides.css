@@ -183,8 +183,11 @@
 
 #ce-step2 .warnings {
   display: flex;
+  justify-content: space-between;
 }
 #ce-step2 .warnings p {
+  flex-grow: 1;
+  font-size: 2.5vh;
   margin: 1em;
   opacity: 0;
   transition: var(--transition-slide);
@@ -197,6 +200,11 @@
 #ce-step2[step-2] .warnings p:nth-child(2) {
   opacity: 1;
   transform: translateY(0);
+}
+@media (orientation: portrait) {
+  #ce-step2 .warnings p {
+    font-size: 1.5vw;
+  }
 }
 
 #ce-step3 pre {
@@ -539,7 +547,7 @@
   box-shadow: var(--box-shadow);
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  /* justify-content: center; */
   opacity: 0;
   padding: 1em;
   transition: var(--transition-slide);

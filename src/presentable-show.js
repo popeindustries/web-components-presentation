@@ -27,10 +27,13 @@ template.innerHTML = html`
       top: 0;
       width: 100%;
     }
-    :host([local]):not([showtime]) #cuenotes {
+    :host([local]) #cuenotes {
       display: block;
       font-size: 1.2vw;
       padding: 0.4em 1em;
+    }
+    :host([showtime]) #cuenotes {
+      display: none;
     }
     :host-context(.notes) #cuenotes {
       align-items: center;

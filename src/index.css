@@ -103,7 +103,7 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 12vh;
+  font-size: 10vh;
   font-weight: 900;
   padding: 0 5vh;
   text-align: center;
@@ -111,20 +111,20 @@ h1 {
 }
 
 h2 {
-  font-size: 7vh;
+  font-size: 6vh;
   font-weight: 600;
   line-height: 1.2;
 }
 
 h3 {
-  font-size: 5vh;
+  font-size: 4vh;
   line-height: 1.2;
 }
 
 p,
 ul,
 ol {
-  font-size: 4vh;
+  font-size: 3vh;
   margin: 1em 0;
 }
 
@@ -158,13 +158,13 @@ pre {
   width: auto;
 }
 pre code {
-  font-size: 2vh;
-  margin: 0 0 0 -2em;
+  font-size: 1.8vh;
+  margin: 0 0 0 -4em;
   background-color: transparent !important;
   width: auto;
 }
 pre code.compact {
-  font-size: 1.8vh;
+  font-size: 1.5vh;
 }
 pre code span.highlight {
   border: 2px dashed rgba(255, 255, 0, 0.8);
@@ -254,6 +254,9 @@ pre.inline code {
   }
   pre code.compact {
     font-size: 1.2vw;
+  }
+  .side-by-side {
+    display: block;
   }
   .warning:before {
     font-size: 3vw;

@@ -571,41 +571,40 @@
         >
         <pres-cue slot="cues">Use inline style or link tags to enable scoping</pres-cue>
 
-        <pre class="code"><code class="js">
-          const template = document.createElement('template');
-          template.innerHTML = `
-            &lt;style&gt;
-              <span class="highlight one">:host</span> {
-                <span class="highlight two">display: block;</span>
-              }
-              <span class="highlight three">:host([active])</span> {
-                color: chartreuse;
-              }
-              <span class="highlight four">:host-context(.dark)</span> {
-                color: antiquewhite;
-              }
-              <span class="highlight four">:host-context(header)</span> {
-                color: hotpink;
-              }
-              <span class="highlight five">#title</span> {
-                font-size: 24px;
-              }
-            &lt;/style&gt;
-            &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
-          `;
+        <div class="side-by-side">
+          <pre class="code"><code class="js">
+            const template = document.createElement('template');
+            template.innerHTML = `
+              &lt;style&gt;
+                <span class="highlight one">:host</span> {
+                  <span class="highlight two">display: block;</span>
+                }
+                <span class="highlight three">:host([active])</span> {
+                  color: chartreuse;
+                }
+                <span class="highlight four">:host-context(header)</span> {
+                  color: hotpink;
+                }
+                <span class="highlight five">#title</span> {
+                  font-size: 24px;
+                }
+              &lt;/style&gt;
+              &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
+            `;
 
-          class MyComponent extends HTMLElement {
-            constructor() {
-              super();
-              this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+            class MyComponent extends HTMLElement {
+              constructor() {
+                super();
+                this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+              }
             }
-          }
-        </code></pre>
-        <pre class="code"><code class="css">
-          my-component {
-            display: flex; /* overrides :host */
-          }
-        </code></pre>
+          </code></pre>
+          <pre class="code"><code class="css">
+            my-component {
+              display: flex; /* overrides :host */
+            }
+          </code></pre>
+        </div>
 
         <pres-cue slot="cues" step>The :host selector applies style rules to the component root</pres-cue>
         <pres-cue slot="cues" step>Note that all custom elements are display: inline by default</pres-cue>
