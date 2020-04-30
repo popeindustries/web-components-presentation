@@ -2,8 +2,7 @@ import { PresentableCue } from './presentable-cue.js';
 import { PresentableSlide } from './presentable-slide.js';
 
 const TOUCH_THRESHOLD = 100;
-const EVENT_SERVER_LOCAL = 'http://localhost:3000';
-const EVENT_SERVER_REMOTE = 'http://localhost:3000';
+const EVENT_SERVER = 'https://sheltered-anchorage-49892.herokuapp.com';
 
 const html = String.raw;
 const isLocal = window.location.hostname === 'localhost';
@@ -134,7 +133,7 @@ class PresentableShow extends HTMLElement {
   }
 
   connectToEventServer() {
-    this.es = new EventSource(isLocal ? EVENT_SERVER_LOCAL : EVENT_SERVER_REMOTE);
+    this.es = new EventSource(EVENT_SERVER);
     this.es.onopen = () => {
       console.log('connected to remote event server');
     };
@@ -178,7 +177,7 @@ class PresentableShow extends HTMLElement {
    * @param { number } cueIndex
    */
   async change(cueIndex) {
-    if (cueIndex < this.cueTotal) {
+    if (cueIndex < this.cueTotal && cueIndex >= 0) {
       this.dispatchEvent(
         new CustomEvent('cue', {
           composed: false,
@@ -192,10 +191,10 @@ class PresentableShow extends HTMLElement {
       if (isShowtime && !isNotes) {
         this.notesWindow?.change?.(cueIndex);
         try {
-          await fetch(isLocal ? EVENT_SERVER_LOCAL : EVENT_SERVER_REMOTE, {
+          await fetch(EVENT_SERVER, {
             method: 'POST',
             headers: {
-              Accept: 'application/json',
+              'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
             body: cueIndex,
@@ -206,10 +205,10 @@ class PresentableShow extends HTMLElement {
       }
     } else if (cueIndex >= this.cueTotal) {
       try {
-        await fetch(isLocal ? EVENT_SERVER_LOCAL : EVENT_SERVER_REMOTE, {
+        await fetch(EVENT_SERVER, {
           method: 'POST',
           headers: {
-            Accept: 'application/json',
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
           body: false,
