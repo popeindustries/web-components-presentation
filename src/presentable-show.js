@@ -2,11 +2,14 @@ import { PresentableCue } from './presentable-cue.js';
 import { PresentableSlide } from './presentable-slide.js';
 
 const TOUCH_THRESHOLD = 100;
+const EVENT_SERVER_LOCAL = 'http://localhost:3000';
+const EVENT_SERVER_REMOTE = 'http://localhost:3000';
 
 const html = String.raw;
 const isLocal = window.location.hostname === 'localhost';
 const isNotes = window.name === 'notes';
 const isShowtime = isLocal && window.location.search.includes('showtime');
+const isWatching = !isLocal || window.location.search.includes('watch');
 const startingCue = isShowtime ? 0 : getUrlCue();
 const template = document.createElement('template');
 
@@ -70,6 +73,7 @@ class PresentableShow extends HTMLElement {
     this.cueIndex = -1;
     this.cueTotal = 0;
     this.notesWindow;
+    this.es;
 
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
     this.elCueNotes = this.shadowRoot.querySelector('#cuenotes');
@@ -108,13 +112,14 @@ class PresentableShow extends HTMLElement {
           this.setAttribute('showtime', '');
           this.notesWindow = window.open(window.location.href, 'notes');
         }
-      }
-      document.addEventListener('keyup', this, false, { passive: true });
-      document.documentElement.addEventListener('touchstart', this, false);
-      if (isLocal) {
         window.addEventListener('popstate', this, false);
         window.history.replaceState({}, document.title, window.location.href);
       }
+      if (isWatching) {
+        this.connectToEventServer();
+      }
+      document.addEventListener('keyup', this, false, { passive: true });
+      document.documentElement.addEventListener('touchstart', this, false);
     } else {
       document.documentElement.classList.add('notes');
       window.change = this.change.bind(this);
@@ -125,6 +130,22 @@ class PresentableShow extends HTMLElement {
     document.removeEventListener('keyup', this, false);
     document.documentElement.removeEventListener('touchstart', this, false);
     window.removeEventListener('popstate', this, false);
+    this.es?.close();
+  }
+
+  connectToEventServer() {
+    this.es = new EventSource(isLocal ? EVENT_SERVER_LOCAL : EVENT_SERVER_REMOTE);
+    this.es.onopen = () => {
+      console.log('connected to remote event server');
+    };
+    this.es.onmessage = (event) => {
+      const index = JSON.parse(event.data);
+      console.log(`remote change to index: ${index}`);
+      this.change(index);
+    };
+    this.es.onerror = (error) => {
+      console.log('error connecting to event server', error);
+    };
   }
 
   handleEvent(event) {
@@ -156,8 +177,8 @@ class PresentableShow extends HTMLElement {
    * Change to new "cueIndex"
    * @param { number } cueIndex
    */
-  change(cueIndex) {
-    if (cueIndex <= this.cueTotal) {
+  async change(cueIndex) {
+    if (cueIndex < this.cueTotal) {
       this.dispatchEvent(
         new CustomEvent('cue', {
           composed: false,
@@ -168,22 +189,45 @@ class PresentableShow extends HTMLElement {
       if (isLocal && !isShowtime) {
         window.history.pushState({}, '', window.location.href.replace(/\/\d*$/, `/${cueIndex}`));
       }
-      if (isShowtime && this.notesWindow) {
-        this.notesWindow.change(cueIndex);
+      if (isShowtime && !isNotes) {
+        this.notesWindow?.change?.(cueIndex);
+        try {
+          await fetch(isLocal ? EVENT_SERVER_LOCAL : EVENT_SERVER_REMOTE, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: cueIndex,
+          });
+        } catch (err) {
+          console.log('not connected to event server');
+        }
       }
+    } else if (cueIndex >= this.cueTotal) {
+      try {
+        await fetch(isLocal ? EVENT_SERVER_LOCAL : EVENT_SERVER_REMOTE, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: false,
+        });
+      } catch (err) {
+        console.log('not connected to event server');
+      }
+    } else {
+      // ignore invalid index
     }
   }
 
   forward() {
-    if (this.cueIndex + 1 < this.cueTotal) {
-      this.change(this.cueIndex + 1);
-    }
+    this.change(this.cueIndex + 1);
   }
 
   back() {
-    if (this.cueIndex - 1 >= 0) {
-      this.change(this.cueIndex - 1);
-    }
+    this.change(this.cueIndex - 1);
   }
 
   /**
