@@ -25,7 +25,7 @@
         <h2>Web Component<br />(<em>wɛb kəmˈpəʊnənt</em>)<br /><span>noun</span></h2>
         <p>A collection of technologies used to create reusable HTML elements with encapsulated functionality.</p>
 
-        <pres-cue slot="cues">What are web components?</pres-cue>
+        <pres-cue slot="cues">What are web components? Three API categories:</pres-cue>
 
         <ul>
           <li>HTML Templates</li>
@@ -33,7 +33,6 @@
           <li>Shadow DOM</li>
         </ul>
 
-        <pres-cue slot="cues">Three API categories:</pres-cue>
         <pres-cue slot="cues" step>HTML Templates</pres-cue>
         <pres-cue slot="cues" step>Custom Elements</pres-cue>
         <pres-cue slot="cues" step>Shadow DOM</pres-cue>
@@ -115,7 +114,7 @@
           &lt;/template&gt;
         </code></pre>
 
-        <pres-cue slot="cues">The slot element acts as a placeholder in a component's Shadow DOM. More later</pres-cue>
+        <pres-cue slot="cues" step>The slot element acts as a placeholder in a component's Shadow DOM. More later</pres-cue>
       </pres-slide>
 
       <pres-slide id="custom-elements">
@@ -139,7 +138,7 @@
           Create a class that extends from <em class="underline"><code>HTMLElement</code></em>
         </p>
 
-        <pres-cue slot="cues">First step is to create a class that extends from HTMLElement</pres-cue>
+        <pres-cue slot="cues" step>First step is to create a class that extends from HTMLElement</pres-cue>
 
         <pre class="code"><code class="js">
           class MyComponent extends HTMLElement {
@@ -158,7 +157,7 @@
         </header>
         <p>Define a tag name and register it with your class</p>
 
-        <pres-cue slot="cues">Second step is to define a tag name and register it with your class</pres-cue>
+        <pres-cue slot="cues" step>Second step is to define a tag name and register it with your class</pres-cue>
 
         <pre class="code"><code class="js">
           window.customElements.define('my-component', MyComponent);
@@ -216,7 +215,7 @@
         </header>
         <p>Custom elements have an initialisation lifecycle</p>
 
-        <pres-cue slot="cues">Custom elements have a lifecycle</pres-cue>
+        <pres-cue slot="cues" step>Custom elements have a lifecycle</pres-cue>
 
         <pre class="code"><code class="js">
           class MyComponent extends HTMLElement {
@@ -364,7 +363,7 @@
           <strong class="underline">properties</strong>
         </p>
 
-        <pres-cue slot="cues">HTML elements store state as both attributes and properties</pres-cue>
+        <pres-cue slot="cues" step>HTML elements store state as both attributes and properties</pres-cue>
 
         <pre class="code"><code class="html">
           &lt;my-component fancy&gt;&lt;/my-component&gt;
@@ -387,7 +386,7 @@
 
         <p>State reflection and observability</p>
 
-        <pres-cue slot="cues"
+        <pres-cue slot="cues" step
           >Sometimes state values are reflected from attribute to property and back. Sometimes not.</pres-cue
         >
 
@@ -493,7 +492,7 @@
         </header>
         <p>Built-in native elements can also be extended with custom behaviour</p>
 
-        <pres-cue slot="cues"
+        <pres-cue slot="cues" step
           >Unlike autonomous custom elements which extend the generic HTMLElement, custom elements may instead extend
           built-in element classes</pres-cue
         >
@@ -539,7 +538,7 @@
 
         <p>A component's shadow DOM is usually initialised in the constructor with <code>this.attachShadow()</code></p>
 
-        <pres-cue slot="cues">Call attachShadow in the constructor</pres-cue>
+        <pres-cue slot="cues" step>Call attachShadow in the constructor</pres-cue>
 
         <pre class="code"><code class="js">
           const template = document.createElement('template');
@@ -728,7 +727,7 @@
         </header>
         <p>There are APIs for monitoring slot changes and retrieving their contents</p>
 
-        <pres-cue slot="cues">APIs for monitoring slot changes and retrieving/inspecting their contents</pres-cue>
+        <pres-cue slot="cues" step>APIs for monitoring slot changes and retrieving/inspecting their contents</pres-cue>
 
         <pre class="code"><code class="js">
           class MyComponent extends HTMLElement {
@@ -758,7 +757,7 @@
         </header>
         <p>Introducing <code>Presentable</code>, an over-engineered slide framework based on web components!</p>
 
-        <pres-cue slot="cues">Welcome to my over-engineered, web-components-based, slide framework</pres-cue>
+        <pres-cue slot="cues" step>Welcome to my over-engineered, web-components-based, slide framework</pres-cue>
 
         <pre class="code"><code class="html">
           &lt;pres-slide id=&quot;definition&quot;&gt;
@@ -802,7 +801,7 @@
         </header>
         <p>Templates with inline <code>&lt;style&gt;</code> and default/named <code>&lt;slot&gt;</code></p>
 
-        <pres-cue slot="cues">Templating with inline style and slots</pres-cue>
+        <pres-cue slot="cues" step>Templating with inline style and slots</pres-cue>
 
         <pre class="code"><code class="js compact">
           // presentable-slide.js
@@ -841,7 +840,7 @@
         </header>
         <p>Listening for <code>slotchange</code> event and iterating over <code>assignedElements</code></p>
 
-        <pres-cue slot="cues">slotchange event</pres-cue>
+        <pres-cue slot="cues" step>slotchange event</pres-cue>
 
         <pre class="code"><code class="js compact">
           // presentable-show.js: parse slides when slotted
@@ -876,7 +875,7 @@
         </header>
         <p>Mixin attribute/property reflection</p>
 
-        <pres-cue slot="cues">Mixin attribute/property reflection</pres-cue>
+        <pres-cue slot="cues" step>Mixin attribute/property reflection</pres-cue>
 
         <div class="side-by-side">
           <pre class="code"><code class="js compact">

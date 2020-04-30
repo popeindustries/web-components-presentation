@@ -22,6 +22,12 @@ template.innerHTML = html`
     :host([show]) {
       opacity: 1;
       visibility: visible;
+      z-index: 1000;
+    }
+    :host([hide]) {
+      opacity: 0;
+      visibility: hidden;
+      z-index: initial;
     }
     :host-context(.notes) {
       display: none !important;

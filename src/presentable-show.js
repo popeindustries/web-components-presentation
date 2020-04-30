@@ -55,7 +55,7 @@ template.innerHTML = html`
       right: 0;
       text-align: left;
       width: 100%;
-      z-index: 999;
+      z-index: 9999;
     }
   </style>
   <slot></slot>
