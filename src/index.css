@@ -66,6 +66,7 @@ body {
 }
 
 pres-show {
+  --slide-progress-colour: blueviolet;
   height: 100%;
 }
 pres-show:not(:defined) {
@@ -229,7 +230,7 @@ pre.inline code {
 .warning:before {
   content: '⚠️';
   animation: 1s ease 0s infinite alternate pulse;
-  font-size: 6vh;
+  font-size: 4vh;
   font-style: normal;
   left: -0.4em;
   position: absolute;
@@ -282,6 +283,6 @@ pre.inline code {
     width: 100%;
   }
   .warning:before {
-    font-size: 3vw;
+    font-size: 2vw;
   }
 }

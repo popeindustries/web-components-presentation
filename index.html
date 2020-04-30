@@ -148,6 +148,8 @@
         <pres-cue slot="cues" step>First step is to create a class that extends from HTMLElement</pres-cue>
 
         <pre class="code"><code class="js">
+          // Extend HTMLElement behaviour with custom functionality
+
           class MyComponent extends HTMLElement {
             constructor() {
               super();
@@ -167,6 +169,8 @@
         <pres-cue slot="cues" step>Second step is to define a tag name and register it with your class</pres-cue>
 
         <pre class="code"><code class="js">
+          // Globally register 'my-component' tag name with 'MyComponent' class
+
           window.customElements.define('my-component', MyComponent);
         </code></pre>
         <div class="warnings">
@@ -664,12 +668,14 @@
 
         <pres-cue slot="cues" step>Project user content into a component's shadow DOM with slots</pres-cue>
 
-        <pre class="code"><code class="js">
+        <pre class="code"><code class="js compact">
           const template = document.createElement('template');
-          template.innerHTML = `
+          template.innerHTML = html`
             &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
             <span class="highlight one">&lt;slot&gt;Default content&lt;/slot&gt;</span>
-            &lt;ul&gt;<span class="highlight two">&lt;slot name=&quot;items&quot;&gt;&lt;/slot&gt;</span>&lt;/ul&gt;
+            &lt;ul&gt;
+              <span class="highlight two">&lt;slot name=&quot;items&quot;&gt;&lt;/slot&gt;</span>
+            &lt;/ul&gt;
           `;
 
           class MyComponent extends HTMLElement {
@@ -681,7 +687,7 @@
         </code></pre>
 
         <div class="side-by-side">
-          <pre class="code"><code class="html">
+          <pre class="code"><code class="html compact">
             &lt;!-- Document markup --&gt;
             &lt;my-component&gt;
               &lt;p&gt;Some body content&lt;/p&gt;
@@ -690,7 +696,7 @@
               &lt;p&gt;Some more body content&lt;/p&gt;
             &lt;/my-component&gt;
           </code></pre>
-          <pre class="code"><code class="html">
+          <pre class="code"><code class="html compact">
             &lt;!-- Rendered, flattened DOM --&gt;
             &lt;my-component&gt;
             &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
@@ -807,7 +813,10 @@
         <pres-cue slot="cues" step>Welcome to my over-engineered, web-components-based, slide framework</pres-cue>
 
         <pre class="code"><code class="html">
-          &lt;!-- An actual, 100% real slide --&gt;
+          &lt;!--
+            index.html
+            An actual, 100% genuine, Presentable slide!
+          --&gt;
           &lt;pres-slide id=&quot;definition&quot;&gt;
             &lt;h2&gt;Web Component&lt;br /&gt;(&lt;em&gt;wɛb kəmˈpəʊnənt&lt;/em&gt;)&lt;br /&gt;&lt;span&gt;noun&lt;/span&gt;&lt;/h2&gt;
             &lt;p&gt;
@@ -844,23 +853,18 @@
 
         <pres-cue slot="cues" step>Templating with inline style and slots</pres-cue>
 
-        <pre class="code"><code class="js compact">
-          // presentable-slide.js: templates!
+        <pre class="code"><code class="js">
+          /**
+           * presentable-slide.js
+           * Templates! And slots!!
+           */
           const html = String.raw;
           const template = document.createElement(&#39;template&#39;);
           template.innerHTML = html`
             &lt;style&gt;
               :host {
                 bottom: 0;
-                contain: content;
-                display: block;
-                left: 0;
-                opacity: 0;
-                padding: 2vw 4vw;
-                position: absolute;
-                right: 0;
-                top: 0;
-                transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
+                /*...*/
                 visibility: hidden;
               }
               :host([show]) {
@@ -868,10 +872,56 @@
                 visibility: visible;
               }
             &lt;/style&gt;
+            &lt;!-- Gather all unnamed content here --&gt;
             &lt;slot&gt;&lt;/slot&gt;
+            &lt;!-- Append all named content items to single slot --&gt;
             &lt;slot name=&quot;cues&quot;&gt;&lt;/slot&gt;
           `;
         </code></pre>
+      </pres-slide>
+
+      <pres-slide id="pres-styling">
+        <header>
+          <h3>Presentable</h3>
+          <p>So stylish</p>
+        </header>
+        <p>Override default shadow DOM styling with css custom properties</p>
+
+        <pres-cue slot="cues" step>Using css custom properties to style Shadow DOM content</pres-cue>
+
+        <div class="side-by-side">
+          <pre class="code"><code class="css">
+            /**
+             * presentable-show.js
+             * Custom properties with defaults
+             */
+            #progress {
+              background-color: var(--slide-progress-colour, hotpink);
+              box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+              border-radius: calc(var(--slide-progress-height, 3px) / 2);
+              height: var(--slide-progress-height, 3px);
+              left: 0;
+              max-width: 100%;
+              position: absolute;
+              transition: width ease-out 100ms;
+              top: 0;
+              z-index: 9998;
+            }
+          </code></pre>
+          <pre class="code"><code class="css">
+            /**
+             * index.css
+             * Override custom properties
+             */
+            pres-show {
+              --slide-progress-colour: blueviolet;
+              height: 100%;
+            }
+            pres-show:not(:defined) {
+              display: none;
+            }
+          </code></pre>
+        </div>
       </pres-slide>
 
       <pres-slide id="pres-slotchange">
@@ -883,8 +933,11 @@
 
         <pres-cue slot="cues" step>slotchange event</pres-cue>
 
-        <pre class="code"><code class="js compact">
-          // presentable-show.js: parse slides when slotted
+        <pre class="code"><code class="js">
+          /**
+           * presentable-show.js
+           * Parse slides when slotted
+           */
           this.shadowRoot.querySelector('slot')?.addEventListener(
             'slotchange',
             (event) => {
@@ -919,8 +972,11 @@
         <pres-cue slot="cues" step>Mixin attribute/property reflection</pres-cue>
 
         <div class="side-by-side">
-          <pre class="code"><code class="js compact">
-            // active-element-mixin.js
+          <pre class="code"><code class="js">
+            /**
+             * active-element-mixin.js
+             * Define "active" attribute/property
+             */
             export function ActiveElementMixin(baseClass) {
               return class ActiveElement extends baseClass {
                 get active() {
@@ -942,8 +998,12 @@
               };
             }
           </code></pre>
-          <pre class="code"><code class="js compact">
-            // presentable-show.js: handle bubbled event
+          <pre class="code"><code class="js">
+            /**
+             * presentable-show.js:
+             * Handle bubbled "active" event
+             * and copy cue contents to internal notes element
+             */
             handleEvent(event) {
               switch (event.type) {
                 case 'active': {

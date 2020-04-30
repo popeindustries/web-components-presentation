@@ -59,7 +59,20 @@ template.innerHTML = html`
       width: 100%;
       z-index: 9999;
     }
+    #progress {
+      background-color: var(--slide-progress-colour, hotpink);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      border-radius: calc(var(--slide-progress-height, 3px) / 2);
+      height: var(--slide-progress-height, 3px);
+      left: 0;
+      max-width: 100%;
+      position: absolute;
+      transition: width ease-out 100ms;
+      top: 0;
+      z-index: 9998;
+    }
   </style>
+  <div id="progress"></div>
   <slot></slot>
   <div id="cuenotes"></div>
   </div>
@@ -69,13 +82,14 @@ class PresentableShow extends HTMLElement {
   constructor() {
     super();
 
-    this.cueIndex = -1;
-    this.cueTotal = 0;
-    this.notesWindow;
-    this.es;
+    this._cueIndex = -1;
+    this._cueTotal = 0;
+    this._notesWindow;
+    this._es;
 
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
     this.elCueNotes = this.shadowRoot.querySelector('#cuenotes');
+    this.elProgress = this.shadowRoot.querySelector('#progress');
 
     // Parse slides when slotted
     this.shadowRoot.querySelector('slot')?.addEventListener(
@@ -84,21 +98,58 @@ class PresentableShow extends HTMLElement {
         for (const slottedChild of event.target.assignedElements()) {
           if (slottedChild instanceof PresentableSlide) {
             const slide = slottedChild;
-            const cueRangeStart = this.cueTotal;
+            const cueRangeStart = this._cueTotal;
 
             for (const cue of slide.cues) {
-              this.cueTotal++;
-              cue.index = this.cueTotal;
+              this._cueTotal++;
+              cue.index = this._cueTotal;
             }
 
-            slide.cueRange = [cueRangeStart, this.cueTotal];
+            slide.cueRange = [cueRangeStart, this._cueTotal];
           }
         }
 
-        this.change(startingCue);
+        this.index = startingCue;
       },
       { once: true }
     );
+  }
+
+  /**
+   * Retrieve current cue index
+   * @returns { number }
+   */
+  get index() {
+    return this._cueIndex;
+  }
+
+  /**
+   * Change current cue index to "value"
+   * @param { number }
+   */
+  set index(value) {
+    if (value < this._cueTotal && value >= 0) {
+      this.dispatchEvent(
+        new CustomEvent('cue', {
+          composed: false,
+          detail: { cueIndex: value, oldCueIndex: this._cueIndex },
+        })
+      );
+      this._cueIndex = value;
+      this.elProgress.style.width = `${(this._cueIndex / this._cueTotal) * 100}%`;
+
+      if (isLocal && !isShowtime) {
+        window.history.pushState({}, '', window.location.href.replace(/\/\d*$/, `/${value}`));
+      }
+      if (isShowtime && !isNotes) {
+        this._notesWindow?.change?.(value);
+        this._postToEventServer(value);
+      }
+    } else if (value >= this._cueTotal) {
+      this._postToEventServer(false);
+    } else {
+      // ignore invalid index
+    }
   }
 
   connectedCallback() {
@@ -109,7 +160,7 @@ class PresentableShow extends HTMLElement {
         this.setAttribute('local', '');
         if (isShowtime) {
           this.setAttribute('showtime', '');
-          this.notesWindow = window.open(window.location.href, 'notes');
+          this._notesWindow = window.open(window.location.href, 'notes');
         }
         window.addEventListener('popstate', this, false);
         window.history.replaceState({}, document.title, window.location.href);
@@ -121,7 +172,7 @@ class PresentableShow extends HTMLElement {
       document.documentElement.addEventListener('touchstart', this, false);
     } else {
       document.documentElement.classList.add('notes');
-      window.change = this.change.bind(this);
+      window.change = (value) => (this.index = value);
     }
   }
 
@@ -129,20 +180,20 @@ class PresentableShow extends HTMLElement {
     document.removeEventListener('keyup', this, false);
     document.documentElement.removeEventListener('touchstart', this, false);
     window.removeEventListener('popstate', this, false);
-    this.es?.close();
+    this._es?.close();
   }
 
   connectToEventServer() {
-    this.es = new EventSource(EVENT_SERVER);
-    this.es.onopen = () => {
+    this._es = new EventSource(EVENT_SERVER);
+    this._es.onopen = () => {
       console.log('connected to remote event server');
     };
-    this.es.onmessage = (event) => {
+    this._es.onmessage = (event) => {
       const index = JSON.parse(event.data);
       console.log(`remote change to index: ${index}`);
       this.change(index);
     };
-    this.es.onerror = (error) => {
+    this._es.onerror = (error) => {
       console.log('error connecting to event server', error);
     };
   }
@@ -156,11 +207,11 @@ class PresentableShow extends HTMLElement {
         break;
       }
       case 'keyup': {
-        this.onKeyUp(event);
+        this._onKeyUp(event);
         break;
       }
       case 'touchstart': {
-        this.onTouchStart(event);
+        this._onTouchStart(event);
         break;
       }
       case 'popstate': {
@@ -173,67 +224,24 @@ class PresentableShow extends HTMLElement {
   }
 
   /**
-   * Change to new "cueIndex"
-   * @param { number } cueIndex
+   * Move cue index forward
    */
-  async change(cueIndex) {
-    if (cueIndex < this.cueTotal && cueIndex >= 0) {
-      this.dispatchEvent(
-        new CustomEvent('cue', {
-          composed: false,
-          detail: { cueIndex, oldCueIndex: this.cueIndex },
-        })
-      );
-      this.cueIndex = cueIndex;
-      if (isLocal && !isShowtime) {
-        window.history.pushState({}, '', window.location.href.replace(/\/\d*$/, `/${cueIndex}`));
-      }
-      if (isShowtime && !isNotes) {
-        this.notesWindow?.change?.(cueIndex);
-        try {
-          await fetch(EVENT_SERVER, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: cueIndex,
-          });
-        } catch (err) {
-          console.log('not connected to event server');
-        }
-      }
-    } else if (cueIndex >= this.cueTotal) {
-      try {
-        await fetch(EVENT_SERVER, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: false,
-        });
-      } catch (err) {
-        console.log('not connected to event server');
-      }
-    } else {
-      // ignore invalid index
-    }
-  }
-
   forward() {
-    this.change(this.cueIndex + 1);
+    this.index = this._cueIndex + 1;
   }
 
+  /**
+   * Move cue index backward
+   */
   back() {
-    this.change(this.cueIndex - 1);
+    this.index = this._cueIndex - 1;
   }
 
   /**
    * Handle key down
    * @param { Event } event
    */
-  onKeyUp(event) {
+  _onKeyUp(event) {
     event.preventDefault();
     const key = (event.key || event.keyIdentifier).toLowerCase();
 
@@ -252,7 +260,7 @@ class PresentableShow extends HTMLElement {
    * Handle touch
    * @param { Event } event
    */
-  onTouchStart(event) {
+  _onTouchStart(event) {
     event.preventDefault();
     const start = event.layerX;
     let cb;
@@ -269,6 +277,25 @@ class PresentableShow extends HTMLElement {
       }),
       false
     );
+  }
+
+  /**
+   * Send current "index" to event server
+   * @param { number | false } index
+   */
+  async _postToEventServer(index) {
+    try {
+      await fetch(EVENT_SERVER, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: index,
+      });
+    } catch (err) {
+      console.log('not connected to event server');
+    }
   }
 }
 

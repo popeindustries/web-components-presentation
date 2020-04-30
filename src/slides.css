@@ -626,6 +626,7 @@
 
 #presentable,
 #pres-template,
+#pres-styling,
 #pres-slotchange,
 #pres-mixin {
   background-color: var(--colour-presentable);
@@ -634,41 +635,19 @@
   justify-content: center;
 }
 
-#presentable pre {
-  opacity: 0;
-  transition: var(--transition-slide);
-  transform: translateY(100%);
-}
-#presentable[step-1] pre {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-#pres-template pre {
-  opacity: 0;
-  transition: var(--transition-slide);
-  transform: translateY(100%);
-}
-#pres-template[step-1] pre {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-#pres-slotchange pre {
-  opacity: 0;
-  transition: var(--transition-slide);
-  transform: translateY(100%);
-}
-#pres-slotchange[step-1] pre {
-  opacity: 1;
-  transform: translateY(0);
-}
-
+#presentable pre,
+#pres-template pre,
+#pres-styling pre,
+#pres-slotchange pre,
 #pres-mixin pre {
   opacity: 0;
   transition: var(--transition-slide);
   transform: translateY(100%);
 }
+#presentable[step-1] pre,
+#pres-template[step-1] pre,
+#pres-styling[step-1] pre,
+#pres-slotchange[step-1] pre,
 #pres-mixin[step-1] pre {
   opacity: 1;
   transform: translateY(0);
