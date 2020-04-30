@@ -6,6 +6,9 @@
   --colour-bg: hotpink;
   --colour-text: #0b1728;
   --colour-bg-code: #2d2d2d;
+  --highlight-border-colour-on: rgba(255, 255, 0, 0.75);
+  --highlight-border-colour-off: rgba(255, 255, 0, 0);
+  --highlight-box-shadow-on: 0 0 0.8em rgba(255, 255, 0, 0.25);
 }
 
 @font-face {
@@ -189,9 +192,11 @@ pre code.compact {
   font-size: 1.5vh;
 }
 pre code span.highlight {
-  border: 2px dashed rgba(255, 255, 0, 0.8);
+  border: 0.7px dotted var(--highlight-border-colour-on);
   border-radius: 2px;
+  box-shadow: var(--highlight-box-shadow-on);
   display: inline-block;
+  padding: 0.125em 0.2em 0.2em;
 }
 pre.inline {
   background-color: transparent;
