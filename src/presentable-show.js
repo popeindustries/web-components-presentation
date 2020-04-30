@@ -2,7 +2,7 @@ import { PresentableCue } from './presentable-cue.js';
 import { PresentableSlide } from './presentable-slide.js';
 
 const TOUCH_THRESHOLD = 100;
-const EVENT_SERVER = 'https://sheltered-anchorage-49892.herokuapp.com';
+const EVENT_SERVER = 'https://pure-everglades-39129.herokuapp.com';
 
 const html = String.raw;
 const isLocal = window.location.hostname === 'localhost';
