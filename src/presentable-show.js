@@ -191,7 +191,7 @@ class PresentableShow extends HTMLElement {
     this._es.onmessage = (event) => {
       const index = JSON.parse(event.data);
       console.log(`remote change to index: ${index}`);
-      this.change(index);
+      this.index = index;
     };
     this._es.onerror = (error) => {
       console.log('error connecting to event server', error);
@@ -216,7 +216,7 @@ class PresentableShow extends HTMLElement {
       }
       case 'popstate': {
         if (event.state) {
-          this.change(getUrlCue());
+          this.index = getUrlCue();
         }
         break;
       }
@@ -252,7 +252,7 @@ class PresentableShow extends HTMLElement {
       this.back();
     }
     if (key === 'r') {
-      this.change(0);
+      this.index = 0;
     }
   }
 
