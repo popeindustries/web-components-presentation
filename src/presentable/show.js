@@ -1,8 +1,8 @@
-import { PresentableCue } from './presentable-cue.js';
-import { PresentableSlide } from './presentable-slide.js';
+import { PresentableCue } from './cue.js';
+import { PresentableSlide } from './slide.js';
 
 const TOUCH_THRESHOLD = 100;
-const EVENT_SERVER = 'https://pure-everglades-39129.herokuapp.com';
+const EVENT_SERVER = '';
 
 const html = String.raw;
 const isLocal = window.location.hostname === 'localhost';
@@ -79,15 +79,16 @@ template.innerHTML = html`
 `;
 
 class PresentableShow extends HTMLElement {
+  _cueIndex = -1;
+  _cueTotal = 0;
+  _notesWindow;
+  _es;
+
   constructor() {
     super();
-
-    this._cueIndex = -1;
-    this._cueTotal = 0;
-    this._notesWindow;
-    this._es;
-
-    this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+    this.attachShadow({ mode: 'open' }).appendChild(
+      template.content.cloneNode(true),
+    );
     this.elCueNotes = this.shadowRoot.querySelector('#cuenotes');
     this.elProgress = this.shadowRoot.querySelector('#progress');
 
@@ -111,7 +112,7 @@ class PresentableShow extends HTMLElement {
 
         this.index = startingCue;
       },
-      { once: true }
+      { once: true },
     );
   }
 
@@ -133,13 +134,19 @@ class PresentableShow extends HTMLElement {
         new CustomEvent('cue', {
           composed: false,
           detail: { cueIndex: value, oldCueIndex: this._cueIndex },
-        })
+        }),
       );
       this._cueIndex = value;
-      this.elProgress.style.width = `${(this._cueIndex / this._cueTotal) * 100}%`;
+      this.elProgress.style.width = `${
+        (this._cueIndex / (this._cueTotal - 1)) * 100
+      }%`;
 
       if (isLocal && !isShowtime) {
-        window.history.pushState({}, '', window.location.href.replace(/\/\d*$/, `/${value}`));
+        window.history.pushState(
+          {},
+          '',
+          window.location.href.replace(/\/\d*$/, `/${value}`),
+        );
       }
       if (isShowtime && !isNotes) {
         this._notesWindow?.change?.(value);
@@ -184,18 +191,20 @@ class PresentableShow extends HTMLElement {
   }
 
   connectToEventServer() {
-    this._es = new EventSource(EVENT_SERVER);
-    this._es.onopen = () => {
-      console.log('connected to remote event server');
-    };
-    this._es.onmessage = (event) => {
-      const index = JSON.parse(event.data);
-      console.log(`remote change to index: ${index}`);
-      this.index = index;
-    };
-    this._es.onerror = (error) => {
-      console.log('error connecting to event server', error);
-    };
+    if (EVENT_SERVER) {
+      this._es = new EventSource(EVENT_SERVER);
+      this._es.onopen = () => {
+        console.log('connected to remote event server');
+      };
+      this._es.onmessage = (event) => {
+        const index = JSON.parse(event.data);
+        console.log(`remote change to index: ${index}`);
+        this.index = index;
+      };
+      this._es.onerror = (error) => {
+        console.log('error connecting to event server', error);
+      };
+    }
   }
 
   handleEvent(event) {
@@ -245,10 +254,22 @@ class PresentableShow extends HTMLElement {
     event.preventDefault();
     const key = (event.key || event.keyIdentifier).toLowerCase();
 
-    if (key === 'arrowright' || key === 'arrowup' || key === 'right' || key === 'up' || key === 'pagedown') {
+    if (
+      key === 'arrowright' ||
+      key === 'arrowup' ||
+      key === 'right' ||
+      key === 'up' ||
+      key === 'pagedown'
+    ) {
       this.forward();
     }
-    if (key === 'arrowleft' || key === 'arrowdown' || key === 'left' || key === 'down' || key === 'pageup') {
+    if (
+      key === 'arrowleft' ||
+      key === 'arrowdown' ||
+      key === 'left' ||
+      key === 'down' ||
+      key === 'pageup'
+    ) {
       this.back();
     }
     if (key === 'r') {
@@ -275,7 +296,7 @@ class PresentableShow extends HTMLElement {
           diff > 0 ? this.forward() : this.back();
         }
       }),
-      false
+      false,
     );
   }
 

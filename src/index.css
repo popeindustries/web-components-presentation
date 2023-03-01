@@ -1,48 +1,37 @@
 @charset "UTF-8";
 
 :root {
-  --box-shadow: 0.1em 0.2em 0.4em rgba(0, 0, 0, 0.4);
-  --box-border-radius: 4px;
+  --box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+  --box-border-radius: 10px;
   --colour-bg: hotpink;
   --colour-text: #0b1728;
   --colour-bg-code: #2d2d2d;
   --highlight-border-colour-on: rgba(255, 255, 0, 0.75);
   --highlight-border-colour-off: rgba(255, 255, 0, 0);
-  --highlight-box-shadow-on: 0 0 0.8em rgba(255, 255, 0, 0.25);
+  --highlight-box-shadow-on: 0 0 16px rgba(255, 255, 0, 0.25);
 }
 
 @font-face {
-  font-family: 'Avenir Next';
-  src: url('../assets/fonts/AvenirNext-Medium.woff2') format('woff2'),
-    url('../assets/fonts/AvenirNext-Medium.woff') format('woff');
-  font-weight: 500;
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter.var.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
   font-style: normal;
+  font-named-instance: 'Regular';
 }
 @font-face {
-  font-family: 'Avenir Next';
-  src: url('../assets/fonts/AvenirNext-Heavy.woff2') format('woff2'),
-    url('../assets/fonts/AvenirNext-Heavy.woff') format('woff');
-  font-weight: 900;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Avenir Next';
-  src: url('../assets/fonts/AvenirNext-Regular.woff2') format('woff2'),
-    url('../assets/fonts/AvenirNext-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Avenir Next';
-  src: url('../assets/fonts/AvenirNext-Bold.woff2') format('woff2'),
-    url('../assets/fonts/AvenirNext-Bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-italic.var.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: italic;
+  font-named-instance: 'Italic';
 }
 @font-face {
   font-family: 'Hack';
-  src: url('../assets/fonts/Hack-Regular.woff2') format('woff2'),
-    url('../assets/fonts/Hack-Regular.woff') format('woff');
+  src: url('../assets/fonts/Hack-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -59,7 +48,7 @@ html {
 
 body {
   color: var(--colour-text);
-  font-family: 'Avenir', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-variant: normal;
   font-weight: 500;
@@ -70,6 +59,7 @@ body {
 
 pres-show {
   --slide-progress-colour: blueviolet;
+  display: grid;
   height: 100%;
 }
 pres-show:not(:defined) {
@@ -89,20 +79,20 @@ pres-slide[hide] {
 }
 
 header {
-  align-items: center;
+  align-items: end;
   border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
-  display: flex;
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: 1fr 3fr;
   /* justify-content: space-between; */
-  margin-bottom: 1vh;
-  padding-bottom: 1vh;
+  margin-bottom: var(--grid-gap);
+  padding-bottom: calc(var(--grid-gap) / 2);
 }
-header h2,
-header h3 {
-  flex-basis: 25%;
-}
-header p {
-  flex-basis: 75%;
-  max-width: 50%;
+
+header > * {
+  margin: 0;
+  padding: 0;
+  max-width: 75%;
 }
 
 h1,
@@ -138,14 +128,12 @@ h3 {
   line-height: 1.2;
 }
 
-p,
-ul,
-ol {
+:where(p, ul, ol) {
   font-size: 3vh;
-  margin: 1em 0;
+  margin: 0 0 var(--grid-gap);
 }
 
-p {
+pres-slide > p {
   max-width: 70%;
 }
 
@@ -177,16 +165,14 @@ pre {
   border-radius: var(--box-border-radius);
   box-shadow: var(--box-shadow);
   display: flex;
-  justify-content: center;
-  margin: 2vh 0;
-  width: auto;
+  margin: 0;
 }
 pre code {
   background-color: transparent !important;
   font-size: 1.8vh;
-  margin: 0 0 0 -9vw;
+  margin: 0 3vw 0 -3vw;
   min-width: 50%;
-  width: auto;
+  width: fit-content;
 }
 pre code.compact {
   font-size: 1.5vh;
@@ -216,14 +202,6 @@ pre.inline code {
   text-decoration: underline;
 }
 
-.side-by-side {
-  display: flex;
-  justify-content: space-between;
-}
-.side-by-side > * {
-  width: calc(50% - 2vh);
-}
-
 .warning {
   background-color: lightgoldenrodyellow;
   border-radius: var(--box-border-radius);
@@ -234,22 +212,47 @@ pre.inline code {
 }
 .warning:before {
   content: '⚠️';
-  animation: 1s ease 0s infinite alternate pulse;
+  color: gold;
   font-size: 4vh;
   font-style: normal;
-  left: -0.4em;
+  left: -2vh;
   position: absolute;
-  text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
-  top: -0.6em;
+  text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+  top: -3vh;
 }
 
-@keyframes pulse {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(0.8);
-  }
+.grid-33 {
+  align-items: stretch;
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-50 {
+  align-items: stretch;
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-50-auto {
+  align-items: stretch;
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(2, minmax(min-content, auto));
+}
+
+.grid-25-75 {
+  align-items: stretch;
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: 1fr 3fr;
+}
+
+.grid-50 > p,
+.grid-50-auto > p,
+.grid-25-75 > p {
+  align-self: center;
 }
 
 @media (orientation: portrait) {

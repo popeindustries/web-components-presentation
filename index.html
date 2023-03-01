@@ -5,31 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>&lt;web-components&gt;</title>
     <script type="module" src="assets/highlight.js"></script>
-    <script type="module" src="src/presentable-show.js"></script>
+    <script type="module" src="src/presentable/show.js"></script>
     <link rel="stylesheet" type="text/css" href="src/index.css" />
-    <link rel="stylesheet" type="text/css" href="assets/tomorrow-night-eighties.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets/tomorrow-night-eighties.css"
+    />
     <link rel="stylesheet" type="text/css" href="src/slides.css" />
     <script type="module">
       hljs.initHighlightingOnLoad();
     </script>
   </head>
   <body>
+    <style>
+      :root {
+        --colour-html-templates: gold;
+        --colour-custom-elements: aqua;
+        --colour-shadow-dom: chartreuse;
+        --colour-presentable: hotpink;
+        --transition-slide: all 300ms 50ms cubic-bezier(0.215, 0.61, 0.355, 1);
+        --grid-gap: 2vw;
+      }
+    </style>
     <pres-show>
       <pres-slide id="intro">
+        <style>
+          #intro,
+          #outro {
+            background-color: hotpink;
+          }
+        </style>
         <h1><code>&lt;web-components&gt;</code></h1>
 
         <pres-cue slot="cues">Showtime!</pres-cue>
       </pres-slide>
 
       <pres-slide id="definition">
-        <h2>Web Component<br />(<em>wɛb kəmˈpəʊnənt</em>)<br /><span>noun</span></h2>
+        <style>
+          #definition {
+            background-color: gainsboro;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4vh 10vh;
+          }
+          #definition h2 span {
+            font-weight: 200;
+          }
+          #definition p {
+            max-width: 65%;
+          }
+          #definition ul {
+            padding: 0;
+          }
+          #definition li {
+            box-shadow: var(--box-shadow);
+            font-weight: 700;
+            margin: 2em 0;
+            opacity: 0;
+            padding: 0.8em;
+            text-align: center;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #definition[step-1] li:nth-child(1) {
+            background-color: var(--colour-html-templates);
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #definition[step-2] li:nth-child(2) {
+            background-color: var(--colour-custom-elements);
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #definition[step-3] li:nth-child(3) {
+            background-color: var(--colour-shadow-dom);
+            opacity: 1;
+            transform: translateY(0);
+          }
+          @media (orientation: portrait) {
+            #definition {
+              padding: 2vw 5vw;
+            }
+          }
+        </style>
+        <h2>
+          Web Component<br />(<em>wɛb kəmˈpəʊnənt</em>)<br /><span>noun</span>
+        </h2>
         <p>
-          A collection of technologies used to create reusable HTML elements with <em>encapsulated functionality</em>
+          A collection of technologies used to create reusable HTML elements
+          with <em>encapsulated functionality</em>
         </p>
 
-        <pres-cue slot="cues">What are web components? Three API categories:</pres-cue>
+        <pres-cue slot="cues"
+          >What are web components? Three API categories:</pres-cue
+        >
 
-        <ul>
+        <ul class="grid-33">
           <li>HTML Templates</li>
           <li>Custom Elements</li>
           <li>Shadow DOM</li>
@@ -41,97 +114,246 @@
       </pres-slide>
 
       <pres-slide id="exposed">
-        <p class="warning">
-          Web Components aim to expose internal DOM APIs and behaviour to developers, not
-          <strong class="underline">fix</strong> or re-imagine the way the DOM currently works!
-        </p>
+        <style>
+          #exposed {
+            align-items: center;
+            background-color: crimson;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          #exposed .warning {
+            padding: 2vw;
+            width: 50%;
+          }
+          #exposed .warning p:nth-of-type(1) {
+            margin-bottom: var(--grid-gap);
+          }
+          #exposed .warning p:nth-of-type(2) {
+            opacity: 0;
+            transition: var(--transition-slide);
+            margin-bottom: 0;
+          }
+          #exposed[step-1] .warning p:nth-of-type(2) {
+            opacity: 1;
+          }
+        </style>
+        <div class="warning">
+          <p>
+            Web Components aim to expose internal DOM APIs and behaviour to
+            developers...
+          </p>
+          <p>
+            ...not <strong class="underline">fix</strong> or re-imagine the way
+            the DOM currently works!
+          </p>
+        </div>
 
-        <pres-cue slot="cues">In general, web components aim to expose existing internal APIs to developers</pres-cue>
+        <pres-cue slot="cues"
+          >In general, web components aim to expose existing internal APIs to
+          developers...</pres-cue
+        >
+        <pres-cue slot="cues" step>...not fix the DOM</pres-cue>
       </pres-slide>
 
       <pres-slide id="html-templates">
+        <style>
+          #html-templates {
+            background-color: var(--colour-html-templates);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          #html-templates ul {
+            padding: 0;
+          }
+          #html-templates li {
+            box-shadow: var(--box-shadow);
+            border-radius: var(--box-border-radius);
+            font-weight: 700;
+            opacity: 0;
+            padding: 1.2em;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #html-templates li code {
+            display: block;
+            margin-bottom: 0.5rem;
+          }
+          #html-templates[step-1] li:nth-child(1) {
+            background-color: papayawhip;
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #html-templates[step-2] li:nth-child(2) {
+            background-color: peachpuff;
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
         <header>
           <h2>HTML Templates</h2>
           <p>
-            Two new HTML elements for describing unrendered, <strong class="underline">static</strong> markup that may
-            be efficiently reused multiple times
+            Two new HTML elements for describing unrendered,
+            <strong class="underline">static</strong> markup that may be
+            efficiently reused multiple times
           </p>
         </header>
 
         <pres-cue slot="cues">First technology category is templates</pres-cue>
 
-        <ul>
+        <ul class="grid-50">
           <li><code>&lt;template&gt;</code> HTML Content Template element</li>
           <li><code>&lt;slot&gt;</code> HTML Slot element</li>
         </ul>
 
         <pres-cue slot="cues" step
-          >HTML content template: parsed but not rendered until contents are cloned and inserted into DOM</pres-cue
+          >HTML content template: parsed but not rendered until contents are
+          cloned and inserted into DOM</pres-cue
         >
         <pres-cue slot="cues" step
-          >HTML slot element: placeholder inside a web component for accepting user markup into a Shadow DOM</pres-cue
+          >HTML slot element: placeholder inside a web component for accepting
+          user markup into a Shadow DOM</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="ht-template">
+        <style>
+          #ht-template {
+            background-color: papayawhip;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          #ht-template h3 {
+            margin-bottom: 1em;
+          }
+          #ht-template pre:nth-of-type(2) {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ht-template[step-1] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <h3><code>&lt;template&gt;</code></h3>
-        <pre class="code"><code class="html">
-          &lt;!-- A template defined in markup --&gt;
-          &lt;template id="tmpl"&gt;
-            &lt;h1&gt;Some title&lt;/h1&gt;
-            &lt;p&gt;Some body text...&lt;/p&gt;
-          &lt;/template&gt;
-        </code></pre>
 
-        <pres-cue slot="cues" step>Template tag can define any valid HTML, but won't render</pres-cue>
+        <pres-cue slot="cues"
+          >Template tag can define any valid HTML, but won't render</pres-cue
+        >
 
-        <pre class="code"><code class="js">
-          // Select template...
-          const tmpl = document.querySelector('#tmpl');
-          // ...and clone the template content to reuse it multiple times
-          document.body.appendChild(tmpl.content.cloneNode(true));
-        </code></pre>
+        <div class="grid-50-auto">
+          <pre class="code"><code class="html">
+            &lt;!-- A template defined in markup --&gt;
+            &lt;template id="tmpl"&gt;
+              &lt;h1&gt;Some title&lt;/h1&gt;
+              &lt;p&gt;Some body text...&lt;/p&gt;
+            &lt;/template&gt;
+          </code></pre>
+
+          <pre class="code"><code class="js">
+            // Select template...
+            const tmpl = document.querySelector('#tmpl');
+            // ...and clone the template content to reuse it multiple times
+            document.body.appendChild(tmpl.content.cloneNode(true));
+          </code></pre>
+        </div>
 
         <pres-cue slot="cues" step>Contents rendered when cloned</pres-cue>
-
-        <pre class="code"><code class="html">
-          &lt;!-- template instantiation proposal --&gt;
-          &lt;template id="tmpl"&gt;
-            &lt;h1&gt;{{ title }}&lt;/h1&gt;
-            &lt;p&gt;{{ body }}&lt;/p&gt;
-          &lt;/template&gt;
-        </code></pre>
-
-        <pres-cue slot="cues" step
-          >Only for static content, though. Template Instantiation proposal to allow for dynamic content. Like
-          lit-html</pres-cue
-        >
       </pres-slide>
 
       <pres-slide id="ht-slot">
+        <style>
+          #ht-slot {
+            background-color: peachpuff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          #ht-slot h3 {
+            margin-bottom: var(--grid-gap);
+          }
+          #ht-slot pre:nth-of-type(2) {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ht-slot[step-1] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
         <h3><code>&lt;slot&gt;</code></h3>
-        <pre class="code"><code class="html">
-          &lt;!-- A template with placeholder slot --&gt;
-          &lt;template id="tmpl"&gt;
-            &lt;h1&gt;Some title&lt;/h1&gt;
-            &lt;!-- placeholder has fallback content --&gt;
-            &lt;slot&gt;Waiting for body text...&lt;/slot&gt;
-          &lt;/template&gt;
-        </code></pre>
 
-        <pres-cue slot="cues" step
-          >The slot element acts as a placeholder in a component's Shadow DOM. More later...</pres-cue
+        <pres-cue slot="cues"
+          >The slot element acts as a placeholder in a component's Shadow
+          DOM</pres-cue
         >
+
+        <div class="grid-50-auto">
+          <pre class="code"><code class="html">
+            &lt;!-- A template with placeholder slot --&gt;
+            &lt;template id="tmpl"&gt;
+              &lt;h1&gt;Some title&lt;/h1&gt;
+              &lt;!-- placeholder has fallback content --&gt;
+              &lt;slot&gt;Waiting for body text...&lt;/slot&gt;
+            &lt;/template&gt;
+          </code></pre>
+          <pre class="code"><code class="html">
+            &lt;!-- Rendered inside a shadowDOM --&gt;
+            &lt;h1&gt;Some title&lt;/h1&gt;
+            &lt;?&gt;Later...&lt;/?&gt;
+        </code></pre>
+        </div>
+
+        <pres-cue slot="cues" step>More later...</pres-cue>
       </pres-slide>
 
       <pres-slide id="custom-elements">
+        <style>
+          #custom-elements,
+          #ce-step1,
+          #ce-step2,
+          #ce-step3,
+          #ce-upgrade,
+          #ce-children,
+          #ce-lifecycle,
+          #ce-ready,
+          #ce-state,
+          #ce-reactivity,
+          #ce-base,
+          #ce-built-ins {
+            background-color: var(--colour-custom-elements);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          #custom-elements > p {
+            color: lightseagreen;
+            font-size: 4vh;
+            margin-left: calc(25% + var(--grid-gap));
+            max-width: initial;
+          }
+          @media (orientation: portrait) {
+            #custom-elements > p {
+              font-size: 2vw;
+            }
+          }
+        </style>
+
         <header>
           <h2>Custom Elements</h2>
           <p>APIs for creating HTML elements with custom behaviour</p>
         </header>
         <p><code>&lt;my-element&gt;&lt;/my-element&gt;</code></p>
 
-        <pres-cue slot="cues">Custom elements allow us to create our own HTML elements with custom behaviour</pres-cue>
+        <pres-cue slot="cues"
+          >Custom elements allow us to create our own HTML elements with custom
+          behaviour</pres-cue
+        >
       </pres-slide>
 
       <pres-slide id="ce-step1">
@@ -141,13 +363,18 @@
             Extend <em><code>HTMLElement</code></em>
           </p>
         </header>
-        <p>
-          Create a class that extends from <em class="underline"><code>HTMLElement</code></em>
-        </p>
 
-        <pres-cue slot="cues" step>First step is to create a class that extends from HTMLElement</pres-cue>
+        <pres-cue slot="cues"
+          >First step is to create a class that extends from
+          HTMLElement</pres-cue
+        >
 
-        <pre class="code"><code class="js">
+        <div class="grid-25-75">
+          <p>
+            Create a class that extends from
+            <em class="underline"><code>HTMLElement</code></em>
+          </p>
+          <pre class="code"><code class="js">
           // Extend HTMLElement behaviour with custom functionality
 
           class MyComponent extends HTMLElement {
@@ -157,259 +384,488 @@
             }
           }
         </code></pre>
+        </div>
       </pres-slide>
 
       <pres-slide id="ce-step2">
+        <style>
+          #ce-step2 .warnings {
+            margin-top: var(--grid-gap);
+          }
+          #ce-step2 .warnings p {
+            font-size: 2.5vh;
+            margin: 1em;
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-step2[step-1] .warnings p:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-step2[step-2] .warnings p:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          @media (orientation: portrait) {
+            #ce-step2 .warnings p {
+              font-size: 1.5vw;
+            }
+          }
+        </style>
         <header>
           <h3>Custom<br />Elements #2</h3>
           <p>Register tag name</p>
         </header>
-        <p>Define a tag name and register it with your class</p>
 
-        <pres-cue slot="cues" step>Second step is to define a tag name and register it with your class</pres-cue>
+        <pres-cue slot="cues"
+          >Second step is to define a tag name and register it with your
+          class</pres-cue
+        >
 
-        <pre class="code"><code class="js">
+        <div class="grid-25-75">
+          <p>Define a tag name and register it with your class</p>
+          <pre class="code"><code class="js">
           // Globally register 'my-component' tag name with 'MyComponent' class
 
-          window.customElements.define('my-component', MyComponent);
+          if (!window.customElements.get('my-component')) {
+            window.customElements.define('my-component', MyComponent);
+          }
         </code></pre>
-        <div class="warnings">
+        </div>
+
+        <div class="warnings grid-50">
           <p class="warning">
             Tag names must contain at least one '<strong><code>-</code></strong
             >' character
           </p>
           <p class="warning">
-            A tag name and <code>Constructor</code> can only be defined <strong class="underline">once</strong>
+            A tag name and <code>Constructor</code> can only be defined
+            <strong class="underline">once</strong>
           </p>
         </div>
 
-        <pres-cue slot="cues" step>Tag names must contain at least one '-'</pres-cue>
-        <pres-cue slot="cues" step>Tag names and constructors can only be defined once</pres-cue>
+        <pres-cue slot="cues" step
+          >Tag names must contain at least one '-'</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >Tag names and constructors can only be defined once</pres-cue
+        >
       </pres-slide>
 
       <pres-slide id="ce-step3">
+        <style>
+          #ce-step3 pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-step3 pre:nth-of-type(1) {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+          }
+          #ce-step3[step-1] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-step3[step-2] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-step3[step-3] pre:nth-of-type(3) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
         <header>
           <h3>Custom<br />Elements #3</h3>
           <p>Add to DOM</p>
         </header>
-        <p>Add your custom element to the DOM</p>
 
         <pres-cue slot="cues" step
-          >Third step is to add your custom element to the DOM. Server rendered static markup</pres-cue
+          >Third step is to add your custom element to the DOM. Server rendered
+          static markup</pres-cue
         >
 
-        <pre class="code"><code class="html">
-          &lt;html&gt;
-            &lt;body&gt;
-              &lt;!-- Server-rendered static markup --&gt;
-              &lt;my-component fancy&gt;&lt;/my-component&gt;
-            &lt;/body&gt;
-          &lt;/html&gt;
-        </code></pre>
+        <div class="grid-50">
+          <pre class="code"><code class="html">
+            &lt;html&gt;
+              &lt;body&gt;
+                &lt;!-- Server-rendered static markup --&gt;
+                &lt;my-component fancy&gt;&lt;/my-component&gt;
+              &lt;/body&gt;
+            &lt;/html&gt;
+          </code></pre>
 
-        <pre class="code"><code class="js">
-          // Dynamically using createElement
-          const myComponent = document.createElement('my-component');
-          myComponent.setAttribute('fancy', '');
-          document.body.appendChild(myComponent);
-        </code></pre>
+          <pre class="code"><code class="js">
+            // Dynamically using createElement
+            const myComponent = document.createElement('my-component');
+            myComponent.setAttribute('fancy', '');
+            document.body.appendChild(myComponent);
+          </code></pre>
 
-        <pre class="code"><code class="js">
-          // Or quick and dirty
-          document.body.innerHTML = '&lt;my-component fancy&gt;&lt;/my-component&gt;';
-        </code></pre>
-
-        <pres-cue slot="cues" step>...or using createElement in JavaScript</pres-cue>
-        <pres-cue slot="cues" step>...or quick and dirty with innerHTML</pres-cue>
-      </pres-slide>
-
-      <pres-slide id="ce-lifecycle">
-        <header>
-          <h3>Custom<br />Elements</h3>
-          <p>Element lifecycle</p>
-        </header>
-        <p>Custom elements have an initialisation lifecycle</p>
-
-        <pres-cue slot="cues" step>Custom elements have a lifecycle</pres-cue>
-
-        <pre class="code"><code class="js">
-          class MyComponent extends HTMLElement {
-            <span class="highlight one">constructor()</span> {
-              super(); // required!
-              // initialise properties
-              this.fancy = false;
-              // initialise Shadow DOM
-              this.attachShadow(/*...*/)
-              // NO INSPECTION OF ATTRIBUTES OR CHILDREN ALLOWED!
-            }
-            <span class="highlight two">connectedCallback()</span> {
-              this.fancy = this.getAttribute('fancy') !== null;
-              this.addEventListener('click', this, false);
-            }
-            <span class="highlight three">disconnectedCallback()</span> {
-              this.removeEventListener('click', this, false);
-            }
-          }
-        </code></pre>
+          <pre class="code"><code class="js">
+            // Or quick and dirty
+            document.body.innerHTML = '&lt;my-component fancy&gt;&lt;/my-component&gt;';
+          </code></pre>
+        </div>
 
         <pres-cue slot="cues" step
-          >The constructor is called when an instance is created. Here you can setup default property values and shadow
-          DOM, but don't inspect attributes or children</pres-cue
+          >...or using createElement in JavaScript</pres-cue
         >
         <pres-cue slot="cues" step
-          >The connectedCallback is called when the elememt is added to the DOM. You should defer all setup until
-          now</pres-cue
-        >
-        <pres-cue slot="cues" step
-          >The disconnectedCallback is called when the element is removed from the DOM. You should clean up setup
-          performed in connectedCallback</pres-cue
+          >...or quick and dirty with innerHTML</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="ce-upgrade">
+        <style>
+          #ce-upgrade pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-upgrade[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <header>
           <h3>Custom<br />Elements</h3>
           <p>Element upgrade</p>
         </header>
-        <p>
-          Custom elements are <em>unknown</em> if parsed before their behaviour has been defined, and will be
-          <strong class="underline">upgraded</strong> when eventually registered
-        </p>
 
         <pres-cue slot="cues"
-          >If custom element markup is parsed before the tag has been defined, it will be upgraded when finally
-          defined</pres-cue
+          >If custom element markup is parsed before the tag has been defined,
+          it will be upgraded when finally defined</pres-cue
         >
 
-        <pre class="code"><code class="css">
+        <div class="grid-50">
+          <p>
+            Custom elements are <em>unknown</em> if parsed before their
+            behaviour has been defined, and will be
+            <strong class="underline">upgraded</strong> when eventually
+            registered
+          </p>
+          <pre class="code"><code class="css">
           /* Select and style a custom element before it is defined */
 
           my-component:not(:defined) {
             display: none;
           }
         </code></pre>
+        </div>
 
         <pres-cue slot="cues" step
-          >You can use the css :defined selector to style the component before definition</pres-cue
+          >You can use the css :defined selector to style the component before
+          definition</pres-cue
         >
       </pres-slide>
 
-      <pres-slide id="ce-ready">
+      <pres-slide id="ce-children">
+        <style>
+          #ce-children pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-children[step-1] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-children[step-2] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <header>
           <h3>Custom<br />Elements</h3>
-          <p>Ready or not?</p>
+          <p>Rendering element children</p>
         </header>
-        <p>When is it <em>safe</em> to inspect own attributes and children?</p>
 
-        <pres-cue slot="cues"
-          >If a custom element may not be immediately defined, and is subject to a initialisation lifecyle, when is it
-          safe to inspect own attributes and children?</pres-cue
-        >
+        <pres-cue slot="cues">Generally need to render some content</pres-cue>
 
-        <table>
-          <thead>
-            <tr>
-              <th colspan="2">Rendering in sloooow motion...</th>
-            </tr>
-            <tr>
-              <th>Markup</th>
-              <th>DOM</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <code>&lt;my-element</code>
-              </td>
-              <td>
-                <code>&lt;my-element&gt;&lt;/my-element&gt;</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <code>&lt;my-element some="attr"</code>
-              </td>
-              <td>
-                <code>&lt;my-element some="attr"&gt;&lt;/my-element&gt;</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <code>&lt;my-element some="attr"&gt;&lt;h2&gt;Hi!</code>
-              </td>
-              <td>
-                <code>&lt;my-element some="attr"&gt;&lt;h2&gt;Hi!&lt;/h2&gt;&lt;/my-element&gt;</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <code>&lt;my-element some="attr"&gt;&lt;h2&gt;Hi!&lt;/h2&gt;&lt;/my-element&gt;</code>
-              </td>
-              <td>
-                <code>&lt;my-element some="attr"&gt;&lt;h2&gt;Hi!&lt;/h2&gt;&lt;/my-element&gt;</code>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="grid-50">
+          <pre class="code"><code class="js">
+            const template = document.createElement(&#39;template&#39;);
+            template.innerHTML =
+              '&lt;p&gt;Some child&lt;/p&gt;&lt;p&gt;Some other child&lt;/p&gt;';
+
+            class MyComponent extends HTMLElement {
+              constructor() {
+                super();
+                this.innerHTML = template.content.cloneNode(true);
+              }
+            }
+          </code></pre>
+          <pre class="code lit"><code class="js">
+            import { html, render } from 'lit-html';
+
+            class MyComponent extends HTMLElement {
+              constructor() {
+                super();
+                render(
+                  html`&lt;p&gt;Some child&lt;/p&gt;&lt;p&gt;Some other child&lt;/p&gt;`,
+                  this
+                );
+              }
+            }
+          </code></pre>
+        </div>
 
         <pres-cue slot="cues" step
-          >HTML is a streaming format, where markup is parsed into a DOM representation in chunks. When streaming, a
-          custom element may be connected before it's attributes and children have been parsed</pres-cue
+          >Can use template to clone content for each instance</pres-cue
         >
+        <pres-cue slot="cues" step
+          >Or any templating library that generates DOM</pres-cue
+        >
+      </pres-slide>
 
-        <pre class="code"><code class="js">
-          import { ReadyMixin } from '@nrk/element-ready-mixin';
-
-          // Apply mixin to base class to inherit behaviour
-          class MyComponent extends ReadyMixin(HTMLElement) {
-            readyCallback() {
-              // Fully parsed
-            }
+      <pres-slide id="ce-lifecycle">
+        <style>
+          #ce-lifecycle {
+            background-color: var(--colour-custom-elements);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
           }
-        </code></pre>
+          #ce-lifecycle pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-lifecycle .highlight {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-lifecycle[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-lifecycle[step-2] .highlight.one {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-lifecycle[step-2] .highlight.two,
+          #ce-lifecycle[step-2] .highlight.three {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-lifecycle[step-3] .highlight.two {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-lifecycle[step-3] .highlight.one,
+          #ce-lifecycle[step-3] .highlight.three {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-lifecycle[step-4] .highlight.three {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-lifecycle[step-4] .highlight.one,
+          #ce-lifecycle[step-4] .highlight.two {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+        </style>
 
-        <pres-cue slot="cues" step>You can use the ReadyMixin to guard against incomplete parsing</pres-cue>
+        <header>
+          <h3>Custom<br />Elements</h3>
+          <p>Element lifecycle</p>
+        </header>
+
+        <pres-cue slot="cues" step>Custom elements have a lifecycle</pres-cue>
+
+        <div class="grid-25-75">
+          <p>Custom elements have an initialisation lifecycle</p>
+
+          <pre class="code"><code class="js">
+            class MyComponent extends HTMLElement {
+              // Initialise properties
+              fancy = false;
+              <span class="highlight one">constructor()</span> {
+                super(); // Required!
+                // Initialise Shadow DOM
+                this.attachShadow(/*...*/)
+                // NO INSPECTION OF ATTRIBUTES OR CHILDREN ALLOWED!
+              }
+              <span class="highlight two">connectedCallback()</span> {
+                this.fancy = this.getAttribute('fancy') !== null;
+                this.addEventListener('click', this, false);
+              }
+              <span class="highlight three">disconnectedCallback()</span> {
+                this.removeEventListener('click', this, false);
+              }
+            }
+          </code></pre>
+        </div>
+
+        <pres-cue slot="cues" step
+          >The constructor is called when an instance is created. Here you can
+          setup default property values and shadow DOM, but don't inspect
+          attributes or children</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >The connectedCallback is called when the elememt is added to the DOM.
+          You should defer all setup until now</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >The disconnectedCallback is called when the element is removed from
+          the DOM. You should clean up setup performed in
+          connectedCallback</pres-cue
+        >
       </pres-slide>
 
       <pres-slide id="ce-state">
+        <style>
+          #ce-state pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-state[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <header>
           <h3>Custom<br />Elements</h3>
           <p>Element state</p>
         </header>
         <p>
-          HTML elements store state as both <strong class="underline">attributes</strong> and
+          HTML elements store state as both
+          <strong class="underline">attributes</strong> and
           <strong class="underline">properties</strong>
         </p>
 
-        <pres-cue slot="cues" step>HTML elements store state as both attributes and properties</pres-cue>
+        <pres-cue slot="cues" step
+          >HTML elements store state as both attributes and properties</pres-cue
+        >
 
-        <pre class="code"><code class="html">
-          &lt;!-- State as attribute. Declarative, serialisable --&gt;
-          &lt;my-component fancy&gt;&lt;/my-component&gt;
-        </code></pre>
-        <pre class="code"><code class="js">
-          // State as property. Imperative, not serialisable
-          document.querySelector('my-component').fancy = true;
-        </code></pre>
+        <div class="grid-50">
+          <pre class="code"><code class="html">
+            &lt;!-- State as attribute. Declarative, serialisable --&gt;
+            &lt;my-component fancy&gt;&lt;/my-component&gt;
+          </code></pre>
+          <pre class="code"><code class="js">
+            // State as property. Imperative, not serialisable
+            document.querySelector('my-component').fancy = true;
+          </code></pre>
+        </div>
 
         <pres-cue slot="cues"
-          >In general, because you can serialise their values when server rendering, you should treat attributes as
-          config</pres-cue
+          >Attributes are serialisable: good for config and css
+          selection</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="ce-reactivity">
+        <style>
+          #ce-reactivity pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-reactivity .highlight {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-reactivity[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-reactivity[step-2] .highlight.one {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-reactivity[step-2] .highlight.two,
+          #ce-reactivity[step-2] .highlight.three,
+          #ce-reactivity[step-2] .highlight.four,
+          #ce-reactivity[step-2] .highlight.five,
+          #ce-reactivity[step-2] .highlight.six {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-reactivity[step-3] .highlight.two {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-reactivity[step-3] .highlight.one,
+          #ce-reactivity[step-3] .highlight.three,
+          #ce-reactivity[step-3] .highlight.four,
+          #ce-reactivity[step-3] .highlight.five,
+          #ce-reactivity[step-3] .highlight.six {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-reactivity[step-4] .highlight.three {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-reactivity[step-4] .highlight.one,
+          #ce-reactivity[step-4] .highlight.two,
+          #ce-reactivity[step-4] .highlight.four,
+          #ce-reactivity[step-4] .highlight.five,
+          #ce-reactivity[step-4] .highlight.six {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-reactivity[step-5] .highlight.four {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-reactivity[step-5] .highlight.one,
+          #ce-reactivity[step-5] .highlight.two,
+          #ce-reactivity[step-5] .highlight.three,
+          #ce-reactivity[step-5] .highlight.five,
+          #ce-reactivity[step-5] .highlight.six {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-reactivity[step-6] .highlight.five {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-reactivity[step-6] .highlight.one,
+          #ce-reactivity[step-6] .highlight.two,
+          #ce-reactivity[step-6] .highlight.three,
+          #ce-reactivity[step-6] .highlight.four,
+          #ce-reactivity[step-6] .highlight.six {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #ce-reactivity[step-7] .highlight.six {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #ce-reactivity[step-7] .highlight.one,
+          #ce-reactivity[step-7] .highlight.two,
+          #ce-reactivity[step-7] .highlight.three,
+          #ce-reactivity[step-7] .highlight.four,
+          #ce-reactivity[step-7] .highlight.five {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+        </style>
+
         <header>
           <h3>Custom<br />Elements</h3>
           <p>Element reactivity</p>
         </header>
-        <p>State reflection and observability</p>
 
         <pres-cue slot="cues" step
-          >Sometimes state values are reflected from attribute to property and back. Sometimes not.</pres-cue
+          >Sometimes state values are reflected from attribute to property and
+          back. Sometimes not.</pres-cue
         >
 
-        <pre class="code"><code class="js compact">
+        <div class="grid-25-75">
+          <p>Property reflection and attribute observability</p>
+          <pre class="code"><code class="js compact">
           class MyComponent extends HTMLElement {
             <span class="highlight one">static get observedAttributes()</span> {
               return ['active'];
@@ -423,10 +879,8 @@
             <span class="highlight three">set active(value)</span> {
               value ? this.setAttribute('active', '') : this.removeAttribute('active');
             }
-            constructor() {
-              super();
-              <span class="highlight four">this._fancy = false;</span>
-            }
+
+            <span class="highlight four">_fancy = false;</span>
             <span class="highlight four">get fancy()</span> {
               return this._fancy;
             }
@@ -436,106 +890,184 @@
               <span class="highlight five">this.updated('fancy', oldValue);</span>
             }
             <span class="highlight five">updated(propName, oldValue)</span> {
-              console.log(`property ${propName} updated from ${oldValue} to ${this[propName]}`);
+              console.log(
+                `property ${propName} updated from ${oldValue} to ${this[propName]}`
+              );
             }
           }
         </code></pre>
+        </div>
+
         <pres-cue slot="cues" step
-          >We can observe attribute changes by defining a static observedAttributes array</pres-cue
+          >We can observe attribute changes by defining a static
+          observedAttributes array</pres-cue
         >
         <pres-cue slot="cues" step
-          >When an observed attribute changes, we get notified with the attributeChangedCallback</pres-cue
+          >When an observed attribute changes, we get notified with the
+          attributeChangedCallback</pres-cue
         >
-        <pres-cue slot="cues" step>And we can wrap an attribute in a getter/setter to expose it as a property</pres-cue>
-        <pres-cue slot="cues" step>For properties, we can react to changes by defining a getter/setter</pres-cue>
-        <pres-cue slot="cues" step>And finally, we can ensure that all changes trigger an update callback</pres-cue>
+        <pres-cue slot="cues" step
+          >And we can wrap an attribute in a getter/setter to expose it as a
+          property</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >For properties, we can react to changes by defining a
+          getter/setter</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >And finally, we can ensure that all changes trigger an update
+          callback</pres-cue
+        >
       </pres-slide>
 
       <pres-slide id="ce-base">
+        <style>
+          #ce-base pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-base[step-1] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-base[step-2] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <header>
           <h3>Custom<br />Elements</h3>
           <p>Reactive base classes</p>
         </header>
         <p>Reduce reactivity boilerplate with a base clase</p>
 
-        <div class="side-by-side">
+        <div class="grid-50">
           <pre class="code"><code class="js compact">
-            import { LitElement } from 'lit-element';
+            import { LitElement } from 'lit';
 
             class MyComponent extends LitElement {
-              static get properties() {
-                return {
-                  active: { type: Boolean, reflect: false },
-                  fancy: { type: Boolean, reflect: false }
-                }
+              static properties = {
+                active: { type: Boolean, reflect: true },
+                fancy: { type: Boolean, reflect: false },
               }
-              constructor() {
-                super();
-                this.active = false;
-                this.fancy = false;
-              }
+              active = false;
+              fancy = false;
             }
           </code></pre>
           <pre class="code"><code class="js compact">
-            import { ReactiveElement } from '@nrk/reactive-element';
+            import { ReactiveElement } from './my-reactive-element.js';
 
             class MyComponent extends ReactiveElement {
-              static get reactiveProperties() {
-                return {
-                  attributes: { active: Boolean },
-                  properties: { fancy: Boolean }
-                }
+              static reactiveAttributes = {
+                active: Boolean,
               }
-              constructor() {
-                super();
-                this.active = false;
-                this.fancy = false;
+              static reactiveProperties = {
+                fancy: Boolean,
               }
+              active = false;
+              fancy = false;
             }
           </code></pre>
         </div>
 
         <pres-cue slot="cues" step
-          >There are several custom element base classes available that reduce this reactivity boilerplate. Here is
-          LitElement</pres-cue
+          >There are several custom element base classes available that reduce
+          this reactivity boilerplate. Here is LitElement</pres-cue
         >
         <pres-cue slot="cues" step
-          >Here is ReactiveElement, which makes use of the ReadyMixin, and has no opinions about rendering</pres-cue
+          >Or make your own — it's ok, don't be scared</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="ce-built-ins">
+        <style>
+          #ce-built-ins pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-built-ins .nope {
+            font-size: 10vw;
+            left: 50%;
+            margin: 0;
+            position: absolute;
+            top: 60%;
+            transform: translate(-50%, -50%);
+            visibility: hidden;
+          }
+          #ce-built-ins[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #ce-built-ins[step-2] .nope {
+            visibility: visible;
+          }
+        </style>
+
         <header>
           <h3>Custom<br />Elements</h3>
           <p>Extending built-ins</p>
         </header>
-        <p>Built-in native elements can also be extended with custom behaviour</p>
+        <p>
+          Built-in native elements can also be extended with custom behaviour
+        </p>
 
         <pres-cue slot="cues" step
-          >Unlike autonomous custom elements which extend the generic HTMLElement, custom elements may instead extend
-          built-in element classes</pres-cue
+          >Unlike autonomous custom elements which extend the generic
+          HTMLElement, custom elements may instead extend built-in element
+          classes</pres-cue
         >
 
-        <pre class="code"><code class="js">
+        <div class="grid-50">
+          <pre class="code"><code class="js">
           // Extend from native Button
 
           class MyButton extends HTMLButtonElement {}
 
-          window.customElements.define('my-button', MyButton, { extends: 'button' })
+          window.customElements
+            .define('my-button', MyButton, { extends: 'button' })
         </code></pre>
-        <pre class="code"><code class="html">
-          &lt;!-- Use &quot;is&quot; attribute to associate instance with custom behaviour --&gt;
+          <pre class="code"><code class="html">
+          &lt;!-- Use &quot;is&quot; attribute to associate
+           instance with custom behaviour --&gt;
 
           &lt;button is=&quot;my-button&quot;&gt;&lt;/button&gt;
         </code></pre>
+        </div>
 
-        <pres-cue slot="cues">This allows your custom element to inherit a lot of useful behaviour</pres-cue>
+        <pres-cue slot="cues"
+          >This allows your custom element to inherit a lot of useful
+          behaviour</pres-cue
+        >
 
         <p class="nope">❌</p>
         <pres-cue slot="cues" step>But unfortunately, Safari says no!</pres-cue>
       </pres-slide>
 
       <pres-slide id="shadow-dom">
+        <style>
+          #shadow-dom,
+          #sd-init,
+          #sd-styling,
+          #sd-slots,
+          #sd-slots-styling,
+          #sd-slots-api {
+            background-color: var(--colour-shadow-dom);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+
+          #shadow-dom > p {
+            color: seagreen;
+            font-size: 3vw;
+            margin-left: calc(25% + var(--grid-gap));
+            max-width: initial;
+          }
+        </style>
+
         <header>
           <h2>Shadow<br />DOM</h2>
           <p>A hidden DOM tree and scoped styles for your custom elements</p>
@@ -545,24 +1077,53 @@
         </p>
 
         <pres-cue slot="cues"
-          >Shadow DOM is an API for encapsulating a custom element's internal DOM tree and styles</pres-cue
+          >Shadow DOM is an API for encapsulating a custom element's internal
+          DOM tree and styles</pres-cue
         >
         <pres-cue slot="cues"
-          >This is behaviour many built-in elements rely upon to render their UI without conflicting with surrounding
-          markup and styling. Like the video tag, which hides it's poster and controls from the light DOM</pres-cue
+          >This is behaviour many built-in elements rely upon to render their UI
+          without conflicting with surrounding markup and styling. Like the
+          video tag, which hides it's poster and controls from the light
+          DOM</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="sd-init">
+        <style>
+          #sd-init pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #sd-init .highlight {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-init[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-init[step-2] .highlight {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+        </style>
+
         <header>
           <h3>Shadow<br />DOM</h3>
           <p>Initialisation</p>
         </header>
-        <p>A component's shadow DOM is usually initialised in the constructor with <code>this.attachShadow()</code></p>
 
-        <pres-cue slot="cues" step>Call attachShadow in the constructor</pres-cue>
+        <pres-cue slot="cues" step
+          >Call attachShadow in the constructor</pres-cue
+        >
 
-        <pre class="code"><code class="js">
+        <div class="grid-50">
+          <p>
+            A component's shadow DOM is initialised in the constructor with
+            <code>this.attachShadow()</code>
+          </p>
+          <pre class="code"><code class="js">
           const template = document.createElement('template');
           template.innerHTML = '&lt;h2 id="title"&gt;My Component&lt;/h2&gt;';
 
@@ -570,16 +1131,111 @@
             constructor() {
               super();
               // Initialise component's shadow DOM
-              <span class="highlight">this.attachShadow({ mode: 'open' })</span>.appendChild(template.content.cloneNode(true));
+              <span class="highlight">this.attachShadow({ mode: 'open' })</span>
+                .appendChild(template.content.cloneNode(true));
             }
           }
         </code></pre>
+        </div>
+
         <pres-cue slot="cues" step
-          >attachShadow takes an option object to configure it's mode: open or closed. Always use open</pres-cue
+          >attachShadow takes an option object to configure it's mode: open or
+          closed. Always use open</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="sd-styling">
+        <style>
+          #sd-styling pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #sd-styling .highlight {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-styling pre:nth-of-type(1) {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+          }
+          #sd-styling[step-1] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-styling[step-2] .highlight.one {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #sd-styling[step-2] .highlight.two,
+          #sd-styling[step-2] .highlight.three,
+          #sd-styling[step-2] .highlight.four,
+          #sd-styling[step-2] .highlight.five {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-styling[step-3] .highlight.two {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #sd-styling[step-3] .highlight.one,
+          #sd-styling[step-3] .highlight.three,
+          #sd-styling[step-3] .highlight.four,
+          #sd-styling[step-3] .highlight.five {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-styling[step-4] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-styling[step-5] .highlight.three {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #sd-styling[step-5] .highlight.one,
+          #sd-styling[step-5] .highlight.two,
+          #sd-styling[step-5] .highlight.four,
+          #sd-styling[step-5] .highlight.five {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-styling[step-6] .highlight.four {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #sd-styling[step-6] .highlight.one,
+          #sd-styling[step-6] .highlight.two,
+          #sd-styling[step-6] .highlight.three,
+          #sd-styling[step-6] .highlight.five {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-styling[step-7] .highlight.five {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #sd-styling[step-7] .highlight.one,
+          #sd-styling[step-7] .highlight.two,
+          #sd-styling[step-7] .highlight.three,
+          #sd-styling[step-7] .highlight.four {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-styling[step-8] pre:nth-of-type(3) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-styling[step-8] .highlight.one,
+          #sd-styling[step-8] .highlight.two,
+          #sd-styling[step-8] .highlight.three,
+          #sd-styling[step-8] .highlight.four,
+          #sd-styling[step-8] .highlight.five {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+        </style>
+
         <header>
           <h3>Shadow<br />DOM</h3>
           <p>Styling</p>
@@ -587,12 +1243,15 @@
         <p>Shadow DOM styles are scoped to the component's tree</p>
 
         <pres-cue slot="cues" step
-          >Styles defined within a shadow DOM are scoped to the component's tree and opt out of css's global
+          >Styles defined within a shadow DOM are scoped to the component's tree
+          and opt out of css's global scoping</pres-cue
+        >
+        <pres-cue slot="cues"
+          >Use inline style or link tags in the component's tree to enable
           scoping</pres-cue
         >
-        <pres-cue slot="cues">Use inline style or link tags in the component's tree to enable scoping</pres-cue>
 
-        <div class="side-by-side">
+        <div class="grid-50">
           <pre class="code"><code class="js">
             const template = document.createElement('template');
             template.innerHTML = `
@@ -638,56 +1297,139 @@
               font-size: 12px;
             }
           </code></pre>
+          <pre class="code"><code class="js">
+            import styles from './my-component-styles.css' assert { type: 'css' };
+
+            class MyComponent extends HTMLElement {
+              constructor() {
+                super();
+                this.shadowRoot = this.attachShadow({ mode: 'open' });
+                this.shadowRoot.adoptedStyleSheets = [sheet];
+              }
+            }
+          </code></pre>
         </div>
 
-        <pres-cue slot="cues" step>The :host selector applies style rules to the component root</pres-cue>
-        <pres-cue slot="cues" step>Note that all custom elements are display: inline by default</pres-cue>
         <pres-cue slot="cues" step
-          >Also note that a document-level tag selector is more specific than a local :host selector</pres-cue
-        >
-        <pres-cue slot="cues" step>Use :host(selector) to apply conditional styles</pres-cue>
-        <pres-cue slot="cues" step
-          >Or :host-context(selector) pseudo-class to apply styles that are dependant upon some ancestor condition
-          (rendered inside a header tag, for example)</pres-cue
+          >The :host selector applies style rules to the component
+          root</pres-cue
         >
         <pres-cue slot="cues" step
-          >Finally, note that element ids are also scoped, so there is no risk of collision in the global id
-          space</pres-cue
+          >Note that all custom elements are display: inline by
+          default</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >Also note that a document-level tag selector is more specific than a
+          local :host selector</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >Use :host(selector) to apply conditional styles</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >Or :host-context(selector) pseudo-class to apply styles that are
+          dependant upon some ancestor condition (rendered inside a header tag,
+          for example)</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >Finally, note that element ids are also scoped, so there is no risk
+          of collision in the global id space</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >Finally, note that element ids are also scoped, so there is no risk
+          of collision in the global id space</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="sd-slots">
+        <style>
+          #sd-slots > p {
+            max-width: 50%;
+          }
+          #sd-slots pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+
+          #sd-slots pre:nth-of-type(1) {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+          }
+
+          #sd-slots .highlight {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-slots[step-1] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-slots[step-2] .highlight.one {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #sd-slots[step-2] .highlight.two {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-slots[step-3] .highlight.two {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+          #sd-slots[step-3] .highlight.one {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-slots[step-4] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-slots[step-4] .highlight.one,
+          #sd-slots[step-4] .highlight.two {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-slots[step-5] pre:nth-of-type(3) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <header>
           <h3>Shadow<br />DOM</h3>
           <p>Slotting user content</p>
         </header>
+
+        <pres-cue slot="cues" step
+          >Project user content into a component's shadow DOM with
+          slots</pres-cue
+        >
+
         <p>
           The <code>&lt;slot&gt;</code> tag enables projecting content from the
-          <em><strong class="underline">light</strong></em> DOM to the shadow DOM
+          <em><strong class="underline">light</strong></em> DOM to the shadow
+          DOM
         </p>
+        <div class="grid-50">
+          <pre class="code"><code class="js">
+            const template = document.createElement('template');
+            template.innerHTML = html`
+              &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
+              <span class="highlight one">&lt;slot&gt;Default content&lt;/slot&gt;</span>
+              &lt;ul&gt;
+                <span class="highlight two">&lt;slot name=&quot;items&quot;&gt;&lt;/slot&gt;</span>
+              &lt;/ul&gt;
+            `;
 
-        <pres-cue slot="cues" step>Project user content into a component's shadow DOM with slots</pres-cue>
-
-        <pre class="code"><code class="js compact">
-          const template = document.createElement('template');
-          template.innerHTML = html`
-            &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
-            <span class="highlight one">&lt;slot&gt;Default content&lt;/slot&gt;</span>
-            &lt;ul&gt;
-              <span class="highlight two">&lt;slot name=&quot;items&quot;&gt;&lt;/slot&gt;</span>
-            &lt;/ul&gt;
-          `;
-
-          class MyComponent extends HTMLElement {
-            constructor() {
-              super();
-              this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+            class MyComponent extends HTMLElement {
+              constructor() {
+                super();
+                this.attachShadow({ mode: 'open' })
+                  .appendChild(template.content.cloneNode(true));
+              }
             }
-          }
-        </code></pre>
-
-        <div class="side-by-side">
-          <pre class="code"><code class="html compact">
+          </code></pre>
+          <pre class="code"><code class="html">
             &lt;!-- Document markup --&gt;
             &lt;my-component&gt;
               &lt;p&gt;Some body content&lt;/p&gt;
@@ -696,7 +1438,7 @@
               &lt;p&gt;Some more body content&lt;/p&gt;
             &lt;/my-component&gt;
           </code></pre>
-          <pre class="code"><code class="html compact">
+          <pre class="code"><code class="html">
             &lt;!-- Rendered, flattened DOM --&gt;
             &lt;my-component&gt;
             &lt;h2 id="title"&gt;My Component&lt;/h2&gt;
@@ -709,32 +1451,63 @@
             &lt;/my-component&gt;
           </code></pre>
         </div>
+
         <pres-cue slot="cues" step
-          >Default slots are placeholders for all unnamed slot content (with fallback content)</pres-cue
+          >Default slots are placeholders for all unnamed slot content (with
+          fallback content)</pres-cue
         >
         <pres-cue slot="cues" step
-          >Named slots are placeholders for all named slot content (more than one can be appended)</pres-cue
+          >Named slots are placeholders for all named slot content (more than
+          one can be appended)</pres-cue
         >
-        <pres-cue slot="cues" step>All user defined child content will then be slotted</pres-cue>
-        <pres-cue slot="cues">Note: only top level children can be slotted!</pres-cue>
-        <pres-cue slot="cues" step>Slotted content is then projected and flattened into the component's tree</pres-cue>
+        <pres-cue slot="cues" step
+          >All user defined child content will then be slotted</pres-cue
+        >
+        <pres-cue slot="cues"
+          >Note: only top level children can be slotted!</pres-cue
+        >
+        <pres-cue slot="cues" step
+          >Slotted content is then projected and flattened into the component's
+          tree</pres-cue
+        >
       </pres-slide>
 
       <pres-slide id="sd-slots-styling">
+        <style>
+          #sd-slots-styling > p {
+            max-width: 50%;
+          }
+          #sd-slots-styling pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #sd-slots-styling[step-1] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-slots-styling[step-2] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <header>
           <h3>Shadow<br />DOM</h3>
           <p>Styling slotted content</p>
         </header>
+
         <p>
-          Slot content is <em>distributed</em> into the Shadow DOM, not copied, so styles applied before distribution
-          still apply
+          Slot content is <em>distributed</em> into the Shadow DOM, not copied,
+          so styles applied before distribution still apply
         </p>
 
         <pres-cue slot="cues" step
-          >Slots are distributed, not moved, so styles applied before distribution still apply</pres-cue
+          >Slots are distributed, not moved, so styles applied before
+          distribution still apply</pres-cue
         >
 
-        <div class="side-by-side">
+        <div class="grid-50">
           <pre class="code"><code class="css">
             /* Style light DOM children */
 
@@ -764,20 +1537,51 @@
             }
           </code></pre>
         </div>
-        <pres-cue slot="cues" step>Can specify styling from within a component with ::slotted()</pres-cue>
+        <pres-cue slot="cues" step
+          >Can specify styling from within a component with
+          ::slotted()</pres-cue
+        >
         <pres-cue slot="cues">...but only top-level!</pres-cue>
       </pres-slide>
 
       <pres-slide id="sd-slots-api">
+        <style>
+          #sd-slots-api pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #sd-slots-api .highlight {
+            border-color: var(--highlight-border-colour-off);
+            box-shadow: none;
+          }
+          #sd-slots-api[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-slots-api[step-2] .highlight {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
+          }
+        </style>
+
         <header>
           <h3>Shadow<br />DOM</h3>
           <p>Slots API</p>
         </header>
-        <p>There are APIs for monitoring slot changes and retrieving their contents</p>
 
-        <pres-cue slot="cues" step>APIs for monitoring slot changes and retrieving/inspecting their contents</pres-cue>
+        <pres-cue slot="cues" step
+          >APIs for monitoring slot changes and retrieving/inspecting their
+          contents</pres-cue
+        >
 
-        <pre class="code"><code class="js">
+        <div class="grid-25-75">
+          <p>
+            There are APIs for monitoring slot changes and retrieving their
+            contents
+          </p>
+
+          <pre class="code"><code class="js">
           class MyComponent extends HTMLElement {
             constructor() {
               super();
@@ -797,102 +1601,145 @@
             }
           }
         </code></pre>
+        </div>
 
         <pres-cue slot="cues" step
-          >Here we wait for the slotchange event before iterating over slotted children</pres-cue
+          >Here we wait for the slotchange event before iterating over slotted
+          children</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="presentable">
+        <style>
+          #presentable,
+          #pres-template,
+          #pres-styling,
+          #pres-slotchange,
+          #pres-mixin {
+            background-color: var(--colour-presentable);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+
+          #presentable pre,
+          #pres-template pre,
+          #pres-styling pre,
+          #pres-slotchange pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #presentable[step-1] pre,
+          #pres-template[step-1] pre,
+          #pres-styling[step-1] pre,
+          #pres-slotchange[step-1] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
         <header>
           <h2>Presentable</h2>
-          <p>A slide framework</p>
+          <p>A slide library</p>
         </header>
-        <p>Introducing <code>Presentable</code>, an over-engineered slide framework based on web components!</p>
 
-        <pres-cue slot="cues" step>Welcome to my over-engineered, web-components-based, slide framework</pres-cue>
+        <pres-cue slot="cues" step
+          >Welcome to my over-engineered, web-components-based, slide
+          library</pres-cue
+        >
 
-        <pre class="code"><code class="html">
-          &lt;!--
-            index.html
-            An actual, 100% genuine, Presentable slide!
-          --&gt;
-          &lt;pres-slide id=&quot;definition&quot;&gt;
-            &lt;h2&gt;Web Component&lt;br /&gt;(&lt;em&gt;wɛb kəmˈpəʊnənt&lt;/em&gt;)&lt;br /&gt;&lt;span&gt;noun&lt;/span&gt;&lt;/h2&gt;
-            &lt;p&gt;
-              A collection of technologies used to create reusable HTML elements with
-              &lt;em&gt;encapsulated functionality&lt;/em&gt;
-            &lt;/p&gt;
+        <div class="grid-25-75">
+          <p>
+            Introducing <code>Presentable</code>, an over-engineered slide
+            library based on web components!
+          </p>
+          <pre class="code"><code class="html">
+            &lt;!-- index.html --&gt;
+            &lt;pres-slide id=&quot;definition&quot;&gt;
+              &lt;h2&gt;Web Component&lt;br /&gt;(&lt;em&gt;wɛb kəmˈpəʊnənt&lt;/em&gt;)&lt;br /&gt;&lt;span&gt;noun&lt;/span&gt;&lt;/h2&gt;
+              &lt;p&gt;
+                A collection of technologies used to create reusable HTML elements with
+                &lt;em&gt;encapsulated functionality&lt;/em&gt;
+              &lt;/p&gt;
 
-            &lt;pres-cue slot=&quot;cues&quot;&gt;What are web components? Three API categories:&lt;/pres-cue&gt;
+              &lt;pres-cue slot=&quot;cues&quot;&gt;What are web components? Three API categories:&lt;/pres-cue&gt;
 
-            &lt;ul&gt;
-              &lt;li&gt;HTML Templates&lt;/li&gt;
-              &lt;li&gt;Custom Elements&lt;/li&gt;
-              &lt;li&gt;Shadow DOM&lt;/li&gt;
-            &lt;/ul&gt;
+              &lt;ul&gt;
+                &lt;li&gt;HTML Templates&lt;/li&gt;
+                &lt;li&gt;Custom Elements&lt;/li&gt;
+                &lt;li&gt;Shadow DOM&lt;/li&gt;
+              &lt;/ul&gt;
 
-            &lt;pres-cue slot=&quot;cues&quot; step&gt;HTML Templates&lt;/pres-cue&gt;
-            &lt;pres-cue slot=&quot;cues&quot; step&gt;Custom Elements&lt;/pres-cue&gt;
-            &lt;pres-cue slot=&quot;cues&quot; step&gt;Shadow DOM&lt;/pres-cue&gt;
-          &lt;/pres-slide&gt;
-        </code></pre>
+              &lt;pres-cue slot=&quot;cues&quot; step&gt;HTML Templates&lt;/pres-cue&gt;
+              &lt;pres-cue slot=&quot;cues&quot; step&gt;Custom Elements&lt;/pres-cue&gt;
+              &lt;pres-cue slot=&quot;cues&quot; step&gt;Shadow DOM&lt;/pres-cue&gt;
+            &lt;/pres-slide&gt;
+          </code></pre>
+        </div>
 
         <pres-cue slot="cues"
-          >This very presentation is built with Presentable, and uses most of the features and techniques presented
-          here. Open dev tools and look around</pres-cue
+          >This very presentation is built with Presentable, and uses most of
+          the features and techniques presented here. Open dev tools and look
+          around</pres-cue
         >
       </pres-slide>
 
       <pres-slide id="pres-template">
         <header>
           <h3>Presentable</h3>
-          <p>Tasty templates</p>
+          <p>Templates</p>
         </header>
-        <p>Templates with inline <code>&lt;style&gt;</code> and default/named <code>&lt;slot&gt;</code></p>
+        <pres-cue slot="cues" step
+          >Templating with inline style and slots</pres-cue
+        >
 
-        <pres-cue slot="cues" step>Templating with inline style and slots</pres-cue>
+        <div class="grid-25-75">
+          <p>
+            Templates with inline <code>&lt;style&gt;</code> and default/named
+            <code>&lt;slot&gt;</code>
+          </p>
 
-        <pre class="code"><code class="js">
-          /**
-           * presentable-slide.js
-           * Templates! And slots!!
-           */
-          const html = String.raw;
-          const template = document.createElement(&#39;template&#39;);
-          template.innerHTML = html`
-            &lt;style&gt;
-              :host {
-                bottom: 0;
-                /*...*/
-                visibility: hidden;
-              }
-              :host([show]) {
-                opacity: 1;
-                visibility: visible;
-              }
-            &lt;/style&gt;
-            &lt;!-- Gather all unnamed content here --&gt;
-            &lt;slot&gt;&lt;/slot&gt;
-            &lt;!-- Append all named content items to single slot --&gt;
-            &lt;slot name=&quot;cues&quot;&gt;&lt;/slot&gt;
-          `;
-        </code></pre>
+          <pre class="code"><code class="js">
+            // presentable/slide.js
+            const html = String.raw;
+            const template = document.createElement(&#39;template&#39;);
+            template.innerHTML = html`
+              &lt;style&gt;
+                :host {
+                  bottom: 0;
+                  /*...*/
+                  visibility: hidden;
+                }
+                :host([show]) {
+                  opacity: 1;
+                  visibility: visible;
+                }
+              &lt;/style&gt;
+              &lt;!-- Gather all unnamed content here --&gt;
+              &lt;slot&gt;&lt;/slot&gt;
+              &lt;!-- Append all named content items to single slot --&gt;
+              &lt;slot name=&quot;cues&quot;&gt;&lt;/slot&gt;
+            `;
+          </code></pre>
+        </div>
       </pres-slide>
 
       <pres-slide id="pres-styling">
         <header>
           <h3>Presentable</h3>
-          <p>So stylish</p>
+          <p>Styling</p>
         </header>
         <p>Override default shadow DOM styling with css custom properties</p>
 
-        <pres-cue slot="cues" step>Using css custom properties to style Shadow DOM content</pres-cue>
+        <pres-cue slot="cues" step
+          >Using css custom properties to style Shadow DOM content</pres-cue
+        >
 
-        <div class="side-by-side">
+        <div class="grid-50">
           <pre class="code"><code class="css">
             /**
-             * presentable-show.js
+             * presentable/show.js
              * Custom properties with defaults
              */
             #progress {
@@ -927,99 +1774,48 @@
       <pres-slide id="pres-slotchange">
         <header>
           <h3>Presentable</h3>
-          <p>Sexy slots</p>
+          <p>Slots</p>
         </header>
-        <p>Listening for <code>slotchange</code> event and iterating over <code>assignedElements</code></p>
 
         <pres-cue slot="cues" step>slotchange event</pres-cue>
 
-        <pre class="code"><code class="js">
-          /**
-           * presentable-show.js
-           * Parse slides when slotted
-           */
-          this.shadowRoot.querySelector('slot')?.addEventListener(
-            'slotchange',
-            (event) => {
-              for (const slottedChild of event.target.assignedElements()) {
-                if (slottedChild instanceof PresentableSlide) {
-                  const slide = slottedChild;
-                  const cueRangeStart = this.cueTotal;
-
-                  for (const cue of slide.cues) {
-                    this.cueTotal++;
-                    cue.index = this.cueTotal;
-                  }
-
-                  slide.cueRange = [cueRangeStart, this.cueTotal];
-                }
-              }
-
-              this.change(startingCue);
-            },
-            { once: true }
-          );
-        </code></pre>
-      </pres-slide>
-
-      <pres-slide id="pres-mixin">
-        <header>
-          <h3>Presentable</h3>
-          <p>Mischevious mixins</p>
-        </header>
-        <p>Mixin attribute/property reflection</p>
-
-        <pres-cue slot="cues" step>Mixin attribute/property reflection</pres-cue>
-
-        <div class="side-by-side">
+        <div class="grid-25-75">
+          <p>
+            Listening for <code>slotchange</code> event and iterating over
+            <code>assignedElements</code>
+          </p>
           <pre class="code"><code class="js">
             /**
-             * active-element-mixin.js
-             * Define "active" attribute/property
-             */
-            export function ActiveElementMixin(baseClass) {
-              return class ActiveElement extends baseClass {
-                get active() {
-                  return this.getAttribute('active');
+            * presentable/show.js
+            * Parse slides when slotted
+            */
+            this.shadowRoot.querySelector('slot')?.addEventListener(
+              'slotchange',
+              (event) => {
+                for (const slottedChild of event.target.assignedElements()) {
+                  if (slottedChild instanceof PresentableSlide) {
+                    const slide = slottedChild;
+                    const cueRangeStart = this.cueTotal;
+
+                    for (const cue of slide.cues) {
+                      this.cueTotal++;
+                      cue.index = this.cueTotal;
+                    }
+
+                    slide.cueRange = [cueRangeStart, this.cueTotal];
+                  }
                 }
 
-                set active(value) {
-                  if (value) {
-                    this.setAttribute('active', '');
-                    this.dispatchEvent(
-                      new Event('active', {
-                        bubbles: true, cancelable: true
-                      })
-                    );
-                  } else {
-                    this.removeAttribute('active');
-                  }
-                }
-              };
-            }
-          </code></pre>
-          <pre class="code"><code class="js">
-            /**
-             * presentable-show.js:
-             * Handle bubbled "active" event
-             * and copy cue contents to internal notes element
-             */
-            handleEvent(event) {
-              switch (event.type) {
-                case 'active': {
-                  if (event.target instanceof PresentableCue) {
-                    this.elCueNotes.innerHTML = event.target.innerHTML;
-                  }
-                  break;
-                }
-              }
-            }
+                this.change(startingCue);
+              },
+              { once: true }
+            );
           </code></pre>
         </div>
       </pres-slide>
 
       <pres-slide id="outro">
-        <h1>So much more to explore,<br />but so little (of my) time left...</h1>
+        <h1>bye</h1>
         <pres-cue slot="cues">Show's over!</pres-cue>
       </pres-slide>
     </pres-show>

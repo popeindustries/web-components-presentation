@@ -1,5 +1,4 @@
-import { PresentableCue } from './presentable-cue.js';
-import { VisibleElementMixin } from './visible-element-mixin.js';
+import { PresentableCue } from './cue.js';
 
 const html = String.raw;
 const template = document.createElement('template');
@@ -37,15 +36,19 @@ template.innerHTML = html`
   <slot name="cues"></slot>
 `;
 
-export class PresentableSlide extends VisibleElementMixin(HTMLElement) {
+export class PresentableSlide extends HTMLElement {
+  /** @type { Array<PresentableCue> } */
+  cues = [];
+  cueRange = [0, 0];
+  /** @type { 0 | 1 | -1 } */
+  #visible = 0;
+
   constructor() {
     super();
 
-    /** @type { Array<PresentableCue> } */
-    this.cues = [];
-    this.cueRange = [0, 0];
-
-    this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+    this.attachShadow({ mode: 'open' }).appendChild(
+      template.content.cloneNode(true),
+    );
 
     // Parse cues when slotted
     this.shadowRoot.querySelector('slot[name="cues"]')?.addEventListener(
@@ -66,8 +69,48 @@ export class PresentableSlide extends VisibleElementMixin(HTMLElement) {
           }
         }
       },
-      { once: true }
+      { once: true },
     );
+  }
+
+  get visible() {
+    return this.#visible;
+  }
+
+  /**
+   * Set visibility.
+   * @param { 0 | 1 | -1 } value - default|show|hide
+   */
+  set visible(value) {
+    this.#visible = value;
+
+    let shouldDispatch = false;
+
+    switch (value) {
+      case 0:
+        this.removeAttribute('show');
+        this.removeAttribute('hide');
+        break;
+      case 1:
+        this.removeAttribute('hide');
+        this.setAttribute('show', '');
+        shouldDispatch = true;
+        break;
+      case -1:
+        this.removeAttribute('show');
+        this.setAttribute('hide', '');
+        shouldDispatch = true;
+        break;
+    }
+    if (shouldDispatch) {
+      this.dispatchEvent(
+        new CustomEvent('visible', {
+          bubbles: true,
+          cancelable: true,
+          detail: this.#visible,
+        }),
+      );
+    }
   }
 
   connectedCallback() {
@@ -85,8 +128,10 @@ export class PresentableSlide extends VisibleElementMixin(HTMLElement) {
   handleEvent(event) {
     if (event.type === 'cue') {
       const { cueIndex, oldCueIndex } = event.detail;
-      const hasOldCue = oldCueIndex >= this.cueRange[0] && oldCueIndex < this.cueRange[1];
-      const hasCue = cueIndex >= this.cueRange[0] && cueIndex < this.cueRange[1];
+      const hasOldCue =
+        oldCueIndex >= this.cueRange[0] && oldCueIndex < this.cueRange[1];
+      const hasCue =
+        cueIndex >= this.cueRange[0] && cueIndex < this.cueRange[1];
       const isCurrentlyVisible = this.visible === 1;
 
       if (hasOldCue) {

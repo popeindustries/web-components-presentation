@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "dvlp": "^8.2.0"
+    "dvlp": "*"
   },
   "scripts": {
-    "dev": "dvlp --port 8888",
-    "open": "open -a \"Google Chrome\" http://localhost:8888?showtime",
-    "start": "npm run open && npm run dev -- --silent"
+    "dev": "dvlp --silent",
+    "open": "open -a \"Google Chrome\" http://localhost:8080?showtime",
+    "start": "pnpm run open && pnpm run dev -- --silent"
   }
 }
