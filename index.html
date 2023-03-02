@@ -6,16 +6,315 @@
     <title>&lt;web-components&gt;</title>
     <script type="module" src="assets/highlight.js"></script>
     <script type="module" src="src/presentable/show.js"></script>
-    <link rel="stylesheet" type="text/css" href="src/index.css" />
     <link
       rel="stylesheet"
       type="text/css"
       href="assets/tomorrow-night-eighties.css"
     />
-    <link rel="stylesheet" type="text/css" href="src/slides.css" />
     <script type="module">
       hljs.initHighlightingOnLoad();
     </script>
+    <style>
+      :root {
+        --box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+          0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075),
+          0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+        --box-border-radius: 10px;
+        --colour-bg: hotpink;
+        --colour-text: #0b1728;
+        --colour-bg-code: #2d2d2d;
+        --highlight-border-colour-on: rgba(255, 255, 0, 0.75);
+        --highlight-border-colour-off: rgba(255, 255, 0, 0);
+        --highlight-box-shadow-on: 0 0 16px rgba(255, 255, 0, 0.25);
+      }
+
+      @font-face {
+        font-family: 'Inter';
+        src: url('assets/fonts/Inter.var.woff2') format('woff2');
+        font-weight: 100 900;
+        font-display: swap;
+        font-style: normal;
+        font-named-instance: 'Regular';
+      }
+      @font-face {
+        font-family: 'Inter';
+        src: url('assets/fonts/Inter-italic.var.woff2') format('woff2');
+        font-weight: 100 900;
+        font-display: swap;
+        font-style: italic;
+        font-named-instance: 'Italic';
+      }
+      @font-face {
+        font-family: 'Hack';
+        src: url('assets/fonts/Hack-Regular.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        user-select: none;
+      }
+
+      html,
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      html {
+        background-color: var(--colour-bg);
+      }
+
+      body {
+        color: var(--colour-text);
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        font-variant: normal;
+        font-weight: 500;
+        margin: 0;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      pres-show {
+        --slide-progress-colour: blueviolet;
+        display: grid;
+        height: 100%;
+      }
+      pres-show:not(:defined) {
+        display: none;
+      }
+
+      pres-slide {
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+        opacity: 1;
+        transform: translateX(100%);
+      }
+      pres-slide[show] {
+        transform: translateX(0);
+      }
+      pres-slide[hide] {
+        transform: translateX(-100%);
+      }
+
+      header {
+        align-items: end;
+        border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
+        display: grid;
+        gap: var(--grid-gap);
+        grid-template-columns: 1fr 3fr;
+        /* justify-content: space-between; */
+        margin-bottom: var(--grid-gap);
+        padding-bottom: calc(var(--grid-gap) / 2);
+      }
+
+      header > * {
+        margin: 0;
+        padding: 0;
+        max-width: 75%;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        line-height: normal;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 10vh;
+        font-weight: 900;
+        padding: 0 5vh;
+        text-align: center;
+        width: 100%;
+      }
+
+      h2 {
+        font-size: 6vh;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      h3 {
+        font-size: 4vh;
+        line-height: 1.2;
+      }
+
+      :where(p, ul, ol) {
+        font-size: 3vh;
+        margin: 0 0 var(--grid-gap);
+      }
+
+      pres-slide > p {
+        max-width: 70%;
+      }
+
+      img {
+        border: 0;
+      }
+
+      svg {
+        overflow: visible;
+      }
+
+      b,
+      strong {
+        font-weight: bold;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      code {
+        font-family: 'Hack', monospace;
+        font-size: inherit;
+      }
+
+      pre {
+        align-items: center;
+        background-color: var(--colour-bg-code);
+        border-radius: var(--box-border-radius);
+        box-shadow: var(--box-shadow);
+        display: flex;
+        margin: 0;
+      }
+      pre code {
+        background-color: transparent !important;
+        font-size: 1.8vh;
+        margin: 0 3vw 0 -5vw;
+        min-width: 50%;
+        width: fit-content;
+      }
+      pre code.compact {
+        font-size: 1.5vh;
+      }
+      pre code span.highlight {
+        border: 0.7px dotted var(--highlight-border-colour-on);
+        border-radius: 2px;
+        box-shadow: var(--highlight-box-shadow-on);
+        display: inline-block;
+        padding: 0.125em 0.2em 0.2em;
+      }
+      pre.inline {
+        background-color: transparent;
+        box-shadow: none;
+        display: inline-block;
+        margin: 0;
+        vertical-align: top;
+      }
+      pre.inline code {
+        display: inline-block;
+        font-size: inherit;
+        padding: 0;
+        margin-left: 0;
+      }
+
+      .underline {
+        text-decoration: underline;
+      }
+
+      .warning {
+        background-color: lightgoldenrodyellow;
+        border-radius: var(--box-border-radius);
+        box-shadow: var(--box-shadow);
+        font-style: italic;
+        padding: 0.8em;
+        position: relative;
+      }
+      .warning:before {
+        content: '⚠️';
+        color: gold;
+        font-size: 4vh;
+        font-style: normal;
+        left: -2vh;
+        position: absolute;
+        text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+        top: -3vh;
+      }
+
+      .grid-33 {
+        align-items: stretch;
+        display: grid;
+        gap: var(--grid-gap);
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .grid-50 {
+        align-items: stretch;
+        display: grid;
+        gap: var(--grid-gap);
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-50-auto {
+        align-items: stretch;
+        display: grid;
+        gap: var(--grid-gap);
+        grid-template-columns: repeat(2, minmax(min-content, auto));
+      }
+
+      .grid-25-75 {
+        align-items: stretch;
+        display: grid;
+        gap: var(--grid-gap);
+        grid-template-columns: 1fr 3fr;
+      }
+
+      .grid-33 > p,
+      .grid-50 > p,
+      .grid-50-auto > p,
+      .grid-25-75 > p {
+        align-self: center;
+      }
+
+      @media (orientation: portrait) {
+        header {
+          margin-bottom: 2vw;
+          padding-bottom: 2vw;
+        }
+        h1 {
+          font-size: 6vw;
+        }
+        h2 {
+          font-size: 3.5vw;
+        }
+        h3 {
+          font-size: 3vw;
+        }
+        p,
+        ul,
+        ol {
+          font-size: 2.5vw;
+        }
+        pre {
+          margin: 1vw 0;
+        }
+        pre code {
+          font-size: 2vw;
+        }
+        pre code.compact {
+          font-size: 1.6vw;
+        }
+        .side-by-side {
+          display: block;
+        }
+        .side-by-side > * {
+          margin-bottom: 2vw;
+          width: 100%;
+        }
+        .warning:before {
+          font-size: 2vw;
+        }
+      }
+    </style>
   </head>
   <body>
     <style>
@@ -31,8 +330,7 @@
     <pres-show>
       <pres-slide id="intro">
         <style>
-          #intro,
-          #outro {
+          #intro {
             background-color: hotpink;
           }
         </style>
@@ -150,7 +448,7 @@
         </div>
 
         <pres-cue slot="cues"
-          >In general, web components aim to expose existing internal APIs to
+          >Important: web components aim to expose existing internal APIs to
           developers...</pres-cue
         >
         <pres-cue slot="cues" step>...not fix the DOM</pres-cue>
@@ -228,10 +526,14 @@
           #ht-template h3 {
             margin-bottom: 1em;
           }
-          #ht-template pre:nth-of-type(2) {
+          #ht-template pre {
             opacity: 0;
             transition: var(--transition-slide);
             transform: translateY(100%);
+          }
+          #ht-template[show] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
           }
           #ht-template[step-1] pre:nth-of-type(2) {
             opacity: 1;
@@ -276,10 +578,14 @@
           #ht-slot h3 {
             margin-bottom: var(--grid-gap);
           }
-          #ht-slot pre:nth-of-type(2) {
+          #ht-slot pre {
             opacity: 0;
             transition: var(--transition-slide);
             transform: translateY(100%);
+          }
+          #ht-slot[show] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
           }
           #ht-slot[step-1] pre:nth-of-type(2) {
             opacity: 1;
@@ -357,6 +663,17 @@
       </pres-slide>
 
       <pres-slide id="ce-step1">
+        <style>
+          #ce-step1 pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #ce-step1[show] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
         <header>
           <h3>Custom<br />Elements #1</h3>
           <p>
@@ -389,6 +706,11 @@
 
       <pres-slide id="ce-step2">
         <style>
+          #ce-step2 pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
           #ce-step2 .warnings {
             margin-top: var(--grid-gap);
           }
@@ -398,6 +720,10 @@
             opacity: 0;
             transition: var(--transition-slide);
             transform: translateY(100%);
+          }
+          #ce-step2[show] pre:nth-of-type(1) {
+            opacity: 1;
+            transform: translateY(0);
           }
           #ce-step2[step-1] .warnings p:nth-child(1) {
             opacity: 1;
@@ -482,6 +808,8 @@
           <p>Add to DOM</p>
         </header>
 
+        <p>Add element instances to the DOM</p>
+
         <pres-cue slot="cues" step
           >Third step is to add your custom element to the DOM. Server rendered
           static markup</pres-cue
@@ -525,7 +853,7 @@
             transition: var(--transition-slide);
             transform: translateY(100%);
           }
-          #ce-upgrade[step-1] pre {
+          #ce-upgrade[show] pre {
             opacity: 1;
             transform: translateY(0);
           }
@@ -587,8 +915,13 @@
 
         <pres-cue slot="cues">Generally need to render some content</pres-cue>
 
+        <p>
+          Since Custom Elements are just DOM elements, there are no restrictions
+          on how to render content
+        </p>
+
         <div class="grid-50">
-          <pre class="code"><code class="js">
+          <pre class="code"><code class="js compact">
             const template = document.createElement(&#39;template&#39;);
             template.innerHTML =
               '&lt;p&gt;Some child&lt;/p&gt;&lt;p&gt;Some other child&lt;/p&gt;';
@@ -600,7 +933,7 @@
               }
             }
           </code></pre>
-          <pre class="code lit"><code class="js">
+          <pre class="code lit"><code class="js compact">
             import { html, render } from 'lit-html';
 
             class MyComponent extends HTMLElement {
@@ -691,7 +1024,7 @@
                 super(); // Required!
                 // Initialise Shadow DOM
                 this.attachShadow(/*...*/)
-                // NO INSPECTION OF ATTRIBUTES OR CHILDREN ALLOWED!
+                // NO INSPECTION OF ATTRIBUTES OR CHILDREN!
               }
               <span class="highlight two">connectedCallback()</span> {
                 this.fancy = this.getAttribute('fancy') !== null;
@@ -749,11 +1082,13 @@
 
         <div class="grid-50">
           <pre class="code"><code class="html">
-            &lt;!-- State as attribute. Declarative, serialisable --&gt;
+            &lt;!-- State as attribute.
+              Declarative, serialisable --&gt;
             &lt;my-component fancy&gt;&lt;/my-component&gt;
           </code></pre>
           <pre class="code"><code class="js">
-            // State as property. Imperative, not serialisable
+            // State as property
+            // Imperative, not serialisable
             document.querySelector('my-component').fancy = true;
           </code></pre>
         </div>
@@ -864,7 +1199,7 @@
         >
 
         <div class="grid-25-75">
-          <p>Property reflection and attribute observability</p>
+          <p>Attribute observability and property reflection</p>
           <pre class="code"><code class="js compact">
           class MyComponent extends HTMLElement {
             <span class="highlight one">static get observedAttributes()</span> {
@@ -890,6 +1225,7 @@
               <span class="highlight five">this.updated('fancy', oldValue);</span>
             }
             <span class="highlight five">updated(propName, oldValue)</span> {
+              // Optionally reflect property to attribute here
               console.log(
                 `property ${propName} updated from ${oldValue} to ${this[propName]}`
               );
@@ -1053,7 +1389,8 @@
           #sd-styling,
           #sd-slots,
           #sd-slots-styling,
-          #sd-slots-api {
+          #sd-slots-api,
+          #sd-dsd {
             background-color: var(--colour-shadow-dom);
             display: flex;
             flex-direction: column;
@@ -1086,6 +1423,7 @@
           video tag, which hides it's poster and controls from the light
           DOM</pres-cue
         >
+        <pres-cue slot="cues">This is not a security feature!</pres-cue>
       </pres-slide>
 
       <pres-slide id="sd-init">
@@ -1163,74 +1501,66 @@
             opacity: 1;
             transform: translateY(0);
           }
-          #sd-styling[step-2] .highlight.one {
+          #sd-styling[step-2] pre:nth-of-type(2) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-styling[step-3] .highlight.one {
             border-color: var(--highlight-border-colour-on);
             box-shadow: var(--highlight-box-shadow-on);
           }
-          #sd-styling[step-2] .highlight.two,
-          #sd-styling[step-2] .highlight.three,
-          #sd-styling[step-2] .highlight.four,
-          #sd-styling[step-2] .highlight.five {
-            border-color: var(--highlight-border-colour-off);
-            box-shadow: none;
-          }
-          #sd-styling[step-3] .highlight.two {
-            border-color: var(--highlight-border-colour-on);
-            box-shadow: var(--highlight-box-shadow-on);
-          }
-          #sd-styling[step-3] .highlight.one,
+          #sd-styling[step-3] .highlight.two,
           #sd-styling[step-3] .highlight.three,
           #sd-styling[step-3] .highlight.four,
           #sd-styling[step-3] .highlight.five {
             border-color: var(--highlight-border-colour-off);
             box-shadow: none;
           }
-          #sd-styling[step-4] pre:nth-of-type(2) {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          #sd-styling[step-5] .highlight.three {
+          #sd-styling[step-4] .highlight.two {
             border-color: var(--highlight-border-colour-on);
             box-shadow: var(--highlight-box-shadow-on);
           }
-          #sd-styling[step-5] .highlight.one,
-          #sd-styling[step-5] .highlight.two,
-          #sd-styling[step-5] .highlight.four,
-          #sd-styling[step-5] .highlight.five {
+          #sd-styling[step-4] .highlight.one,
+          #sd-styling[step-4] .highlight.three,
+          #sd-styling[step-4] .highlight.four,
+          #sd-styling[step-4] .highlight.five {
             border-color: var(--highlight-border-colour-off);
             box-shadow: none;
           }
-          #sd-styling[step-6] .highlight.four {
+          #sd-styling[step-5] pre:nth-of-type(3) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #sd-styling[step-6] .highlight.three {
             border-color: var(--highlight-border-colour-on);
             box-shadow: var(--highlight-box-shadow-on);
           }
           #sd-styling[step-6] .highlight.one,
           #sd-styling[step-6] .highlight.two,
-          #sd-styling[step-6] .highlight.three,
+          #sd-styling[step-6] .highlight.four,
           #sd-styling[step-6] .highlight.five {
             border-color: var(--highlight-border-colour-off);
             box-shadow: none;
           }
-          #sd-styling[step-7] .highlight.five {
+          #sd-styling[step-7] .highlight.four {
             border-color: var(--highlight-border-colour-on);
             box-shadow: var(--highlight-box-shadow-on);
           }
           #sd-styling[step-7] .highlight.one,
           #sd-styling[step-7] .highlight.two,
           #sd-styling[step-7] .highlight.three,
-          #sd-styling[step-7] .highlight.four {
+          #sd-styling[step-7] .highlight.five {
             border-color: var(--highlight-border-colour-off);
             box-shadow: none;
           }
-          #sd-styling[step-8] pre:nth-of-type(3) {
-            opacity: 1;
-            transform: translateY(0);
+          #sd-styling[step-8] .highlight.five {
+            border-color: var(--highlight-border-colour-on);
+            box-shadow: var(--highlight-box-shadow-on);
           }
           #sd-styling[step-8] .highlight.one,
           #sd-styling[step-8] .highlight.two,
           #sd-styling[step-8] .highlight.three,
-          #sd-styling[step-8] .highlight.four,
-          #sd-styling[step-8] .highlight.five {
+          #sd-styling[step-8] .highlight.four {
             border-color: var(--highlight-border-colour-off);
             box-shadow: none;
           }
@@ -1252,9 +1582,10 @@
         >
 
         <div class="grid-50">
-          <pre class="code"><code class="js">
+          <pre class="code"><code class="js compact">
             const template = document.createElement('template');
-            template.innerHTML = `
+            template.innerHTML = html`
+              &lt;link rel="stylesheet" href="my-component-styles.css" /&gt;
               &lt;style&gt;
                 <span class="highlight one">:host</span> {
                   <span class="highlight two">display: block;</span>
@@ -1280,7 +1611,24 @@
               }
             }
           </code></pre>
-          <pre class="code"><code class="css">
+          <pre class="code"><code class="js compact">
+            import styles from './my-component-styles.css' assert { type: 'css' };
+
+            class MyComponent extends HTMLElement {
+              constructor() {
+                super();
+                this.attachShadow({ mode: 'open' }).adoptedStyleSheets = [sheet];
+              }
+            }
+          </code></pre>
+          <pre class="code"><code class="css compact">
+            /**
+             * Inheritable styles and CSS properties pierce through shadow boundaries
+             */
+            body {
+              color: var(--colour-text);
+              font-family: 'Inter', sans-serif;
+            }
             /**
              * Document-level styles have higher spcificity,
              * and will override :host selector rules
@@ -1291,25 +1639,17 @@
             my-component[active] {
               color: gold;
             }
-
             /* But children can't be styled! */
             my-component h2 {
               font-size: 12px;
             }
           </code></pre>
-          <pre class="code"><code class="js">
-            import styles from './my-component-styles.css' assert { type: 'css' };
-
-            class MyComponent extends HTMLElement {
-              constructor() {
-                super();
-                this.shadowRoot = this.attachShadow({ mode: 'open' });
-                this.shadowRoot.adoptedStyleSheets = [sheet];
-              }
-            }
-          </code></pre>
         </div>
 
+        <pres-cue slot="cues" step
+          >Or load external stylesheet using import assertion and apply with
+          adoptedStyleSheets</pres-cue
+        >
         <pres-cue slot="cues" step
           >The :host selector applies style rules to the component
           root</pres-cue
@@ -1329,10 +1669,6 @@
           >Or :host-context(selector) pseudo-class to apply styles that are
           dependant upon some ancestor condition (rendered inside a header tag,
           for example)</pres-cue
-        >
-        <pres-cue slot="cues" step
-          >Finally, note that element ids are also scoped, so there is no risk
-          of collision in the global id space</pres-cue
         >
         <pres-cue slot="cues" step
           >Finally, note that element ids are also scoped, so there is no risk
@@ -1538,7 +1874,7 @@
           </code></pre>
         </div>
         <pres-cue slot="cues" step
-          >Can specify styling from within a component with
+          >Can specify limited styling from within a component with
           ::slotted()</pres-cue
         >
         <pres-cue slot="cues">...but only top-level!</pres-cue>
@@ -1607,6 +1943,58 @@
           >Here we wait for the slotchange event before iterating over slotted
           children</pres-cue
         >
+      </pres-slide>
+
+      <pres-slide id="sd-dsd">
+        <style>
+          #sd-dsd pre {
+            opacity: 0;
+            transition: var(--transition-slide);
+            transform: translateY(100%);
+          }
+          #sd-dsd[show] pre {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+
+        <header>
+          <h3>Shadow<br />DOM</h3>
+          <p>Declarative Shadow DOM (DSD)</p>
+        </header>
+
+        <pres-cue slot="cues"
+          >One problem with shadow DOM is that it requires JS</pres-cue
+        >
+
+        <div class="grid-25-75">
+          <p>
+            Declarative Shadow DOM allows server rendering of JS-dependant
+            shadow content
+          </p>
+
+          <pre class="code"><code class="html">
+            &lt;my-component&gt;
+              &lt;template shadowrootmode=&quot;open&quot;&gt;
+                &lt;h2 id=&quot;title&quot;&gt;My Component&lt;/h2&gt;
+                &lt;slot&gt;Default content&lt;/slot&gt;
+                &lt;ul&gt;
+                  &lt;slot name=&quot;items&quot;&gt;&lt;/slot&gt;
+                &lt;/ul&gt;
+              &lt;/template&gt;
+
+              &lt;p&gt;Some body content&lt;/p&gt;
+              &lt;li slot=&quot;items&quot;&gt;one&lt;/li&gt;
+              &lt;li slot=&quot;items&quot;&gt;&lt;em&gt;two&lt;/em&gt;&lt;/li&gt;
+              &lt;p&gt;Some more body content&lt;/p&gt;
+            &lt;/my-component&gt;
+          </code></pre>
+        </div>
+
+        <pres-cue slot="cues" step>
+          Declarative Shadow DOM enables server rendering of custom elements
+          with shadow DOM
+        </pres-cue>
       </pres-slide>
 
       <pres-slide id="presentable">
@@ -1815,7 +2203,17 @@
       </pres-slide>
 
       <pres-slide id="outro">
-        <h1>bye</h1>
+        <style>
+          #outro {
+            background-color: hotpink;
+          }
+          #outro h1 {
+            font-size: 6vh;
+          }
+        </style>
+        <h1>
+          <code>&lt;the-end&gt;</code>Thanks!<code>&lt;/the-end&gt;</code>
+        </h1>
         <pres-cue slot="cues">Show's over!</pres-cue>
       </pres-slide>
     </pres-show>
